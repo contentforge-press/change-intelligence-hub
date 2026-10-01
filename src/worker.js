@@ -100,6 +100,11 @@ function page() {
     <a class="btn" href="https://s-shopify.pixharvest.com/v1/snapshot?store=allbirds.com" target="_blank">Try a free snapshot</a>
     <a class="btn ghost" href="#pricing">See pricing</a>
   </div>
+  <div class="badges" style="margin-top:14px">
+    <a href="#about" style="color:var(--mut);text-decoration:none">About</a> ·
+    <a href="#roadmap" style="color:var(--mut);text-decoration:none">Roadmap</a> ·
+    <a href="#contact" style="color:var(--mut);text-decoration:none">Contact</a>
+  </div>
 </div></header>
 
 <section><div class="wrap">
@@ -143,6 +148,34 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
     <div class="price"><div class="amt">$499</div><div class="per">Business / month</div><ul><li>Batch & landscape</li><li>High volume</li></ul></div>
     <div class="price"><div class="amt">$2000</div><div class="per">Enterprise / month</div><ul><li>Unlimited</li><li>Custom integration</li></ul></div>
   </div>
+</div></section>
+
+<section id="about"><div class="wrap">
+  <h2>Why we built this</h2>
+  <p class="lead">Software is increasingly written and run by autonomous agents — but agents still struggle to answer one simple question: <i>"did the thing I care about change?"</i> Change Intelligence gives every agent a reliable way to ask, with a price attached to the answer.</p>
+  <p class="lead">We are a small, independent team building the boring, dependable plumbing of the agent economy. No venture money, no lock-in, no surveillance: every endpoint speaks open standards (MCP + x402), settles peer-to-peer, and can be replaced. We make money only when our data saves your agent real work.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+    <span class="badge">Open standards</span><span class="badge">Independent &amp; self-funded</span><span class="badge">0% payment commission</span><span class="badge">Global, remote</span>
+  </div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <h2>Roadmap</h2>
+  <div class="prices">
+    <div class="price"><div class="per">Shipped</div><ul><li>Five live intelligence APIs</li><li>x402 v1 + v2, Base mainnet</li><li>Official MCP Registry (4/5)</li><li>Email alerts &amp; dashboards</li></ul></div>
+    <div class="price hl"><div class="per">Next</div><ul><li>HN in official Registry</li><li>On-chain agent directory (The Spawn)</li><li>Weekly public data briefings</li><li>Wallet-based pay sessions</li></ul></div>
+    <div class="price"><div class="per">Later</div><ul><li>More data sources on request</li><li>Team &amp; audit workspaces</li><li>Custom private feeds</li><li>SOC 2 / enterprise contracts</li></ul></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <h2>Talk to a human</h2>
+  <p class="lead">Building an agent fleet, need a custom feed, an SLA, an invoice or a pilot? We answer every message.</p>
+  <p class="lead">
+    <a href="mailto:contentforge.press@outlook.com" style="color:var(--acc)">contentforge.press@outlook.com</a><br>
+    <a href="https://github.com/contentforge-press" target="_blank" style="color:var(--acc)">github.com/contentforge-press</a>
+    &nbsp;·&nbsp; <span style="color:var(--mut)">Response within 24h, worldwide · remote</span>
+  </p>
 </div></section>
 
 <footer><div class="wrap">
