@@ -1,0 +1,7 @@
+name = "change-intel-hub"
+main = "src/worker.js"
+compatibility_date = "2025-01-01"
+
+[[kv_namespaces]]
+binding = "SHARED_KV"
+id = "ed62f7b5d5274de686f5f699915a30a1"
