@@ -179,9 +179,9 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
     <div class="pcard">
       <div class="tag">talent</div>
       <h3>Hiring Intelligence Dataset</h3>
-      <p class="what">50+ companies · deduplicated job postings</p>
+      <p class="what">77 companies · 13,716 deduplicated job postings</p>
       <div class="stat">$199 · one-time</div>
-      <div class="smp">CSV + JSON + Parquet</div>
+      <div class="smp">Greenhouse + Ashby · snapshot 2026-10-02 · CSV + JSON + Parquet</div>
       <a class="btn buy" href="${BUY.hiring}" data-buy="hiring">Buy · $199</a>
     </div>
   </div>
