@@ -15,13 +15,14 @@ const PRODUCTS = [
       card: '2026 US tariff & landed-cost · 1,000+ pages', sample: 'Free tier · REST + MCP' },
 ];
 
-// --- purchase buttons: mailto order funnel until Paddle checkout links are enabled ---
+// --- purchase buttons: Dodo Payments checkout (URLs filled after verification approval; custom stays mailto) ---
 const BUY = {
-    hobby: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Hobby%20%249%2Fmo%20%E2%80%94%20PixHarvest',
-    pro: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Pro%20%2499%2Fmo%20%E2%80%94%20PixHarvest',
-    business: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Business%20%24499%2Fmo%20%E2%80%94%20PixHarvest',
-    enterprise: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Enterprise%20%242000%2Fmo%20%E2%80%94%20PixHarvest',
-    hts: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20HTS%20Tariff%20Snapshot%20%2449%20%E2%80%94%20PixHarvest',
+    // NOTE: checkout URLs (Dodo) are pasted here after merchant verification; until then buttons point to email so no dead links.
+    standard: 'mailto:contentforge.press@outlook.com?subject=PixHarvest%20Standard%20(%2419%2Fmo)',
+    pro: 'mailto:contentforge.press@outlook.com?subject=PixHarvest%20Pro%20(%2479%2Fmo)',
+    business: 'mailto:contentforge.press@outlook.com?subject=PixHarvest%20Enterprise%20(%24499%2Fmo)',
+    hts: 'mailto:contentforge.press@outlook.com?subject=HTS%20Tariff%20Snapshot%20(%2449)',
+    hiring: 'mailto:contentforge.press@outlook.com?subject=Hiring%20Intelligence%20Dataset%20(%24199)',
     custom: 'mailto:contentforge.press@outlook.com?subject=Custom%20dataset%20request%20%E2%80%94%20PixHarvest',
 };
 
@@ -67,6 +68,10 @@ code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 pre{background:#0a0d13;border:1px solid var(--line);border-radius:10px;padding:14px;overflow:auto;font-size:13px;color:#c9d4e8}
 footer{border-top:1px solid var(--line);padding:30px 0;color:var(--mut);font-size:13px}
 footer a{color:var(--mut)}
+.leadform{display:grid;gap:10px;max-width:580px;margin:18px 0 6px}
+.leadform input,.leadform select,.leadform textarea{background:#0a0d13;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--txt);font:inherit;font-size:14px}
+.leadform textarea{min-height:88px;resize:vertical}
+.leadok{font-size:13px;color:var(--ok);min-height:18px;margin-top:2px}
 @media(max-width:720px){h1{font-size:32px}.prices{grid-template-columns:repeat(2,1fr)}}
 `;
 
@@ -77,6 +82,14 @@ if(!uid){uid='a'+Date.now().toString(36)+Math.random().toString(36).slice(2,10);
 function send(o){o.uid=uid;try{navigator.sendBeacon&&navigator.sendBeacon('/__beacon',new Blob([JSON.stringify(o)],{type:'application/json'}));}catch(e){fetch('/__beacon',{method:'POST',keepalive:true,headers:{'content-type':'application/json'},body:JSON.stringify(o)});}}
 send({type:'pv',path:location.pathname+location.search,ref:document.referrer||''});
 document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('a,button');if(!t)return;var h=(t.getAttribute('href')||'');if(h.indexOf('s-')===0)send({type:'event',name:'open_product'});},true);
+}catch(e){}})();`;
+
+const LEAD_JS = `
+(function(){try{
+var ok=document.getElementById('leadok');if(!ok)return;
+window.leadSubmit=function(ev){ev.preventDefault();var f=ev.target;var d={};[].forEach.call(f.querySelectorAll('input,select,textarea'),function(el){if(!el.name)return;d[el.name]=el.value;});
+if(d.website){ok.textContent='Thanks!';f.reset();return;}
+fetch('/api/lead',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json();}).then(function(r){if(r.ok){ok.textContent='Message sent - we reply within 24h.';f.reset();}else{ok.textContent='Send failed - please email contentforge.press@outlook.com.';}}).catch(function(){ok.textContent='Send failed - please email contentforge.press@outlook.com.';});return false;};
 }catch(e){}})();`;
 
 function page() {
@@ -93,7 +106,7 @@ function page() {
     return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Change Intelligence — one key, five data intelligence feeds</title>
-<meta name="description" content="Change Intelligence: five production data APIs for autonomous AI agents — Shopify, GitHub, App Store, HackerNews and US tariff data. Free snapshot, paid change reports; USDC on Base via x402; card checkout. One key works across all five. Plans from $9/mo.">
+<meta name="description" content="Change Intelligence: five production data APIs for autonomous AI agents — Shopify, GitHub, App Store, HackerNews and US tariff data. Free snapshot, paid change reports; USDC on Base via x402; card checkout. One key works across all five. Plans from $19/mo.">
 <link rel="icon" type="image/png" href="/favicon.png">
 <meta property="og:type" content="website"><meta property="og:title" content="Change Intelligence — one key, five AI intelligence feeds">
 <meta property="og:description" content="Free snapshot, paid change reports for AI agents. USDC on Base via x402. One key across five feeds.">
@@ -152,12 +165,11 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
 
 <section id="pricing"><div class="wrap">
   <h2>Simple pricing</h2>
-  <p class="lead">Same four tiers on every product. One key works across the family. Monthly, cancel anytime.</p>
+  <p class="lead">Three subscription tiers on every product. One key works across the family. Monthly, cancel anytime.</p>
   <div class="prices">
-    <div class="price"><div class="amt">$9</div><div class="per">Hobby / month</div><ul><li>Paid tools, no attribution</li><li>Higher limits</li></ul><a class="btn buy" href="${BUY.hobby}" data-buy="hobby">Buy · $9/mo</a></div>
-    <div class="price hl"><div class="amt">$99</div><div class="per">Pro / month</div><ul><li>Continuous monitoring</li><li>Email alerts</li></ul><a class="btn buy" href="${BUY.pro}" data-buy="pro">Buy · $99/mo</a></div>
-    <div class="price"><div class="amt">$499</div><div class="per">Business / month</div><ul><li>Batch & landscape</li><li>High volume</li></ul><a class="btn buy" href="${BUY.business}" data-buy="business">Buy · $499/mo</a></div>
-    <div class="price"><div class="amt">$2000</div><div class="per">Enterprise / month</div><ul><li>Unlimited</li><li>Custom integration</li></ul><a class="btn buy" href="${BUY.enterprise}" data-buy="enterprise">Buy · $2,000/mo</a></div>
+    <div class="price"><div class="amt">$19</div><div class="per">Starter / month</div><ul><li>500 API calls / month</li><li>All five feeds</li></ul><a class="btn buy" href="${BUY.standard}" data-buy="standard">Buy · $19/mo</a></div>
+    <div class="price hl"><div class="amt">$79</div><div class="per">Pro / month</div><ul><li>5,000 API calls / month</li><li>Full dataset coverage</li></ul><a class="btn buy" href="${BUY.pro}" data-buy="pro">Buy · $79/mo</a></div>
+    <div class="price"><div class="amt">$499</div><div class="per">Enterprise / month</div><ul><li>Unlimited calls</li><li>Custom endpoints &amp; SLA</li></ul><a class="btn buy" href="${BUY.business}" data-buy="business">Buy · $499/mo</a></div>
   </div>
 </div></section>
 
@@ -172,6 +184,14 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
       <div class="stat">$49 · one-time</div>
       <div class="smp">1,000+ product pages covered</div>
       <a class="btn buy" href="${BUY.hts}" data-buy="hts">Buy · $49</a>
+    </div>
+    <div class="pcard">
+      <div class="tag">hiring intelligence</div>
+      <h3>Hiring Intelligence Dataset</h3>
+      <p class="what">13,716 verified job postings · 77 tech companies — CSV + JSON</p>
+      <div class="stat">$199 · one-time</div>
+      <div class="smp">Role, seniority, remote policy, salary band, stack</div>
+      <a class="btn buy" href="${BUY.hiring}" data-buy="hiring">Buy · $199</a>
     </div>
   </div>
 </div></section>
@@ -203,6 +223,16 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
 <section id="contact"><div class="wrap">
   <h2>Talk to a human</h2>
   <p class="lead">Building an agent fleet, need a custom feed, an SLA, an invoice or a pilot? We answer every message.</p>
+  <form class="leadform" onsubmit="leadSubmit(event)">
+    <input name="name" placeholder="Your name" autocomplete="name">
+    <input name="email" type="email" placeholder="Work email (we reply here)" required autocomplete="email">
+    <input name="company" placeholder="Company (optional)">
+    <select name="product"><option value="">Which data feed are you interested in?</option><option>Shopify Intel</option><option>GitHub Intel</option><option>App Store Intel</option><option>HackerNews Intel</option><option>Tariff &amp; Trade Data</option><option>Hiring Intelligence Dataset</option><option>Custom dataset</option></select>
+    <textarea name="message" placeholder="What do you need? Volume, SLA, timeline..." required></textarea>
+    <input name="website" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+    <div><button type="submit" class="btn">Send message</button></div>
+    <div class="leadok" id="leadok"></div>
+  </form>
   <p class="lead">
     <a href="mailto:contentforge.press@outlook.com" style="color:var(--acc)">contentforge.press@outlook.com</a><br>
     <a href="https://github.com/contentforge-press" target="_blank" style="color:var(--acc)">github.com/contentforge-press</a>
@@ -220,7 +250,8 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
   <a href="https://github.com/contentforge-press" target="_blank">github</a>
 </div></footer>
 
-<script>${ANALYTICS_JS}</script>
+<script>${ANALYTICS_JS}
+${LEAD_JS}</script>
 </body></html>`;
 }
 
@@ -230,7 +261,7 @@ const POLICIES = {
         title: 'Terms of Service',
         blocks: [
             ['1. Service', 'Change Intelligence ("the Service") is a set of data APIs and datasets operated by PixHarvest for developers, businesses and autonomous AI agents. By accessing the Service you agree to these Terms.'],
-            ['2. Subscriptions & payment', 'Subscription plans are billed monthly through Paddle. You may cancel at any time; access continues until the end of the paid period. Prices are in USD and may change with notice.'],
+            ['2. Subscriptions & payment', 'Subscription plans are billed monthly through Dodo Payments. You may cancel at any time; access continues until the end of the paid period. Prices are in USD and may change with notice.'],
             ['3. API usage', 'Each plan has rate limits and usage quotas as documented. You may integrate our data into your own products, but may not resell or redistribute raw feeds as a competing data service without a written license.'],
             ['4. One-time data products', 'One-time datasets (CSV/JSON/Parquet) are delivered by email within 24 hours and licensed for internal business use.'],
             ['5. Disclaimer', 'Data is sourced from public third-party services and is provided "as is" without warranty of accuracy, completeness or fitness for a particular purpose.'],
@@ -242,7 +273,7 @@ const POLICIES = {
         title: 'Privacy Policy',
         blocks: [
             ['1. What we collect', 'Our website stores only anonymous analytics: page views, referrer hostname, and a first-party cookie (_uid) used for visitor counting. API usage is logged by target, endpoint and timestamp for metering and abuse prevention.'],
-            ['2. Payments', 'Payments are processed by Paddle, a third-party payment provider. We never see or store your card details. Paddle\u2019s privacy policy applies to payment data.'],
+            ['2. Payments', 'Payments are processed by Dodo Payments, a third-party payment provider (Merchant of Record). We never see or store your card details. Dodo Payments\u2019 privacy policy applies to payment data.'],
             ['3. Cookies', 'We set one first-party analytics cookie (_uid) with a one-year lifetime. No third-party advertising cookies are used.'],
             ['4. Data sharing', 'We do not sell personal data. Logged data is used only to operate, meter and improve the Service.'],
             ['5. Your rights', 'You may contact us to request access to or deletion of personal data we hold. Contact: contentforge.press@outlook.com'],
@@ -251,7 +282,7 @@ const POLICIES = {
     refunds: {
         title: 'Refund Policy',
         blocks: [
-            ['1. Subscriptions', 'Subscription plans can be cancelled at any time from your Paddle dashboard. If the Service is unusable due to our fault, we will refund the most recent charge within 7 days of the charge date.'],
+            ['1. Subscriptions', 'Subscription plans can be cancelled at any time from your Dodo Payments dashboard (or by emailing us). If the Service is unusable due to our fault, we will refund the most recent charge within 7 days of the charge date.'],
             ['2. One-time data products', 'One-time datasets qualify for a full refund within 14 days of purchase if the file was not delivered or is materially defective. After successful download and delivery, no refund applies unless the data is materially wrong.'],
             ['3. How to request', 'Email contentforge.press@outlook.com with your payment reference. Refunds are issued to the original payment method within 5-10 business days.'],
         ],
@@ -310,9 +341,9 @@ function demoPage() {
     '<div id="note">Tip: try allbirds.com, gymshark.com, or any store domain that runs on Shopify.</div></header>' +
     '<main id="out"><div class="ph">Enter a store and hit Load snapshot.</div></main>' +
     '<footer class="cta"><h2>Turn this into your data pipeline</h2><div class="plans">' +
-    '<div class="plan"><b>$19</b><span>Starter · 1,000 calls / month</span><a href="mailto:contentforge.press@outlook.com?subject=Order%20Starter%20%2419%20-%20Shopify%20Intel">Order starter</a></div>' +
-    '<div class="plan hot"><b>$79</b><span>Pro · 10,000 calls / month + change history</span><a href="mailto:contentforge.press@outlook.com?subject=Order%20Pro%20%2479%20-%20Shopify%20Intel">Order pro</a></div>' +
-    '<div class="plan"><b>$499</b><span>Custom · dedicated store tracking</span><a href="mailto:contentforge.press@outlook.com?subject=Custom%20data%20request">Talk to us</a></div>' +
+    '<div class="plan"><b>$19</b><span>Starter · 1,000 calls / month</span><a href="' + BUY.standard + '">Order starter</a></div>' +
+    '<div class="plan hot"><b>$79</b><span>Pro · 10,000 calls / month + change history</span><a href="' + BUY.pro + '">Order pro</a></div>' +
+    '<div class="plan"><b>$499</b><span>Custom · dedicated store tracking</span><a href="' + BUY.business + '">Talk to us</a></div>' +
     '</div></footer>' +
     '<script>var form=document.getElementById("f"),inp=document.getElementById("s"),btn=document.getElementById("b"),out=document.getElementById("out");' +
     'function esc(x){return String(x).replace(/[&<>"\']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","\'":"&#39;"}[c];});}' +
@@ -344,6 +375,29 @@ export default {
             } catch (e) {
                 return json({ error: 'upstream failed: ' + String(e && e.message || e) }, 502);
             }
+        }
+        if (p === '/api/lead') {
+            if (request.method !== 'POST') return json({ error: 'method' }, 405);
+            let b = {}; try { b = await request.json(); } catch {}
+            if (!b.email || !b.message || String(b.email).length > 200 || String(b.message).length > 4000) return json({ error: 'bad input' }, 400);
+            if (b.website) return json({ ok: true }); // honeypot
+            const rec = { ts: new Date().toISOString(), name: String(b.name || '').slice(0, 100), email: String(b.email).trim().slice(0, 200), company: String(b.company || '').slice(0, 100), product: String(b.product || '').slice(0, 60), message: String(b.message).slice(0, 4000), ip: request.headers.get('cf-connecting-ip') || '', ua: (request.headers.get('user-agent') || '').slice(0, 120) };
+            await kv.put('__lead:' + Date.now().toString(36) + ':' + Math.random().toString(36).slice(2, 8), JSON.stringify(rec));
+            return json({ ok: true });
+        }
+        if (p === '/api/leads' || p === '/api/cursor') {
+            if ((request.headers.get('x-admin-key') || url.searchParams.get('key')) !== 'ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac') return json({ error: 'forbidden' }, 403);
+            if (p === '/api/cursor') {
+                if (request.method === 'POST') { let b = {}; try { b = await request.json(); } catch {} if (b.ts) await kv.put('__lead_cursor', String(b.ts)); return json({ ok: true }); }
+                return json({ ok: true, ts: (await kv.get('__lead_cursor')) || null });
+            }
+            const after = url.searchParams.get('after') || '';
+            const list = await kv.list({ prefix: '__lead:' });
+            let items = [];
+            for (const k of list.keys) { const v = await kv.get(k.name, 'json'); if (v) items.push(v); }
+            items.sort((a, b) => (a.ts < b.ts ? 1 : -1));
+            if (after) items = items.filter(x => x.ts > after);
+            return json({ ok: true, count: items.length, items });
         }
         if (p === '/health') return json({ ok: true });
         if (p === '/terms' || p === '/privacy' || p === '/refunds') return new Response(policyPage(p.slice(1)), { headers: { 'content-type': 'text/html; charset=utf-8' } });
