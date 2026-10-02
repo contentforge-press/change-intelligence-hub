@@ -9,10 +9,8 @@ const PRODUCTS = [
       card: 'facebook/react · 250,860 ★', sample: 'v19.3.0 · 51k forks' },
     { key: 'app', name: 'App Store Intel', what: 'Versions, ratings & reviews', url: 'https://s-app.pixharvest.com', tag: 'mobile',
       card: 'Instagram · 29.5M ratings', sample: 'v448.0.0 · 4.69 avg' },
-    { key: 'hiring', name: 'Hiring Intel', what: 'Open roles & hiring velocity', url: 'https://s-hiring.pixharvest.com', tag: 'talent',
-      card: 'Airbnb · 157 open roles', sample: '22 remote · 41 engineers' },
-    { key: 'hn', name: 'HackerNews Intel', what: 'Keyword mentions & momentum', url: 'https://s-hn.pixharvest.com', tag: 'buzz',
-      card: 'openai · 29,306 mentions', sample: '876 / 30d · Rising' },
+    { key: 'hn', name: 'HackerNews Intel', what: 'Topic trends & developer conversation signals', url: 'https://s-hn.pixharvest.com', tag: 'buzz',
+      card: 'AI coding tools · 8,412 discussions', sample: 'Top · Rising / 30d' },
     { key: 'tariff', name: 'Tariff & Trade Data API', what: 'US HTS rates, duty estimates & trade data', url: 'https://github.com/contentforge-press/us-tariff-data', tag: 'trade data',
       card: '2026 US tariff & landed-cost · 1,000+ pages', sample: 'Free tier · REST + MCP' },
 ];
@@ -24,7 +22,6 @@ const BUY = {
     business: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Business%20%24499%2Fmo%20%E2%80%94%20PixHarvest',
     enterprise: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Enterprise%20%242000%2Fmo%20%E2%80%94%20PixHarvest',
     hts: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20HTS%20Tariff%20Snapshot%20%2449%20%E2%80%94%20PixHarvest',
-    hiring: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Hiring%20Dataset%20%24199%20%E2%80%94%20PixHarvest',
     custom: 'mailto:contentforge.press@outlook.com?subject=Custom%20dataset%20request%20%E2%80%94%20PixHarvest',
 };
 
@@ -95,8 +92,8 @@ function page() {
 
     return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Change Intelligence — one key, six data intelligence feeds</title>
-<meta name="description" content="Change Intelligence: six production data APIs for autonomous AI agents — Shopify, GitHub, App Store, hiring, HackerNews and US tariff data. Free snapshot, paid change reports; USDC on Base via x402; card checkout. One key works across all six. Plans from $9/mo.">
+<title>Change Intelligence — one key, five data intelligence feeds</title>
+<meta name="description" content="Change Intelligence: five production data APIs for autonomous AI agents — Shopify, GitHub, App Store, HackerNews and US tariff data. Free snapshot, paid change reports; USDC on Base via x402; card checkout. One key works across all five. Plans from $9/mo.">
 <link rel="icon" type="image/png" href="/favicon.png">
 <meta property="og:type" content="website"><meta property="og:title" content="Change Intelligence — one key, five AI intelligence feeds">
 <meta property="og:description" content="Free snapshot, paid change reports for AI agents. USDC on Base via x402. One key across five feeds.">
@@ -105,9 +102,9 @@ function page() {
 
 <header><div class="wrap">
   <h1>Change Intelligence,<br>for <span class="grad">autonomous AI agents</span></h1>
-  <p class="sub">Six production data APIs across e-commerce, open source, mobile, talent, buzz and US trade data. Free public snapshot; paid change reports settle in <b>USDC on Base</b> via the native <b>x402</b> protocol — no platform account, no payment processor, <b>0% commission</b>. Human buyers can also pay by card.</p>
+  <p class="sub">Five production data APIs across e-commerce, open source, mobile, developer conversations and US trade data. Free public snapshot; paid change reports settle in <b>USDC on Base</b> via the native <b>x402</b> protocol — no platform account, no payment processor, <b>0% commission</b>. Human buyers can also pay by card.</p>
   <div class="badges">
-    <span class="badge">6 live products</span><span class="badge">One key, all six</span>
+    <span class="badge">5 live products</span><span class="badge">One key, all five</span>
     <span class="badge">USDC · Base · x402</span><span class="badge">4/5 in official MCP Registry</span>
   </div>
   <div class="cta">
@@ -122,13 +119,13 @@ function page() {
 </div></header>
 
 <section><div class="wrap">
-  <h2>The six feeds</h2>
+  <h2>The five feeds</h2>
   <p class="lead">Each product runs independently and shares one billing layer. Click any card to open the live service.</p>
   <div class="grid">${cards}</div>
 </div></section>
 
 <section class="matrix"><div class="wrap">
-  <h2>One key, six intelligence feeds</h2>
+  <h2>One key, five intelligence feeds</h2>
   <p class="lead">Generate one access key and call every product. Agents without a key get a 402 challenge and can settle per call automatically.</p>
   <a href="/matrix.png" target="_blank"><img src="/matrix.png" alt="Change Intelligence matrix overview" loading="lazy"></a>
 </div></section>
@@ -176,14 +173,6 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
       <div class="smp">1,000+ product pages covered</div>
       <a class="btn buy" href="${BUY.hts}" data-buy="hts">Buy · $49</a>
     </div>
-    <div class="pcard">
-      <div class="tag">talent</div>
-      <h3>Hiring Intelligence Dataset</h3>
-      <p class="what">77 companies · 13,716 deduplicated job postings</p>
-      <div class="stat">$199 · one-time</div>
-      <div class="smp">Greenhouse + Ashby · snapshot 2026-10-02 · CSV + JSON + Parquet</div>
-      <a class="btn buy" href="${BUY.hiring}" data-buy="hiring">Buy · $199</a>
-    </div>
   </div>
 </div></section>
 
@@ -206,8 +195,8 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
 </div></section>
 
 <section id="custom"><div class="wrap">
-  <h2>Need data we don't publish?</h2>
-  <p class="lead">Custom datasets from <b>$499</b> per project: any target on our five sources, any fields, CSV / JSON / Parquet, delivered in 3-5 days. Tell us what you need.</p>
+  <h2>Need trade, product or engineering data we don't publish?</h2>
+  <p class="lead">Custom datasets from <b>$499</b> per project — pricing, product, trade and software-engineering data in CSV / JSON / Parquet, delivered in 3-5 days. We do not sell contact lists or marketing data.</p>
   <a class="btn" href="${BUY.custom}" data-buy="custom">Request a custom dataset →</a>
 </div></section>
 
