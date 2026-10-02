@@ -224,12 +224,62 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
 <footer><div class="wrap">
   Change Intelligence · PixHarvest · Built for the agent economy<br>
   <a href="https://s-shopify.pixharvest.com/pricing" target="_blank">pricing</a> ·
+  <a href="/terms">terms</a> ·
+  <a href="/privacy">privacy</a> ·
+  <a href="/refunds">refunds</a> ·
   <a href="mailto:contentforge.press@outlook.com">contact</a> ·
   <a href="https://github.com/contentforge-press" target="_blank">github</a>
 </div></footer>
 
 <script>${ANALYTICS_JS}</script>
 </body></html>`;
+}
+
+// --- legal / policy pages (required by payment providers for website verification) ---
+const POLICIES = {
+    terms: {
+        title: 'Terms of Service',
+        blocks: [
+            ['1. Service', 'Change Intelligence ("the Service") is a set of data APIs and datasets operated by PixHarvest for developers, businesses and autonomous AI agents. By accessing the Service you agree to these Terms.'],
+            ['2. Subscriptions & payment', 'Subscription plans are billed monthly through Paddle. You may cancel at any time; access continues until the end of the paid period. Prices are in USD and may change with notice.'],
+            ['3. API usage', 'Each plan has rate limits and usage quotas as documented. You may integrate our data into your own products, but may not resell or redistribute raw feeds as a competing data service without a written license.'],
+            ['4. One-time data products', 'One-time datasets (CSV/JSON/Parquet) are delivered by email within 24 hours and licensed for internal business use.'],
+            ['5. Disclaimer', 'Data is sourced from public third-party services and is provided "as is" without warranty of accuracy, completeness or fitness for a particular purpose.'],
+            ['6. Limitation of liability', 'To the maximum extent permitted by law, PixHarvest is not liable for indirect, incidental or consequential damages arising from use of the Service.'],
+            ['7. Contact', 'Questions: contentforge.press@outlook.com'],
+        ],
+    },
+    privacy: {
+        title: 'Privacy Policy',
+        blocks: [
+            ['1. What we collect', 'Our website stores only anonymous analytics: page views, referrer hostname, and a first-party cookie (_uid) used for visitor counting. API usage is logged by target, endpoint and timestamp for metering and abuse prevention.'],
+            ['2. Payments', 'Payments are processed by Paddle, a third-party payment provider. We never see or store your card details. Paddle\u2019s privacy policy applies to payment data.'],
+            ['3. Cookies', 'We set one first-party analytics cookie (_uid) with a one-year lifetime. No third-party advertising cookies are used.'],
+            ['4. Data sharing', 'We do not sell personal data. Logged data is used only to operate, meter and improve the Service.'],
+            ['5. Your rights', 'You may contact us to request access to or deletion of personal data we hold. Contact: contentforge.press@outlook.com'],
+        ],
+    },
+    refunds: {
+        title: 'Refund Policy',
+        blocks: [
+            ['1. Subscriptions', 'Subscription plans can be cancelled at any time from your Paddle dashboard. If the Service is unusable due to our fault, we will refund the most recent charge within 7 days of the charge date.'],
+            ['2. One-time data products', 'One-time datasets qualify for a full refund within 14 days of purchase if the file was not delivered or is materially defective. After successful download and delivery, no refund applies unless the data is materially wrong.'],
+            ['3. How to request', 'Email contentforge.press@outlook.com with your payment reference. Refunds are issued to the original payment method within 5-10 business days.'],
+        ],
+    },
+};
+
+function policyPage(kind) {
+    const p = POLICIES[kind] || POLICIES.terms;
+    const body = p.blocks.map(([h, t]) => `<h2>${h}</h2><p>${t}</p>`).join('');
+    return `<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${p.title} — Change Intelligence</title>
+<style>body{margin:0;font:16px/1.7 -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b0e14;color:#e8ecf4}.wrap{max-width:760px;margin:0 auto;padding:48px 22px}h1{font-size:30px;margin:0 0 8px}h2{font-size:19px;color:#7aa2ff;margin:28px 0 6px}p{color:#c2cad8;margin:0 0 6px}a{color:#5b8cff}.back{margin-top:40px}</style></head><body>
+<div class="wrap"><h1>${p.title}</h1>
+${body}
+<p class="back"><a href="/">← Back to Change Intelligence</a></p>
+</div></body></html>`;
 }
 
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { 'content-type': 'application/json' } });
@@ -268,6 +318,7 @@ export default {
         const kv = env.SHARED_KV;
         if (p === '/' ) return new Response(page(), { headers: { 'content-type': 'text/html; charset=utf-8' } });
         if (p === '/health') return json({ ok: true });
+        if (p === '/terms' || p === '/privacy' || p === '/refunds') return new Response(policyPage(p.slice(1)), { headers: { 'content-type': 'text/html; charset=utf-8' } });
         if (p === '/favicon.png') return png(FAVICON);
         if (p === '/matrix.png') return png(MATRIX_B64);
         if (p === '/robots.txt') return new Response('User-agent: *\nAllow: /\n', { headers: { 'content-type': 'text/plain' } });
