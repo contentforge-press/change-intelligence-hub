@@ -13,7 +13,20 @@ const PRODUCTS = [
       card: 'Airbnb · 157 open roles', sample: '22 remote · 41 engineers' },
     { key: 'hn', name: 'HackerNews Intel', what: 'Keyword mentions & momentum', url: 'https://s-hn.pixharvest.com', tag: 'buzz',
       card: 'openai · 29,306 mentions', sample: '876 / 30d · Rising' },
+    { key: 'tariff', name: 'Tariff & Trade Data API', what: 'US HTS rates, duty estimates & trade data', url: 'https://github.com/contentforge-press/us-tariff-data', tag: 'trade data',
+      card: '2026 US tariff & landed-cost · 1,000+ pages', sample: 'Free tier · REST + MCP' },
 ];
+
+// --- purchase buttons: mailto order funnel until Paddle checkout links are enabled ---
+const BUY = {
+    hobby: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Hobby%20%249%2Fmo%20%E2%80%94%20PixHarvest',
+    pro: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Pro%20%2499%2Fmo%20%E2%80%94%20PixHarvest',
+    business: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Business%20%24499%2Fmo%20%E2%80%94%20PixHarvest',
+    enterprise: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Enterprise%20%242000%2Fmo%20%E2%80%94%20PixHarvest',
+    hts: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20HTS%20Tariff%20Snapshot%20%2449%20%E2%80%94%20PixHarvest',
+    hiring: 'mailto:contentforge.press@outlook.com?subject=Order%3A%20Hiring%20Dataset%20%24199%20%E2%80%94%20PixHarvest',
+    custom: 'mailto:contentforge.press@outlook.com?subject=Custom%20dataset%20request%20%E2%80%94%20PixHarvest',
+};
 
 const CSS = `
 :root{--bg:#0b0e14;--card:#141925;--line:#222a3a;--txt:#e8ecf4;--mut:#8b95a7;--acc:#5b8cff;--ok:#56d364}
@@ -29,6 +42,7 @@ p.sub{font-size:19px;color:#c2cad8;max-width:720px;margin:0 0 22px}
 .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
 button,.btn{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:13px 22px;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--txt)}
+.price .buy{margin-top:12px;display:block;text-align:center;font-size:14px;padding:10px 16px}
 section{padding:36px 0}
 h2{font-size:28px;margin:0 0 6px;letter-spacing:-.3px}
 .lead{color:var(--mut);margin:0 0 24px;max-width:680px}
@@ -81,8 +95,8 @@ function page() {
 
     return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Change Intelligence — one key, five AI intelligence feeds</title>
-<meta name="description" content="Change Intelligence: five production APIs for autonomous AI agents — Shopify, GitHub, App Store, hiring and HackerNews monitoring. Free snapshot, paid change reports; USDC on Base via x402. One key works across all five. Plans from $9/mo.">
+<title>Change Intelligence — one key, six data intelligence feeds</title>
+<meta name="description" content="Change Intelligence: six production data APIs for autonomous AI agents — Shopify, GitHub, App Store, hiring, HackerNews and US tariff data. Free snapshot, paid change reports; USDC on Base via x402; card checkout. One key works across all six. Plans from $9/mo.">
 <link rel="icon" type="image/png" href="/favicon.png">
 <meta property="og:type" content="website"><meta property="og:title" content="Change Intelligence — one key, five AI intelligence feeds">
 <meta property="og:description" content="Free snapshot, paid change reports for AI agents. USDC on Base via x402. One key across five feeds.">
@@ -91,9 +105,9 @@ function page() {
 
 <header><div class="wrap">
   <h1>Change Intelligence,<br>for <span class="grad">autonomous AI agents</span></h1>
-  <p class="sub">Five production monitoring APIs across e-commerce, open source, mobile, talent and buzz. Free public snapshot; paid change reports settle in <b>USDC on Base</b> via the native <b>x402</b> protocol — no platform account, no payment processor, <b>0% commission</b>.</p>
+  <p class="sub">Six production data APIs across e-commerce, open source, mobile, talent, buzz and US trade data. Free public snapshot; paid change reports settle in <b>USDC on Base</b> via the native <b>x402</b> protocol — no platform account, no payment processor, <b>0% commission</b>. Human buyers can also pay by card.</p>
   <div class="badges">
-    <span class="badge">5 live products</span><span class="badge">One key, all five</span>
+    <span class="badge">6 live products</span><span class="badge">One key, all six</span>
     <span class="badge">USDC · Base · x402</span><span class="badge">4/5 in official MCP Registry</span>
   </div>
   <div class="cta">
@@ -108,13 +122,13 @@ function page() {
 </div></header>
 
 <section><div class="wrap">
-  <h2>The five feeds</h2>
+  <h2>The six feeds</h2>
   <p class="lead">Each product runs independently and shares one billing layer. Click any card to open the live service.</p>
   <div class="grid">${cards}</div>
 </div></section>
 
 <section class="matrix"><div class="wrap">
-  <h2>One key, five intelligence feeds</h2>
+  <h2>One key, six intelligence feeds</h2>
   <p class="lead">Generate one access key and call every product. Agents without a key get a 402 challenge and can settle per call automatically.</p>
   <a href="/matrix.png" target="_blank"><img src="/matrix.png" alt="Change Intelligence matrix overview" loading="lazy"></a>
 </div></section>
@@ -143,10 +157,33 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
   <h2>Simple pricing</h2>
   <p class="lead">Same four tiers on every product. One key works across the family. Monthly, cancel anytime.</p>
   <div class="prices">
-    <div class="price"><div class="amt">$9</div><div class="per">Hobby / month</div><ul><li>Paid tools, no attribution</li><li>Higher limits</li></ul></div>
-    <div class="price hl"><div class="amt">$99</div><div class="per">Pro / month</div><ul><li>Continuous monitoring</li><li>Email alerts</li></ul></div>
-    <div class="price"><div class="amt">$499</div><div class="per">Business / month</div><ul><li>Batch & landscape</li><li>High volume</li></ul></div>
-    <div class="price"><div class="amt">$2000</div><div class="per">Enterprise / month</div><ul><li>Unlimited</li><li>Custom integration</li></ul></div>
+    <div class="price"><div class="amt">$9</div><div class="per">Hobby / month</div><ul><li>Paid tools, no attribution</li><li>Higher limits</li></ul><a class="btn buy" href="${BUY.hobby}" data-buy="hobby">Buy · $9/mo</a></div>
+    <div class="price hl"><div class="amt">$99</div><div class="per">Pro / month</div><ul><li>Continuous monitoring</li><li>Email alerts</li></ul><a class="btn buy" href="${BUY.pro}" data-buy="pro">Buy · $99/mo</a></div>
+    <div class="price"><div class="amt">$499</div><div class="per">Business / month</div><ul><li>Batch & landscape</li><li>High volume</li></ul><a class="btn buy" href="${BUY.business}" data-buy="business">Buy · $499/mo</a></div>
+    <div class="price"><div class="amt">$2000</div><div class="per">Enterprise / month</div><ul><li>Unlimited</li><li>Custom integration</li></ul><a class="btn buy" href="${BUY.enterprise}" data-buy="enterprise">Buy · $2,000/mo</a></div>
+  </div>
+</div></section>
+
+<section id="one-time"><div class="wrap">
+  <h2>One-time data products</h2>
+  <p class="lead">Buy once, keep forever. Delivered by email within 24 hours.</p>
+  <div class="grid">
+    <div class="pcard">
+      <div class="tag">trade data</div>
+      <h3>HTS Tariff Snapshot (2026)</h3>
+      <p class="what">Full US HTS schedule — CSV + JSON</p>
+      <div class="stat">$49 · one-time</div>
+      <div class="smp">1,000+ product pages covered</div>
+      <a class="btn buy" href="${BUY.hts}" data-buy="hts">Buy · $49</a>
+    </div>
+    <div class="pcard">
+      <div class="tag">talent</div>
+      <h3>Hiring Intelligence Dataset</h3>
+      <p class="what">50+ companies · deduplicated job postings</p>
+      <div class="stat">$199 · one-time</div>
+      <div class="smp">CSV + JSON + Parquet</div>
+      <a class="btn buy" href="${BUY.hiring}" data-buy="hiring">Buy · $199</a>
+    </div>
   </div>
 </div></section>
 
@@ -166,6 +203,12 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
     <div class="price hl"><div class="per">Next</div><ul><li>HN in official Registry</li><li>On-chain agent directory (The Spawn)</li><li>Weekly public data briefings</li><li>Wallet-based pay sessions</li></ul></div>
     <div class="price"><div class="per">Later</div><ul><li>More data sources on request</li><li>Team &amp; audit workspaces</li><li>Custom private feeds</li><li>SOC 2 / enterprise contracts</li></ul></div>
   </div>
+</div></section>
+
+<section id="custom"><div class="wrap">
+  <h2>Need data we don't publish?</h2>
+  <p class="lead">Custom datasets from <b>$499</b> per project: any target on our five sources, any fields, CSV / JSON / Parquet, delivered in 3-5 days. Tell us what you need.</p>
+  <a class="btn" href="${BUY.custom}" data-buy="custom">Request a custom dataset →</a>
 </div></section>
 
 <section id="contact"><div class="wrap">
