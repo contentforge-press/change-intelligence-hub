@@ -108,7 +108,7 @@ function page() {
     <span class="badge">USDC · Base · x402</span><span class="badge">4/5 in official MCP Registry</span>
   </div>
   <div class="cta">
-    <a class="btn" href="https://s-shopify.pixharvest.com/v1/snapshot?store=allbirds.com" target="_blank">Try a free snapshot</a>
+    <a class="btn" href="/try">Try a live demo</a>
     <a class="btn ghost" href="#pricing">See pricing</a>
   </div>
   <div class="badges" style="margin-top:14px">
@@ -300,12 +300,51 @@ async function beacon(kv, body) {
     }
 }
 
+function demoPage() {
+    return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<title>Shopify Intel — Live Demo · PixHarvest</title>' +
+    '<style>body{margin:0;background:#0b0e14;color:#e8ecf4;font:15px/1.55 -apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:#7db4ff}.top{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#141925;border-bottom:1px solid #222a3a;font-size:13px;color:#8b95a7}header{padding:34px 18px 18px;max-width:980px;margin:0 auto}h1{font-size:30px;margin:0 0 8px;letter-spacing:-.5px}h1 span{background:linear-gradient(90deg,#7db4ff,#9d7bff);-webkit-background-clip:text;background-clip:text;color:transparent}p{margin:0 0 18px;color:#b8c0d0}form{display:flex;gap:10px;flex-wrap:wrap}input{flex:1;min-width:220px;padding:12px 14px;border-radius:10px;border:1px solid #2a3348;background:#10151f;color:#e8ecf4;font-size:15px;outline:none}input:focus{border-color:#3b82f6}button{padding:12px 22px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-size:15px;font-weight:600;cursor:pointer}button:disabled{opacity:.5;cursor:wait}#note{font-size:12px;color:#6b7689;margin-top:8px}main{max-width:980px;margin:8px auto 0;padding:0 18px}.ph,.err{background:#141925;border:1px solid #222a3a;border-radius:12px;padding:28px;text-align:center;color:#8b95a7}.err{color:#f59e9e;border-color:#7f1d1d}.sum{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.sum>div{flex:1;min-width:130px;background:#141925;border:1px solid #222a3a;border-radius:12px;padding:14px;text-align:center}.sum b{display:block;font-size:22px;color:#7db4ff}.sum span{font-size:12px;color:#8b95a7}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}.card{display:block;background:#141925;border:1px solid #222a3a;border-radius:12px;padding:14px;color:#e8ecf4;text-decoration:none;transition:border-color .15s}.card:hover{border-color:#3b82f6}.t{font-size:13px;min-height:40px;margin-bottom:10px;color:#c8d0de}.row{display:flex;justify-content:space-between;align-items:center}.px{font-weight:700;color:#7db4ff}.st{font-size:11px;padding:3px 8px;border-radius:999px}.st.ok{background:#123a1f;color:#56d364}.st.no{background:#3a1f12;color:#f59e9e}.note{font-size:12px;color:#6b7689;margin:14px 0 6px}.cta{max-width:980px;margin:26px auto 0;padding:0 18px 40px}.cta h2{font-size:22px;margin:0 0 14px}.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.plan{background:#141925;border:1px solid #222a3a;border-radius:12px;padding:16px}.plan.hot{border-color:#3b82f6}.plan b{font-size:24px;color:#7db4ff}.plan span{display:block;font-size:12px;color:#8b95a7;margin:6px 0 12px}.plan a{display:block;text-align:center;padding:9px;border-radius:9px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600}</style></head><body>' +
+    '<div class="top"><a href="/">pixharvest.com</a><span>Shopify Intel · live demo</span></div>' +
+    '<header><h1>See any <span>Shopify store</span>, instantly</h1><p>Type a store domain and get a live product snapshot — real data, free, no sign-up.</p>' +
+    '<form id="f"><input id="s" value="allbirds.com" placeholder="e.g. gymshark.com"><button id="b">Load snapshot</button></form>' +
+    '<div id="note">Tip: try allbirds.com, gymshark.com, or any store domain that runs on Shopify.</div></header>' +
+    '<main id="out"><div class="ph">Enter a store and hit Load snapshot.</div></main>' +
+    '<footer class="cta"><h2>Turn this into your data pipeline</h2><div class="plans">' +
+    '<div class="plan"><b>$19</b><span>Starter · 1,000 calls / month</span><a href="mailto:contentforge.press@outlook.com?subject=Order%20Starter%20%2419%20-%20Shopify%20Intel">Order starter</a></div>' +
+    '<div class="plan hot"><b>$79</b><span>Pro · 10,000 calls / month + change history</span><a href="mailto:contentforge.press@outlook.com?subject=Order%20Pro%20%2479%20-%20Shopify%20Intel">Order pro</a></div>' +
+    '<div class="plan"><b>$499</b><span>Custom · dedicated store tracking</span><a href="mailto:contentforge.press@outlook.com?subject=Custom%20data%20request">Talk to us</a></div>' +
+    '</div></footer>' +
+    '<script>var form=document.getElementById("f"),inp=document.getElementById("s"),btn=document.getElementById("b"),out=document.getElementById("out");' +
+    'function esc(x){return String(x).replace(/[&<>"\']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","\'":"&#39;"}[c];});}' +
+    'form.addEventListener("submit",function(e){e.preventDefault();var store=inp.value.trim();if(!store)return;btn.disabled=true;btn.textContent="Loading…";out.innerHTML="<div class=ph>Fetching "+esc(store)+" …</div>";' +
+    'fetch("/api/shopify-snapshot?store="+encodeURIComponent(store)).then(function(r){return r.json();}).then(function(d){render(d,store);}).catch(function(){out.innerHTML="<div class=err>Request failed — is that a real Shopify store domain?</div>";}).then(function(){btn.disabled=false;btn.textContent="Load snapshot";});});' +
+    'function render(d,store){if(!d||!d.sample||!d.sample.length){out.innerHTML="<div class=err>No products found for "+esc(store)+". Try a Shopify domain like allbirds.com.</div>";return;}' +
+    'var prices=d.sample.map(function(p){return p.minPrice||0;}).filter(function(x){return x>0;});var min=Math.min.apply(null,prices),max=Math.max.apply(null,prices);' +
+    'var inStock=0,outN=0;d.sample.forEach(function(p){if(p.available)inStock++;else outN++;});' +
+    'var cards=d.sample.map(function(p){return "<a class=card href="+esc(p.url||"#")+" target=_blank rel=noopener><div class=t>"+esc(p.title)+"</div><div class=row><span class=px>$"+esc(p.minPrice)+"</span><span class=\"st "+(p.available?"ok":"no")+"\">"+(p.available?"In stock":"Sold out")+"</span></div></a>";}).join("");' +
+    'out.innerHTML="<div class=sum><div><b>"+d.productCount+"</b><span>products tracked</span></div><div><b>$"+min+"–$"+max+"</b><span>price range (sample)</span></div><div><b>"+inStock+"/"+(inStock+outN)+"</b><span>in stock (sample)</span></div></div><div class=grid>"+cards+"</div>" +' +
+    '"<div class=note>Showing "+d.sample.length+" of "+d.productCount+" products · free public snapshot · <a href=\\"https://s-shopify.pixharvest.com/v1/snapshot?store="+encodeURIComponent(store)+"\\" target=_blank>view raw JSON</a></div>";}' +
+    '<\/script></body></html>';
+}
+
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
         const p = url.pathname;
         const kv = env.SHARED_KV;
         if (p === '/' ) return new Response(page(), { headers: { 'content-type': 'text/html; charset=utf-8' } });
+        if (p === '/try' ) return new Response(demoPage(), { headers: { 'content-type': 'text/html; charset=utf-8' } });
+        if (p === '/api/shopify-snapshot') {
+            const store = (url.searchParams.get('store') || '').trim();
+            if (!store || store.length > 120) return json({ error: 'missing or invalid store' }, 400);
+            try {
+                const up = await fetch('https://s-shopify.pixharvest.com/v1/snapshot?store=' + encodeURIComponent(store), { signal: AbortSignal.timeout(15000) });
+                const body = await up.text();
+                return new Response(body, { headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' } });
+            } catch (e) {
+                return json({ error: 'upstream failed: ' + String(e && e.message || e) }, 502);
+            }
+        }
         if (p === '/health') return json({ ok: true });
         if (p === '/terms' || p === '/privacy' || p === '/refunds') return new Response(policyPage(p.slice(1)), { headers: { 'content-type': 'text/html; charset=utf-8' } });
         if (p === '/favicon.png') return png(FAVICON);
