@@ -11,7 +11,7 @@ const PRODUCTS = [
       card: 'Instagram · 29.5M ratings', sample: 'v448.0.0 · 4.69 avg' },
     { key: 'hn', name: 'HackerNews Intel', what: 'Topic trends & developer conversation signals', url: 'https://s-hn.pixharvest.com', tag: 'buzz',
       card: 'AI coding tools · 8,412 discussions', sample: 'Top · Rising / 30d' },
-    { key: 'tariff', name: 'Tariff & Trade Data API', what: 'US HTS rates, duty estimates & trade data', url: 'https://github.com/contentforge-press/us-tariff-data', tag: 'trade data',
+    { key: 'tariff', name: 'Tariff & Trade Data API', what: 'US HTS rates, duty estimates & trade data', url: 'https://contentforge-press.github.io/us-tariff-data/', tag: 'trade data',
       card: '2026 US tariff & landed-cost · 1,000+ pages', sample: 'Free tier · REST + MCP' },
 ];
 
