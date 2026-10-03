@@ -46,14 +46,14 @@ var PRODUCTS = [
     sample: "Top \xB7 Rising / 30d"
   },
   {
-    key: "tariff",
-    name: "Tariff & Trade Data API",
-    what: "US HTS rates, duty estimates & trade data",
-    url: "https://contentforge-press.github.io/us-tariff-data/",
-    tag: "trade data",
-    card: "2026 US tariff & landed-cost \xB7 1,000+ pages",
-    sample: "Free tier \xB7 REST + MCP"
-  }
+    key: "hiring",
+    name: "Hiring Intelligence",
+    what: "Job postings, growth & expansion signals",
+    url: "https://s-hiring.pixharvest.com",
+    tag: "hiring data",
+    card: "airbnb \xB7 340 open roles",
+    sample: "13,716 postings \xB7 77 companies"
+  },
 ];
 var BUY = {
   // NOTE: checkout URLs (Dodo) are pasted here after merchant verification; until then buttons point to email so no dead links.
@@ -161,84 +161,73 @@ function page() {
 </a>`).join("");
   return `<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Change Intelligence \u2014 one key, five data intelligence feeds</title>
-<meta name="description" content="Change Intelligence: five production data APIs for autonomous AI agents \u2014 Shopify, GitHub, App Store, HackerNews and US tariff data. Free snapshot, paid change reports; USDC on Base via x402; card checkout. One key works across all five. Plans from $19/mo.">
+<title>PixHarvest \u2014 US Import Tariff Data &amp; API</title>
+<meta name="description" content="US import tariff data for cross-border sellers, freight forwarders and AI agents. Look up duty rates by HS code or product \u2014 free. Unlock the complete 2026 HTS schedule, Section 301 stacked estimates, EU rates and change alerts. Plus five independent data products: Shopify, GitHub, HackerNews, App Store and Hiring intelligence.">
 <link rel="icon" type="image/png" href="/favicon.png">
-<meta property="og:type" content="website"><meta property="og:title" content="Change Intelligence \u2014 one key, five AI intelligence feeds">
-<meta property="og:description" content="Free snapshot, paid change reports for AI agents. USDC on Base via x402. One key across five feeds.">
-<meta property="og:image" content="/matrix.png"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:title" content="PixHarvest \u2014 US Import Tariff Data &amp; API">
+<meta property="og:description" content="Look up US duty rates by HS code \u2014 free. Full 2026 HTS schedule, change alerts, and five independent data products for AI agents.">
+<meta name="twitter:card" content="summary_large_image">
 <style>${CSS}.usdc-row{margin-top:8px}.usdc-row .btn{display:inline-block;padding:7px 12px;border-radius:8px;font-size:13px;text-decoration:none;cursor:pointer;margin-top:4px}
+.tariffbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;max-width:640px;margin:16px 0 6px}
+.tariffbox .row{display:flex;gap:10px;flex-wrap:wrap}
+.tariffbox input{flex:1;min-width:220px;background:#0a0d13;border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--txt);font:inherit;font-size:15px}
+.tariffbox .btn{padding:12px 20px}
+.tariffres{font-size:13.5px;color:var(--mut);margin-top:12px;line-height:1.7}
+.tariffres table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+.tariffres th,.tariffres td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+.tariffres th{color:var(--acc);font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.tariffres .good{color:var(--ok)}
 </style></head><body>
 
 <header><div class="wrap">
-  <h1>Change Intelligence,<br>for <span class="grad">autonomous AI agents</span></h1>
-  <p class="sub">Five production data APIs across e-commerce, open source, mobile, developer conversations and US trade data. Free public snapshot; paid change reports settle in <b>USDC on Base</b> via the native <b>x402</b> protocol \u2014 no platform account, no payment processor, <b>0% commission</b>. Human buyers can also pay by card.</p>
+  <h1>US import tariffs,<br>cleaned into an <span class="grad">API</span></h1>
+  <p class="sub">PixHarvest is the tariff data layer for cross-border sellers, freight forwarders and AI agents. Look up duty rates by <b>HS code</b> or product \u2014 free, no signup. Unlock the complete 2026 HTS schedule, Section 301 stacked estimates, EU rates and change alerts.</p>
   <div class="badges">
-    <span class="badge">5 live products</span><span class="badge">One key, all five</span>
-    <span class="badge">USDC \xB7 Base \xB7 x402</span><span class="badge">4/5 in official MCP Registry</span>
+    <span class="badge">Free HS code lookup</span><span class="badge">4,000+ tariff pages</span><span class="badge">5 independent data products</span>
   </div>
   <div class="cta">
-    <a class="btn" href="/try">Try a live demo</a>
+    <a class="btn" href="/try">Try a live tariff lookup</a>
     <a class="btn ghost" href="#pricing">See pricing</a>
   </div>
+  <div class="tariffbox">
+    <div class="row">
+      <input id="hs" placeholder="HS code or product \u2014 e.g. 8703.24, laptop, shoes" autocomplete="off">
+      <button class="btn" onclick="tariffSearch()">Look up rate</button>
+    </div>
+    <div class="tariffres" id="tariffres">Free sample coverage: 30 product categories. Full schedule unlocks on <a href="#pricing" style="color:var(--acc)">/pricing</a> \u2014 from $19/mo.</div>
+  </div>
   <div class="badges" style="margin-top:14px">
+    <a href="#tariff" style="color:var(--mut);text-decoration:none">Tariff API</a> \xB7
+    <a href="#products" style="color:var(--mut);text-decoration:none">Data products</a> \xB7
+    <a href="#pricing" style="color:var(--mut);text-decoration:none">Pricing</a> \xB7
     <a href="#about" style="color:var(--mut);text-decoration:none">About</a> \xB7
-    <a href="#roadmap" style="color:var(--mut);text-decoration:none">Roadmap</a> \xB7
     <a href="#contact" style="color:var(--mut);text-decoration:none">Contact</a>
   </div>
 </div></header>
 
-<section><div class="wrap">
-  <h2>The five feeds</h2>
-  <p class="lead">Each product runs independently and shares one billing layer. Click any card to open the live service.</p>
+<section id="tariff"><div class="wrap">
+  <h2>The tariff data API</h2>
+  <p class="lead">One call answers \u201cwhat does it cost to import this?\u201d \u2014 base MFN rate, 2026 China stacked estimate (Section 301) and EU rate, per HS code.</p>
+  <div class="how">
+    <b>Quick example</b>
+    <pre># free \u2014 look up a rate by HS code or product
+GET https://pixharvest.com/v1/tariff?hs=8703.24
+GET https://pixharvest.com/v1/tariff?q=laptop
+
+# paid \u2014 complete schedule, batch & change alerts on /pricing
+GET https://pixharvest.com/v1/tariff/batch?hs=8703.24,6110.30,6402.99</pre>
+  </div>
+  <div class="grid" style="margin-top:18px">
+    <div class="pcard"><div class="tag">free</div><h3>HS code lookup</h3><p class="what">30 categories live right now</p><div class="stat">Zero signup</div><div class="smp">Base rate \u00B7 China stacked \u00B7 EU rate</div></div>
+    <div class="pcard"><div class="tag">paid</div><h3>Full 2026 HTS schedule</h3><p class="what">Every HS code \u2014 CSV, JSON, API</p><div class="stat">From $19/mo</div><div class="smp">Section 301 stacked estimates \u00B7 change alerts</div></div>
+    <div class="pcard"><div class="tag">paid</div><h3>Batch &amp; alerts</h3><p class="what">Mass lookup + duty-change notifications</p><div class="stat">$0.03 per target</div><div class="smp">Automate landed-cost checks for agents &amp; teams</div></div>
+  </div>
+</div></section>
+
+<section id="products"><div class="wrap">
+  <h2>Independent data products</h2>
+  <p class="lead">Five separate brands, each on its own subdomain \u2014 free live snapshots, paid change detection, USDC on Base via x402 for AI agents.</p>
   <div class="grid">${cards}</div>
-</div></section>
-
-<section class="matrix"><div class="wrap">
-  <h2>One key, five intelligence feeds</h2>
-  <p class="lead">Generate one access key and call every product. Agents without a key get a 402 challenge and can settle per call automatically.</p>
-  <a href="/matrix.png" target="_blank"><img src="/matrix.png" alt="Change Intelligence matrix overview" loading="lazy"></a>
-</div></section>
-
-<section><div class="wrap">
-  <h2>How agents pay</h2>
-  <p class="lead">A four-level path from free data to a distilled answer.</p>
-  <div class="flow">
-    <div class="step"><b>1 \xB7 Free</b><br><span class="smp">Public snapshot of any target</span></div>
-    <div class="step"><b>2 \xB7 402 challenge</b><br><span class="smp">Paid route returns x402 payment requirements</span></div>
-    <div class="step"><b>3 \xB7 Settle</b><br><span class="smp">Agent pays USDC on Base, verified by the facilitator</span></div>
-    <div class="step"><b>4 \xB7 Answer</b><br><span class="smp">Changes / intel / batch / landscape returned</span></div>
-  </div>
-  <div class="how" style="margin-top:20px">
-    <b>Quick example \u2014 Shopify</b>
-    <pre># free
-GET https://s-shopify.pixharvest.com/v1/snapshot?store=allbirds.com
-
-# paid: $0.05 per call, agent settles USDC via x402
-GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
-# \u2192 402 Payment Required  (PAYMENT-REQUIRED: base64 challenge)</pre>
-  </div>
-</div></section>
-
-<section id="pricing"><div class="wrap">
-  <h2>Simple pricing</h2>
-  <p class="lead">Three subscription tiers on every product. One key works across the family. Monthly, cancel anytime.</p>
-  <div class="prices">
-    <div class="price"><div class="amt">$19</div><div class="per">Starter / month</div><ul><li>500 API calls / month</li><li>All five feeds</li></ul><a class="btn buy" href="${BUY.standard}" data-buy="standard">Buy \xB7 $19/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('hobby')">Pay \xB7 $9/mo USDC</a></div></div>
-    <div class="price hl"><div class="amt">$79</div><div class="per">Pro / month</div><ul><li>5,000 API calls / month</li><li>Full dataset coverage</li></ul><a class="btn buy" href="${BUY.pro}" data-buy="pro">Buy \xB7 $79/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('pro')">Pay \xB7 $99/mo USDC</a></div></div>
-    <div class="price"><div class="amt">$499</div><div class="per">Enterprise / month</div><ul><li>Unlimited calls</li><li>Custom endpoints &amp; SLA</li></ul><a class="btn buy" href="${BUY.business}" data-buy="business">Buy \xB7 $499/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('business')">Pay \xB7 $499/mo USDC</a></div></div>
-  </div>
-  <p class="lead" style="font-size:14px;margin-top:10px">Card billing goes live on Dodo right after review (auto-renewal). Until then, pay in USDC on Base \u2014 your key activates automatically within minutes.</p>
-  <div id="usdc-box" style="display:none;margin:18px auto 0;max-width:560px;background:#f6f8fa;border:1px solid #d0d7de;border-radius:12px;padding:18px;text-align:left;font-size:14px">
-    <div style="font-weight:700;margin-bottom:10px">Pay in USDC on Base</div>
-    <div style="line-height:1.8">
-      <div>Amount: <b id="usdc-amount"></b></div>
-      <div>Send to: <code id="usdc-addr" style="word-break:break-all;display:inline-block;background:#fff;border:1px solid #d0d7de;border-radius:6px;padding:4px 8px"></code></div>
-      <div id="usdc-tx" style="color:#57606a"></div>
-    </div>
-    <div id="usdc-status" style="margin-top:10px;color:#57606a;min-height:20px">Creating order\u2026</div>
-    <div style="margin-top:10px;font-size:12px;color:#57606a">One key unlocks all five feeds. Same key as card billing \u2014 <a href="#pricing" style="color:#0369a1">how it works</a>.</div>
-  </div>
 </div></section>
 
 <section id="one-time"><div class="wrap">
@@ -249,53 +238,59 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
       <div class="tag">trade data</div>
       <h3>HTS Tariff Snapshot (2026)</h3>
       <p class="what">Full US HTS schedule \u2014 CSV + JSON</p>
-      <div class="stat">$49 \xB7 one-time</div>
+      <div class="stat">$49 \u00B7 one-time</div>
       <div class="smp">1,000+ product pages covered</div>
-      <a class="btn buy" href="${BUY.hts}" data-buy="hts">Buy \xB7 $49</a>
+      <a class="btn buy" href="${BUY.hts}" data-buy="hts">Buy \u00B7 $49</a>
     </div>
     <div class="pcard">
       <div class="tag">hiring intelligence</div>
       <h3>Hiring Intelligence Dataset</h3>
-      <p class="what">13,716 verified job postings \xB7 77 tech companies \u2014 CSV + JSON</p>
-      <div class="stat">$199 \xB7 one-time</div>
+      <p class="what">13,716 verified job postings \u00B7 77 tech companies \u2014 CSV + JSON</p>
+      <div class="stat">$199 \u00B7 one-time</div>
       <div class="smp">Role, seniority, remote policy, salary band, stack</div>
-      <a class="btn buy" href="${BUY.hiring}" data-buy="hiring">Buy \xB7 $199</a>
+      <a class="btn buy" href="${BUY.hiring}" data-buy="hiring">Buy \u00B7 $199</a>
     </div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <h2>Simple pricing</h2>
+  <p class="lead">Tariff API first \u2014 full schedule, batch and alerts. One key also unlocks the five independent data products. Monthly, cancel anytime.</p>
+  <div class="prices">
+    <div class="price"><div class="amt">$19</div><div class="per">Starter / month</div><ul><li>Full HTS schedule access</li><li>500 API calls / month</li></ul><a class="btn buy" href="${BUY.standard}" data-buy="standard">Buy \u00B7 $19/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('hobby')">Pay \u00B7 $9/mo USDC</a></div></div>
+    <div class="price hl"><div class="amt">$79</div><div class="per">Pro / month</div><ul><li>Full schedule + change alerts</li><li>5,000 API calls / month</li></ul><a class="btn buy" href="${BUY.pro}" data-buy="pro">Buy \u00B7 $79/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('pro')">Pay \u00B7 $99/mo USDC</a></div></div>
+    <div class="price"><div class="amt">$499</div><div class="per">Enterprise / month</div><ul><li>Unlimited calls</li><li>Custom endpoints &amp; SLA</li></ul><a class="btn buy" href="${BUY.business}" data-buy="business">Buy \u00B7 $499/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('business')">Pay \u00B7 $499/mo USDC</a></div></div>
+  </div>
+  <p class="lead" style="font-size:14px;margin-top:10px">Card billing goes live on Dodo right after review (auto-renewal). Until then, pay in USDC on Base \u2014 your key activates automatically within minutes.</p>
+  <div id="usdc-box" style="display:none;margin:18px auto 0;max-width:560px;background:#f6f8fa;border:1px solid #d0d7de;border-radius:12px;padding:18px;text-align:left;font-size:14px">
+    <div style="font-weight:700;margin-bottom:10px">Pay in USDC on Base</div>
+    <div style="line-height:1.8">
+      <div>Amount: <b id="usdc-amount"></b></div>
+      <div>Send to: <code id="usdc-addr" style="word-break:break-all;display:inline-block;background:#fff;border:1px solid #d0d7de;border-radius:6px;padding:4px 8px"></code></div>
+      <div id="usdc-tx" style="color:#57606a"></div>
+    </div>
+    <div id="usdc-status" style="margin-top:10px;color:#57606a;min-height:20px">Creating order\u2026</div>
+    <div style="margin-top:10px;font-size:12px;color:#57606a">One key unlocks the tariff API and all five data products. Same key as card billing \u2014 <a href="#pricing" style="color:#0369a1">how it works</a>.</div>
   </div>
 </div></section>
 
 <section id="about"><div class="wrap">
   <h2>Why we built this</h2>
-  <p class="lead">Software is increasingly written and run by autonomous agents \u2014 but agents still struggle to answer one simple question: <i>"did the thing I care about change?"</i> Change Intelligence gives every agent a reliable way to ask, with a price attached to the answer.</p>
-  <p class="lead">We are a small, independent team building the boring, dependable plumbing of the agent economy. No venture money, no lock-in, no surveillance: every endpoint speaks open standards (MCP + x402), settles peer-to-peer, and can be replaced. We make money only when our data saves your agent real work.</p>
+  <p class="lead">Every cross-border order starts with one question: <i>\u201cwhat will this cost me in duty?\u201d</i> Tariff schedules are public but buried in PDFs and spreadsheets. PixHarvest turns them into a clean API \u2014 and change alerts when rates move.</p>
+  <p class="lead">We are a small, independent team. No venture money, no lock-in: every endpoint speaks open standards (REST + MCP), and agents can settle peer-to-peer via x402. We make money when our data saves you real work.</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
     <span class="badge">Open standards</span><span class="badge">Independent &amp; self-funded</span><span class="badge">0% payment commission</span><span class="badge">Global, remote</span>
   </div>
 </div></section>
 
-<section id="roadmap"><div class="wrap">
-  <h2>Roadmap</h2>
-  <div class="prices">
-    <div class="price"><div class="per">Shipped</div><ul><li>Five live intelligence APIs</li><li>x402 v1 + v2, Base mainnet</li><li>Official MCP Registry (4/5)</li><li>Email alerts &amp; dashboards</li></ul></div>
-    <div class="price hl"><div class="per">Next</div><ul><li>HN in official Registry</li><li>On-chain agent directory (The Spawn)</li><li>Weekly public data briefings</li><li>Wallet-based pay sessions</li></ul></div>
-    <div class="price"><div class="per">Later</div><ul><li>More data sources on request</li><li>Team &amp; audit workspaces</li><li>Custom private feeds</li><li>SOC 2 / enterprise contracts</li></ul></div>
-  </div>
-</div></section>
-
-<section id="custom"><div class="wrap">
-  <h2>Need trade, product or engineering data we don't publish?</h2>
-  <p class="lead">Custom datasets from <b>$499</b> per project \u2014 pricing, product, trade and software-engineering data in CSV / JSON / Parquet, delivered in 3-5 days. We do not sell contact lists or marketing data.</p>
-  <a class="btn" href="${BUY.custom}" data-buy="custom">Request a custom dataset \u2192</a>
-</div></section>
-
 <section id="contact"><div class="wrap">
   <h2>Talk to a human</h2>
-  <p class="lead">Building an agent fleet, need a custom feed, an SLA, an invoice or a pilot? We answer every message.</p>
+  <p class="lead">Need the full HTS schedule, a custom feed, an SLA, an invoice or a pilot? We answer every message.</p>
   <form class="leadform" onsubmit="leadSubmit(event)">
     <input name="name" placeholder="Your name" autocomplete="name">
     <input name="email" type="email" placeholder="Work email (we reply here)" required autocomplete="email">
     <input name="company" placeholder="Company (optional)">
-    <select name="product"><option value="">Which data feed are you interested in?</option><option>Shopify Intel</option><option>GitHub Intel</option><option>App Store Intel</option><option>HackerNews Intel</option><option>Tariff &amp; Trade Data</option><option>Hiring Intelligence Dataset</option><option>Custom dataset</option></select>
+    <select name="product"><option value="">What do you need?</option><option>Tariff &amp; Trade Data API</option><option>Shopify Intel</option><option>GitHub Intel</option><option>App Store Intel</option><option>HackerNews Intel</option><option>Hiring Intelligence Dataset</option><option>Custom dataset</option></select>
     <textarea name="message" placeholder="What do you need? Volume, SLA, timeline..." required></textarea>
     <input name="website" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
     <div><button type="submit" class="btn">Send message</button></div>
@@ -304,26 +299,40 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
   <p class="lead">
     <a href="mailto:contentforge.press@outlook.com" style="color:var(--acc)">contentforge.press@outlook.com</a><br>
     <a href="https://github.com/contentforge-press" target="_blank" style="color:var(--acc)">github.com/contentforge-press</a>
-    &nbsp;\xB7&nbsp; <span style="color:var(--mut)">Response within 24h, worldwide \xB7 remote</span>
+    &nbsp;\u00B7&nbsp; <span style="color:var(--mut)">Response within 24h, worldwide \u00B7 remote</span>
   </p>
 </div></section>
 
 <footer><div class="wrap">
-  Change Intelligence \xB7 PixHarvest \xB7 Built for the agent economy<br>
-  <a href="https://s-shopify.pixharvest.com/pricing" target="_blank">pricing</a> \xB7
-  <a href="/terms">terms</a> \xB7
-  <a href="/privacy">privacy</a> \xB7
-  <a href="/refunds">refunds</a> \xB7
-  <a href="mailto:contentforge.press@outlook.com">contact</a> \xB7
+  PixHarvest \u00B7 US Import Tariff Data &amp; API \u00B7 Built for cross-border teams and AI agents<br>
+  <a href="/docs" style="color:var(--mut)">docs</a> \u00B7
+  <a href="/free-data" style="color:var(--mut)">free data</a> \u00B7
+  <a href="/try" style="color:var(--mut)">try</a> \u00B7
+  <a href="/terms">terms</a> \u00B7
+  <a href="/privacy">privacy</a> \u00B7
+  <a href="/refunds">refunds</a> \u00B7
+  <a href="mailto:contentforge.press@outlook.com">contact</a> \u00B7
   <a href="https://github.com/contentforge-press" target="_blank">github</a>
 </div></footer>
 
 <script>${ANALYTICS_JS}
 ${LEAD_JS}
-${USDC_PAY_JS}<\/script>
+${USDC_PAY_JS}
+function tariffSearch(){
+  const box=document.getElementById('tariffres');
+  const q=document.getElementById('hs').value.trim();
+  if(!q){box.innerHTML='Type an HS code or product first.';return;}
+  box.innerHTML='Looking up \u201c'+q+'\u201d\u2026';
+  fetch('/v1/tariff?hs='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(o){
+    if(o.error){box.innerHTML=o.error;return;}
+    let rows=o.rates.map(function(r){return '<tr><td>'+r.hs+'</td><td>'+r.product+'</td><td>'+r.usBase+'</td><td class="good">'+r.chinaStacked2026+'</td><td>'+r.euRate+'</td></tr>';}).join('');
+    box.innerHTML='<table><tr><th>HS code</th><th>Product</th><th>US base</th><th>China 2026 stacked</th><th>EU</th></tr>'+rows+'</table><div style="margin-top:8px">Free sample coverage \u2014 full schedule on <a href="#pricing" style="color:var(--acc)">/pricing</a>.</div>';
+  }).catch(function(e){box.innerHTML='Network error: '+e;});
+}
+<\/script>
 </body></html>`;
 }
-__name(page, "page");
+__name(page, "page");__name(page, "page");
 var POLICIES = {
   terms: {
     title: "Terms of Service",
@@ -365,15 +374,15 @@ function policyPage(kind) {
 <style>body{margin:0;font:16px/1.7 -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b0e14;color:#e8ecf4}.wrap{max-width:760px;margin:0 auto;padding:48px 22px}h1{font-size:30px;margin:0 0 8px}h2{font-size:19px;color:#7aa2ff;margin:28px 0 6px}p{color:#c2cad8;margin:0 0 6px}a{color:#5b8cff}.back{margin-top:40px}</style></head><body>
 <div class="wrap"><h1>${p.title}</h1>
 ${body}
-<p class="back"><a href="/">\u2190 Back to Change Intelligence</a></p>
+<p class="back"><a href="/">\u2190 Back to PixHarvest</a></p>
 </div></body></html>`;
 }
 __name(policyPage, "policyPage");
 var json = /* @__PURE__ */ __name((o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { "content-type": "application/json" } }), "json");
 var png = /* @__PURE__ */ __name((b64) => new Response(Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)), { headers: { "content-type": "image/png", "cache-control": "public, max-age=86400" } }), "png");
-var LLMS_TXT = `# PixHarvest \u2014 Change Intelligence for Autonomous AI Agents
+var LLMS_TXT = `# PixHarvest — US Import Tariff Data & API
 
-> Five production data APIs for AI agents: Shopify store snapshots, GitHub repo watch, Hacker News mentions, App Store rankings and hiring signals. Free live snapshots; paid change detection settles USDC on Base via x402 (P2P, 0% commission). One access key across the whole family.
+> Main business: US import tariff data. Look up duty rates by HS code or product (free sample: /v1/tariff?hs=8703.24), then unlock the complete 2026 HTS schedule, Section 301 stacked estimates, EU rates and change alerts on /pricing. Separate independent-brand products: Shopify Intel, GitHub Intel, HackerNews Intel, App Store Intel and Hiring Intelligence (each on its own subdomain, free live snapshots, paid change detection settles USDC on Base via x402). One access key across the whole family.
 
 ## The five feeds
 - Shopify: https://s-shopify.pixharvest.com/v1/snapshot?store=allbirds.com (free)
@@ -469,6 +478,30 @@ const SHOPIFY_SAMPLE_JSON = `{
   "hasDiscounts": false
 }
 `;
+
+function tariffLookup(q) {
+  const rows = [];
+  for (const line of TARIFF_CSV.trim().split("\n").slice(1)) {
+    const c = line.split(",");
+    if (c.length < 6) continue;
+    rows.push({ hs: c[0].trim(), category: c[1].trim(), product: c[2].trim(), usBase: c[3].trim(), chinaStacked2026: c[4].trim(), euRate: c[5].trim(), note: c.slice(6).join(",").trim() });
+  }
+  const needle = String(q || "").trim().toLowerCase();
+  if (!needle) return rows.slice(0, 3);
+  let hits = [];
+  const norm = needle.replace(/[^0-9a-z]/g, "");
+  for (const r of rows) {
+    const h = r.hs.replace(".", "");
+    if (h === norm) return [r];
+    if (norm.length >= 4 && h.startsWith(norm)) hits.push(r);
+  }
+  if (hits.length) return hits;
+  for (const r of rows) {
+    if (r.product.toLowerCase().includes(needle) || r.category.toLowerCase().includes(needle)) hits.push(r);
+  }
+  return hits.slice(0, 5);
+}
+
 function freeDataPage() {
   const head = '<link rel="canonical" href="https://pixharvest.com/free-data">';
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Free Data Samples \u2014 US Tariff CSV & Shopify Store JSON \u00B7 PixHarvest</title><meta name="description" content="Free sample datasets: US import tariff rates by HS code and a real Shopify store snapshot JSON. Download the CSV and JSON, then unlock the full live data APIs.">${head}<style>body{margin:0;font:16px/1.7 -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0b0e14;color:#e8ecf4}.wrap{max-width:860px;margin:0 auto;padding:48px 22px}h1{font-size:30px;margin:0 0 12px;background:linear-gradient(90deg,#7aa2ff,#56d364);-webkit-background-clip:text;background-clip:text;color:transparent}h2{font-size:20px;color:#7aa2ff;margin:32px 0 10px}p{color:#c2cad8;margin:6px 0}a{color:#5b8cff;text-decoration:none}a:hover{text-decoration:underline}pre{background:#141925;border:1px solid #222a3a;border-radius:12px;padding:16px;overflow-x:auto;font-size:13px}.btn{display:inline-block;background:#2b5fd9;color:#fff;padding:12px 22px;border-radius:10px;font-weight:600;margin:10px 10px 0 0}.btn.ghost{background:transparent;border:1px solid #2b5fd9;color:#7aa2ff}.card{background:#141925;border:1px solid #222a3a;border-radius:12px;padding:20px;margin:14px 0}</style></head><body>
@@ -857,6 +890,13 @@ var worker_default = {
     const kv = env.SHARED_KV;
     if (p === "/" || p === "/pricing" || p === "/faq") return new Response(page(), { headers: { "content-type": "text/html; charset=utf-8" } });
     if (p === "/try") return new Response(demoPage(), { headers: { "content-type": "text/html; charset=utf-8" } });
+    
+    if (p === "/v1/tariff") {
+      const q = (url.searchParams.get("hs") || url.searchParams.get("q") || "").trim();
+      const rows = tariffLookup(q);
+      if (!rows.length) return json({ error: "no match — try an HS code like 8703.24 or a product like laptop" }, 404);
+      return json({ ok: true, query: q, results: rows.length, rates: rows, note: "Free sample coverage — the full 2026 HTS schedule with 4,000+ pages is on /pricing", fullSchedule: "https://contentforge-press.github.io/us-tariff-data/" }, 200, );
+    }
     if (p === "/api/shopify-snapshot") {
       const store = (url.searchParams.get("store") || "").trim();
       if (!store || store.length > 120) return json({ error: "missing or invalid store" }, 400);
