@@ -509,21 +509,32 @@ async function handleMcpMain(request) {
     const ok = (result) => json({ jsonrpc: "2.0", id, result });
     const err = (code, message) => json({ jsonrpc: "2.0", id, error: { code, message } });
     const text = (t, isError) => json({ jsonrpc: "2.0", id, result: { content: [{ type: "text", text: t }] }, ...(isError ? { isError: true } : {}) });
-    if (msg.method === "initialize") return ok({ protocolVersion: "2025-06-18", capabilities: { tools: {} }, serverInfo: { name: "PixHarvest Tariff Data", version: "1.0.0" } });
+    if (msg.method === "initialize") return ok({ protocolVersion: "2025-06-18", capabilities: { tools: {}, prompts: {} }, serverInfo: { name: "PixHarvest Tariff Data", version: "1.1.0" }, instructions: "PixHarvest Tariff Data provides live US import tariff intelligence: base MFN rates, stacked 2026 Section 301 China-origin rates, EU rates, MPF/HMF fees and landed-cost estimates by HS code or product keyword. Call tariff.lookup first for any tariff question — it resolves HS codes and product keywords to exact rates with a landed-cost example. If the query is ambiguous, tariff.lookup returns the closest matches so you can refine. Use tariff.export when you need the raw sample schedule (first 300 rows) for offline analysis instead of a single-rate answer. Full 4,000+ page schedule and API access: https://pixharvest.com/pricing" });
     if (msg.method === "notifications/initialized") return new Response(null, { status: 202 });
     if (msg.method === "tools/list") return ok({ tools: [
-      { name: "lookup_tariff", description: "Look up US import tariff rates by HS code or product keyword (e.g. 8703.24, laptop). Returns base rate, 2026 China-stacked rate and EU rate.", inputSchema: { type: "object", properties: { query: { type: "string", description: "HS code or product keyword" } }, required: ["query"] } },
-      { name: "tariff_export", description: "Return the sample tariff schedule as text (first 300 rows).", inputSchema: { type: "object", properties: {} } }
+      { name: "tariff.lookup", description: "Look up live US import tariff rates by HS code or product keyword (e.g. 8703.24, laptop, steel pipe). Returns base MFN rate, 2026 China-stacked Section 301 rate, EU rate, MPF/HMF fees and a landed-cost example. Call this first for any tariff question, then use tariff.export for the raw schedule.", inputSchema: { type: "object", properties: { query: { type: "string", description: "HS code (e.g. '8703.24') or product keyword (e.g. 'laptop', 'steel pipe'). Free-text is fine; being specific improves precision. Example: '8703.24'." } }, required: ["query"] }, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } },
+      { name: "tariff.export", description: "Return the sample US tariff schedule as plain text (first 300 rows) for offline analysis or filtering. Call after tariff.lookup when you need the raw schedule rather than a single-rate answer.", inputSchema: { type: "object", properties: {} }, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } }
     ] });
+    if (msg.method === "prompts/list") return ok({ prompts: [
+      { name: "analyze_tariff_impact", description: "Analyse the US import tariff impact for a product (HS code or keyword) and origin country: base rate, stacked China rate, EU rate and landed-cost estimate.", arguments: [ { name: "query", description: "HS code or product keyword, e.g. '8703.24' or 'lithium battery'", required: true } ] }
+    ] });
+    if (msg.method === "prompts/get") {
+      const p = msg.params?.name;
+      if (p === "analyze_tariff_impact") {
+        const q = (msg.params?.arguments || {}).query || "laptop";
+        return ok({ description: "US import tariff impact analysis", messages: [ { role: "user", content: { type: "text", text: "Analyse the US import tariff impact for: " + q + ". Use tariff.lookup to get the base MFN rate, 2026 China-stacked rate, EU rate and landed-cost example, then summarise the total cost impact for an importer." } } ] });
+      }
+      return err(-32602, "unknown prompt");
+    }
     if (msg.method === "tools/call") {
       const a = msg.params?.arguments || {};
       const n = msg.params?.name;
-      if (n === "lookup_tariff") {
+      if (n === "tariff.lookup" || n === "lookup_tariff") {
         const rows = tariffLookup(String(a.query || a.hs || a.q || "").trim());
         if (!rows.length) return text(JSON.stringify({ error: "no match - try an HS code like 8703.24 or a product like laptop" }), true);
         return text(JSON.stringify({ ok: true, query: a.query, results: rows.length, rates: rows, note: "Free sample coverage - full 2026 HTS schedule with 4,000+ pages on https://pixharvest.com/pricing" }));
       }
-      if (n === "tariff_export") {
+      if (n === "tariff.export" || n === "tariff_export") {
         const rows = tariffLookup("");
         return text(JSON.stringify({ ok: true, results: rows.length, rates: rows.slice(0, 300), note: "Free sample - full schedule: https://contentforge-press.github.io/us-tariff-data/" }));
       }
