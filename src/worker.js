@@ -84,6 +84,29 @@ send({type:'pv',path:location.pathname+location.search,ref:document.referrer||''
 document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('a,button');if(!t)return;var h=(t.getAttribute('href')||'');if(h.indexOf('s-')===0)send({type:'event',name:'open_product'});},true);
 }catch(e){}})();`;
 
+
+const USDC_PAY_JS = `
+const USDC_ORDER = 'https://s-github.pixharvest.com';
+function usdcPay(plan){
+  const box=document.getElementById('usdc-box');
+  document.getElementById('usdc-status').textContent='Creating order…';
+  box.style.display='block'; box.scrollIntoView({behavior:'smooth'});
+  fetch(USDC_ORDER+'/v1/order?plan='+encodeURIComponent(plan)).then(function(r){return r.json();}).then(function(o){
+    if(o.error){ document.getElementById('usdc-status').textContent='Order error: '+o.error; return; }
+    document.getElementById('usdc-amount').textContent=o.amountUsd+' USDC';
+    document.getElementById('usdc-addr').textContent=o.payTo;
+    document.getElementById('usdc-tx').textContent='Base network (eip155:8453) · '+o.asset.slice(0,10)+'… · order '+o.orderId+' · expires in 60 min';
+    let n=0;
+    const t=setInterval(function(){
+      fetch(USDC_ORDER+'/v1/order/check?id='+encodeURIComponent(o.orderId)).then(function(r){return r.json();}).then(function(s){
+        if(s.status==='paid'){ clearInterval(t); document.getElementById('usdc-status').innerHTML='<b style="color:#1a7f37">✓ Payment confirmed!</b> Your access key: <code>'+s.accessKey+'</code><br>Use it as ?key=… on any PixHarvest endpoint (one key, all five feeds).'; }
+        else if(s.status==='expired'){ clearInterval(t); document.getElementById('usdc-status').textContent='Order expired after 60 minutes. Click Pay again to create a new order.'; }
+        else { n++; document.getElementById('usdc-status').textContent='Waiting for payment… ('+n+' checks). Send the exact amount to the address above on Base.'; }
+      }).catch(function(){});
+    },10000);
+  }).catch(function(e){ document.getElementById('usdc-status').textContent='Network error: '+e; });
+}
+`;
 const LEAD_JS = `
 (function(){try{
 var ok=document.getElementById('leadok');if(!ok)return;
@@ -111,7 +134,8 @@ function page() {
 <meta property="og:type" content="website"><meta property="og:title" content="Change Intelligence — one key, five AI intelligence feeds">
 <meta property="og:description" content="Free snapshot, paid change reports for AI agents. USDC on Base via x402. One key across five feeds.">
 <meta property="og:image" content="/matrix.png"><meta name="twitter:card" content="summary_large_image">
-<style>${CSS}</style></head><body>
+<style>${CSS}.usdc-row{margin-top:8px}.usdc-row .btn{display:inline-block;padding:7px 12px;border-radius:8px;font-size:13px;text-decoration:none;cursor:pointer;margin-top:4px}
+</style></head><body>
 
 <header><div class="wrap">
   <h1>Change Intelligence,<br>for <span class="grad">autonomous AI agents</span></h1>
@@ -167,9 +191,20 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
   <h2>Simple pricing</h2>
   <p class="lead">Three subscription tiers on every product. One key works across the family. Monthly, cancel anytime.</p>
   <div class="prices">
-    <div class="price"><div class="amt">$19</div><div class="per">Starter / month</div><ul><li>500 API calls / month</li><li>All five feeds</li></ul><a class="btn buy" href="${BUY.standard}" data-buy="standard">Buy · $19/mo</a></div>
-    <div class="price hl"><div class="amt">$79</div><div class="per">Pro / month</div><ul><li>5,000 API calls / month</li><li>Full dataset coverage</li></ul><a class="btn buy" href="${BUY.pro}" data-buy="pro">Buy · $79/mo</a></div>
-    <div class="price"><div class="amt">$499</div><div class="per">Enterprise / month</div><ul><li>Unlimited calls</li><li>Custom endpoints &amp; SLA</li></ul><a class="btn buy" href="${BUY.business}" data-buy="business">Buy · $499/mo</a></div>
+    <div class="price"><div class="amt">$19</div><div class="per">Starter / month</div><ul><li>500 API calls / month</li><li>All five feeds</li></ul><a class="btn buy" href="${BUY.standard}" data-buy="standard">Buy · $19/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('hobby')">Pay · $9/mo USDC</a></div></div>
+    <div class="price hl"><div class="amt">$79</div><div class="per">Pro / month</div><ul><li>5,000 API calls / month</li><li>Full dataset coverage</li></ul><a class="btn buy" href="${BUY.pro}" data-buy="pro">Buy · $79/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('pro')">Pay · $99/mo USDC</a></div></div>
+    <div class="price"><div class="amt">$499</div><div class="per">Enterprise / month</div><ul><li>Unlimited calls</li><li>Custom endpoints &amp; SLA</li></ul><a class="btn buy" href="${BUY.business}" data-buy="business">Buy · $499/mo card</a><div class="usdc-row">or <a class="btn ghost" onclick="usdcPay('business')">Pay · $499/mo USDC</a></div></div>
+  </div>
+  <p class="lead" style="font-size:14px;margin-top:10px">Card billing goes live on Dodo right after review (auto-renewal). Until then, pay in USDC on Base — your key activates automatically within minutes.</p>
+  <div id="usdc-box" style="display:none;margin:18px auto 0;max-width:560px;background:#f6f8fa;border:1px solid #d0d7de;border-radius:12px;padding:18px;text-align:left;font-size:14px">
+    <div style="font-weight:700;margin-bottom:10px">Pay in USDC on Base</div>
+    <div style="line-height:1.8">
+      <div>Amount: <b id="usdc-amount"></b></div>
+      <div>Send to: <code id="usdc-addr" style="word-break:break-all;display:inline-block;background:#fff;border:1px solid #d0d7de;border-radius:6px;padding:4px 8px"></code></div>
+      <div id="usdc-tx" style="color:#57606a"></div>
+    </div>
+    <div id="usdc-status" style="margin-top:10px;color:#57606a;min-height:20px">Creating order…</div>
+    <div style="margin-top:10px;font-size:12px;color:#57606a">One key unlocks all five feeds. Same key as card billing — <a href="#pricing" style="color:#0369a1">how it works</a>.</div>
   </div>
 </div></section>
 
@@ -251,7 +286,8 @@ GET https://s-shopify.pixharvest.com/v1/changes?store=allbirds.com
 </div></footer>
 
 <script>${ANALYTICS_JS}
-${LEAD_JS}</script>
+${LEAD_JS}
+${USDC_PAY_JS}</script>
 </body></html>`;
 }
 
@@ -363,7 +399,7 @@ export default {
         const url = new URL(request.url);
         const p = url.pathname;
         const kv = env.SHARED_KV;
-        if (p === '/' ) return new Response(page(), { headers: { 'content-type': 'text/html; charset=utf-8' } });
+        if (p === '/' || p === '/pricing' || p === '/faq') return new Response(page(), { headers: { 'content-type': 'text/html; charset=utf-8' } });
         if (p === '/try' ) return new Response(demoPage(), { headers: { 'content-type': 'text/html; charset=utf-8' } });
         if (p === '/api/shopify-snapshot') {
             const store = (url.searchParams.get('store') || '').trim();
