@@ -501,6 +501,36 @@ function tariffLookup(q) {
   }
   return hits.slice(0, 5);
 }
+async function handleMcpMain(request) {
+    let msg = {};
+    try { msg = await request.json(); } catch { return json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "parse error" } }, 400); }
+    const { id } = msg;
+    const ok = (result) => json({ jsonrpc: "2.0", id, result });
+    const err = (code, message) => json({ jsonrpc: "2.0", id, error: { code, message } });
+    const text = (t, isError) => json({ jsonrpc: "2.0", id, result: { content: [{ type: "text", text: t }] }, ...(isError ? { isError: true } : {}) });
+    if (msg.method === "initialize") return ok({ protocolVersion: "2025-06-18", capabilities: { tools: {} }, serverInfo: { name: "PixHarvest Tariff Data", version: "1.0.0" } });
+    if (msg.method === "notifications/initialized") return new Response(null, { status: 202 });
+    if (msg.method === "tools/list") return ok({ tools: [
+      { name: "lookup_tariff", description: "Look up US import tariff rates by HS code or product keyword (e.g. 8703.24, laptop). Returns base rate, 2026 China-stacked rate and EU rate.", inputSchema: { type: "object", properties: { query: { type: "string", description: "HS code or product keyword" } }, required: ["query"] } },
+      { name: "tariff_export", description: "Return the sample tariff schedule as text (first 300 rows).", inputSchema: { type: "object", properties: {} } }
+    ] });
+    if (msg.method === "tools/call") {
+      const a = msg.params?.arguments || {};
+      const n = msg.params?.name;
+      if (n === "lookup_tariff") {
+        const rows = tariffLookup(String(a.query || a.hs || a.q || "").trim());
+        if (!rows.length) return text(JSON.stringify({ error: "no match - try an HS code like 8703.24 or a product like laptop" }), true);
+        return text(JSON.stringify({ ok: true, query: a.query, results: rows.length, rates: rows, note: "Free sample coverage - full 2026 HTS schedule with 4,000+ pages on https://pixharvest.com/pricing" }));
+      }
+      if (n === "tariff_export") {
+        const rows = tariffLookup("");
+        return text(JSON.stringify({ ok: true, results: rows.length, rates: rows.slice(0, 300), note: "Free sample - full schedule: https://contentforge-press.github.io/us-tariff-data/" }));
+      }
+      return err(-32601, "unknown tool");
+    }
+    return err(-32601, "method not found");
+  }
+
 
 function freeDataPage() {
   const head = '<link rel="canonical" href="https://pixharvest.com/free-data">';
@@ -898,6 +928,7 @@ var worker_default = {
     if (p === "/" || p === "/pricing" || p === "/faq") return new Response(page(), { headers: { "content-type": "text/html; charset=utf-8" } });
     if (p === "/try") return new Response(demoPage(), { headers: { "content-type": "text/html; charset=utf-8" } });
     
+    if (p === "/mcp") return handleMcpMain(request);
     if (p === "/v1/tariff") {
       const q = (url.searchParams.get("hs") || url.searchParams.get("q") || "").trim();
       const rows = tariffLookup(q);
