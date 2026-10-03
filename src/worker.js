@@ -437,14 +437,28 @@ export default {
         }
         if (p === '/health') return json({ ok: true });
         if (p === '/terms' || p === '/privacy' || p === '/refunds') return new Response(policyPage(p.slice(1)), { headers: { 'content-type': 'text/html; charset=utf-8' } });
+        if (p === '/sitemap.xml') return new Response('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://pixharvest.com/</loc></url>\n  <url><loc>https://pixharvest.com/pricing</loc></url>\n  <url><loc>https://pixharvest.com/try</loc></url>\n  <url><loc>https://pixharvest.com/terms</loc></url>\n  <url><loc>https://pixharvest.com/privacy</loc></url>\n  <url><loc>https://pixharvest.com/refunds</loc></url>\n</urlset>\n', { headers: { 'content-type': 'application/xml' } });
         if (p === '/favicon.png') return png(FAVICON);
         if (p === '/matrix.png') return png(MATRIX_B64);
-        if (p === '/robots.txt') return new Response('User-agent: *\nAllow: /\n', { headers: { 'content-type': 'text/plain' } });
+        if (p === '/robots.txt') return new Response('User-agent: *\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\nSitemap: https://pixharvest.com/sitemap.xml\n', { headers: { 'content-type': 'text/plain' } });
         if (p === '/__beacon') {
             if (request.method !== 'POST') return json({ error: 'method' }, 405);
             let b = {}; try { b = await request.json(); } catch {}
             await beacon(kv, b);
             return new Response('', { status: 204 });
+        }
+        if (p === '/v1/admin/issue-key') {
+            // 人工补发 access key 的保险端点（链上已到账但自动链路未识别时，核对后手动发 key）
+            if ((request.headers.get('x-admin-key') || url.searchParams.get('key')) !== 'ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac') return json({ error: 'forbidden' }, 403);
+            if (request.method !== 'POST') return json({ error: 'method' }, 405);
+            const plan = ['hobby', 'pro', 'business', 'enterprise'].includes(url.searchParams.get('plan')) ? url.searchParams.get('plan') : 'hobby';
+            const note = String(url.searchParams.get('note') || '').slice(0, 120);
+            const bytes = new Uint8Array(24); crypto.getRandomValues(bytes);
+            const accessKey = 'sci_' + Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+            const now = Date.now();
+            const expiresAt = new Date(now + 30 * 86400000).toISOString();
+            await kv.put('sub-' + accessKey, JSON.stringify({ accessKey, plan, payer: note || 'manual-issue', startedAt: new Date(now).toISOString(), expiresAt, priceUsd: 0, source: 'manual' }));
+            return json({ ok: true, accessKey, plan, expiresAt, note });
         }
         if (p === '/v1/admin/stats') {
             const days = Math.min(parseInt(url.searchParams.get('days') || '7'), 30);
