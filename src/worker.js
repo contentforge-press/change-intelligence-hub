@@ -2262,6 +2262,19 @@ function govRecompete(o) {
   const age = (Date.now() - new Date(o.postedDate).getTime()) / 864e5;
   return age >= 1 && o.type && /(solicitation|combined|presolicitation)/i.test(o.type);
 }
+
+/* Recompete 到期页：真实到期合同（现任承包商+到期时间）SEO 页 —— "contracts expiring" 是承包商的刚需搜索词 */
+function govExpiringPage(items, naics) {
+  const nm = naics ? (GOV_NAICS.find(g => g[0] === naics) || [naics, "NAICS " + naics])[1] : null;
+  const title = (nm ? nm + " \u2014 " : "") + "Federal Contracts Expiring Soon (Recompete Windows) \u00B7 GovContract Radar";
+  const desc = "Which federal contracts are expiring soon" + (nm ? " in " + nm + " (NAICS " + naics + ")" : "") + "? Expiring contracts are recompete windows \u2014 the most predictable entry point in federal sales. See the incumbent, the buyer and the expiry date from public USAspending data.";
+  const rows = items.map(c => {
+    const endD = String(c.endDate || "").slice(0, 10);
+    const months = c.endDate ? Math.max(0, Math.ceil((new Date(c.endDate) - Date.now()) / (30 * 864e5))) : null;
+    return '<div class="co"><div class="cn"><div class="ct"><a href="/gov/company/' + esc(String(c.recipient || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60)) + '" style="color:#0b1b3a;text-decoration:none">' + esc(c.recipient || "") + '</a></div><div class="cm">' + (c.naics ? 'NAICS ' + esc(c.naics) + ' \u00B7 ' : '') + (c.agency ? esc(c.agency) + ' \u00B7 ' : '') + 'expires ' + esc(endD) + (months !== null ? ' (' + months + ' mo)' : '') + ' \u00B7 <b style="color:#0d7a3d">$' + Number(c.amount || 0).toLocaleString("en-US", { maximumFractionDigits: 0 }) + '</b></div></div></div>';
+  }).join("");
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + title + '</title><meta name="description" content="' + desc + '"><link rel="canonical" href="https://pixharvest.com' + (naics ? "/gov/naics/" + naics + "/expiring" : "/gov/expiring") + '"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.5}.w{max-width:820px;margin:0 auto;padding:28px 20px 40px}.h{font-size:25px;font-weight:800;margin-bottom:6px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.co{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:11px 14px;margin-bottom:8px}.cn{flex:1}.ct{font-size:15px;font-weight:700;margin-bottom:2px}.cm{font-size:12.5px;color:#5a6b8a}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:18px 0 6px;text-decoration:none}.cta.g{background:#fff;color:#0d7a3d;border:2px solid #0d7a3d}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}.f a{color:#0d7a3d}</style></head><body><div class="w"><div class="h">' + (nm ? esc(nm) + ': ' : "") + 'Federal Contracts Expiring Soon</div><div class="s">Expiring contracts are <b>recompete windows</b> \u2014 the most predictable entry point in federal sales. Incumbents lose 30\u201340% of recompetes to new entrants. See who holds these contracts and when they end, from public USAspending data.' + (naics ? ' <a href="/gov/expiring" style="color:#0d7a3d">All expiring contracts \u2192</a>' : '') + '</div>' + rows + '<a class="cta" href="/try">Get alerted on every recompete in your NAICS within 60 minutes \u2192</a><a class="cta g" href="/gov/company">See who wins federal contracts by company \u2192</a><div class="f">Source: USAspending.gov public data \u00B7 GovContract Radar \u00B7 ' + (naics ? '<a href="/gov/naics/' + esc(naics) + '">Live opportunities in NAICS ' + esc(naics) + '</a> \u00B7 ' : '') + '<a href="/">home</a></div></div></body></html>';
+}
 function govSignalSummary(o) {
   const p = [];
   if (o.type) p.push(o.type.replace(/([a-z])([A-Z])/g, "$1 $2"));
@@ -2661,19 +2674,38 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
       const cards = pool.contractors.slice(0, 120).map(c => '<a href="/gov/company/' + esc(c.slug) + '" style="display:block;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:12px 16px;margin:8px 0;color:#0b1b3a;text-decoration:none;font-weight:600;font-size:14px">' + esc(c.name) + ' <span style="color:#8a97b5;font-weight:400">· ' + c.contracts + ' awards \u00B7 ' + esc(c.agency || "") + ' \u2192</span></a>').join("");
       return new Response('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Federal Contractors \u2014 Who Wins Government Contracts \u00B7 GovContract Radar</title><meta name="description" content="See which companies win recent U.S. federal contracts by industry, from public USAspending data \u2014 and get alerted on new opportunities the hour they post."><style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;max-width:760px;margin:0 auto;padding:30px 20px}h1{font-size:26px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:18px 0 6px;text-decoration:none}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}</style></head><body><h1>Recent Federal Contractors by Industry</h1><div class="s">Active federal contractors from public USAspending data \u2014 see who wins in your market, then get alerted on every new opportunity that fits your NAICS.</div>' + cards + '<a class="cta" href="/try">Try the full opportunity radar free \u2192</a><div class="f">Source: USAspending.gov public API \u00B7 GovContract Radar \u00B7 <a href="/gov/awards" style="color:#0d7a3d">awards by industry</a> \u00B7 <a href="/" style="color:#0d7a3d">home</a></div></body></html>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
     }
+    if (p === "/gov/expiring" || p === "/gov/expiring/") {
+      const rc = await env.SHARED_KV.get("__gov_recompete", "json").catch(() => null);
+      if (!rc || !rc.items || !rc.items.length) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      const sorted = rc.items.slice().sort((a, b) => (a.endDate || "").localeCompare(b.endDate || ""));
+      return new Response(govExpiringPage(sorted, null), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+    }
+    if (p.startsWith("/gov/naics/") && p.endsWith("/expiring")) {
+      const naics = p.slice("/gov/naics/".length, -"/expiring".length).trim();
+      if (!/^\d{6}$/.test(naics)) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      const rc = await env.SHARED_KV.get("__gov_recompete", "json").catch(() => null);
+      if (!rc || !rc.items || !rc.items.length) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      const filtered = rc.items.filter(i => i.naics === naics).sort((a, b) => (a.endDate || "").localeCompare(b.endDate || ""));
+      if (!filtered.length) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      return new Response(govExpiringPage(filtered, naics), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+    }
     if (p.startsWith("/gov/naics/") && p.endsWith("/companies")) {
       const naics = p.slice("/gov/naics/".length, -"/companies".length).trim();
       if (!/^\d{6}$/.test(naics)) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
       const kv2 = env.SHARED_KV;
       let cached = await kv2.get("__gov_naics_companies:" + naics, "json").catch(() => null);
-      if (!cached || !cached.companies || !cached.companies.length || Date.now() - (cached.at || 0) > 7 * 864e5) {
+      if (!cached || !cached.companies || !cached.companies.length || Date.now() - (cached.at || 0) > 14 * 864e5) {
         const fetched = await fetchNaicsCompanies(naics);
         if (fetched && fetched.companies && fetched.companies.length) {
           cached = { at: Date.now(), naics, companies: fetched.companies.slice(0, 60), total: fetched.total };
-          await kv2.put("__gov_naics_companies:" + naics, JSON.stringify(cached), { expirationTtl: 86400 * 14 }).catch(() => {});
+          await kv2.put("__gov_naics_companies:" + naics, JSON.stringify(cached), { expirationTtl: 86400 * 30 }).catch(() => {});
         }
       }
-      if (!cached || !cached.companies || !cached.companies.length) return new Response("Not found", { status: 404, headers: { "content-type": "text/html; charset=utf-8" } });
+      if (!cached || !cached.companies || !cached.companies.length) {
+        const naicsName = GOV_NAICS.find(g => g[0] === naics);
+        const nm = naicsName ? naicsName[1] : "NAICS " + naics;
+        return new Response('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Who Wins ' + esc(nm) + ' Federal Contracts \u2014 GovContract Radar</title></head><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;max-width:760px;margin:0 auto;padding:30px 20px"><h1>Who Wins ' + esc(nm) + ' Federal Contracts</h1><p style="color:#5a6b8a">Company data is refreshing \u2014 check back shortly.</p><p><a href="/gov/naics/' + naics + '" style="color:#0d7a3d">See live opportunities in NAICS ' + naics + ' \u2192</a></p></body></html>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+      }
       const naicsName = GOV_NAICS.find(g => g[0] === naics);
       const nm = naicsName ? naicsName[1] : "NAICS " + naics;
       const rows2 = cached.companies.map((c, i) => '<div class="co"><span class="rk">' + (i + 1) + '</span><div class="cn"><a href="/gov/company/' + esc(String(c.slug || c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60))) + '" style="color:#0b1b3a;text-decoration:none;font-weight:700">' + esc(c.name) + '</a><div class="cm">' + (c.agency ? esc(c.agency) + ' \u00B7 ' : '') + c.contracts + ' award' + (c.contracts > 1 ? 's' : '') + ' \u00B7 <b style="color:#0d7a3d">$' + Number(c.total_amount).toLocaleString("en-US", { maximumFractionDigits: 0 }) + '</b></div></div></div>').join("");
@@ -3023,6 +3055,14 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
       GOV_ALTS.forEach(a => add("gov/alternatives/" + a[0]));
       add("gov/company");
       add("gov/awards");
+      add("gov/expiring");
+      try {
+        const rc = await env.SHARED_KV.get("__gov_recompete", "json");
+        if (rc && Array.isArray(rc.items)) {
+          const naicsSet = new Set(rc.items.map(i => i.naics).filter(Boolean));
+          naicsSet.forEach(n => add("gov/naics/" + n + "/expiring"));
+        }
+      } catch (e) {}
       try {
         const cpool = await env.SHARED_KV.get("__gov_contractors_pool", "json");
         if (cpool && Array.isArray(cpool.contractors)) cpool.contractors.slice(0, 300).forEach(c => add("gov/company/" + String(c.slug || "").replace(/[^a-z0-9\-]/g, "")));
