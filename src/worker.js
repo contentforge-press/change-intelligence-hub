@@ -1,3 +1,4 @@
+const CONTROL_KEY = "vOAoLbXsQpyVIp6zsTWu8c6KRgxhOS5L";
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
@@ -338,7 +339,7 @@ var POLICIES = {
   terms: {
     title: "Terms of Service",
     blocks: [
-      ["1. Service", 'Change Intelligence ("the Service") is a set of data APIs and datasets operated by PixHarvest for developers, businesses and autonomous AI agents. By accessing the Service you agree to these Terms.'],
+      ["1. Service", 'GovContract Radar ("the Service") is a set of data APIs and subscription products operated by PixHarvest for developers, businesses and autonomous AI agents. By accessing the Service you agree to these Terms.'],
       ["2. Subscriptions & payment", "Subscription plans are billed monthly through Dodo Payments. You may cancel at any time; access continues until the end of the paid period. Prices are in USD and may change with notice."],
       ["3. API usage", "Each plan has rate limits and usage quotas as documented. You may integrate our data into your own products, but may not resell or redistribute raw feeds as a competing data service without a written license."],
       ["4. One-time data products", "One-time datasets (CSV/JSON/Parquet) are delivered by email within 24 hours and licensed for internal business use."],
@@ -381,53 +382,101 @@ ${body}
 __name(policyPage, "policyPage");
 var json = /* @__PURE__ */ __name((o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { "content-type": "application/json" } }), "json");
 var png = /* @__PURE__ */ __name((b64) => new Response(Uint8Array.from(atob(b64), (c) => c.charCodeAt(0)), { headers: { "content-type": "image/png", "cache-control": "public, max-age=86400" } }), "png");
-var LLMS_TXT = `# PixHarvest — US Import Tariff Data & API
+var LLMS_FULL_TXT = `# GovContract Radar \u2014 Full AI-Agent Guide
 
-> Main business: US import tariff data. Look up duty rates by HS code or product (free sample: /v1/tariff?hs=8703.24), then unlock the complete 2026 HTS schedule, Section 301 stacked estimates, EU rates and change alerts on /pricing. Separate independent-brand products: Shopify Intel, GitHub Intel, HackerNews Intel, App Store Intel and Hiring Intelligence (each on its own subdomain, free live snapshots, paid change detection settles USDC on Base via x402). One access key across the whole family.
+> GovContract Radar provides real-time US federal contract opportunity intelligence. It watches SAM.gov (the official U.S. federal government contracting system of record) every hour, filters new solicitations by NAICS codes and set-aside categories (8(a), WOSB, HUBZone, SDVOSB, SBA), and delivers matches within 60 minutes of posting. Every record includes its official posting date (postedDate) and, where the source provides it, the exact posting time (postedAt); plus agency, deadline, set-aside, NAICS codes and a direct SAM.gov link. Award intelligence comes from USAspending.gov. All data is public domain; republishing is fully compliant.
 
-## The five feeds
-- Shopify: https://s-shopify.pixharvest.com/v1/snapshot?store=allbirds.com (free)
-- GitHub: https://s-github.pixharvest.com/v1/snapshot?repo=vercel/next.js (free)
-- Hacker News: https://s-hn.pixharvest.com/v1/snapshot?query=openai (free)
-- App Store: https://s-app.pixharvest.com/v1/snapshot?appId=284882215 (free)
-- Hiring: https://s-hiring.pixharvest.com/v1/snapshot?company=gh:airbnb (free)
+## What this product is for
+- Small federal contractors who miss bidding windows because they check SAM.gov manually
+- Bid teams that need set-aside-filtered, deadline-driven opportunity triage
+- Developers and AI agents that want structured, filterable federal contracting data (MCP / REST API)
+- Market researchers tracking what agencies are buying in a given NAICS
+
+## Key facts
+- Sync: hourly via GovConAPI (SAM-quota-free) + SAM fallback every 6h; posted-to-radar latency \u226460 min
+- Data: public domain (SAM.gov + USAspending.gov)
+- Trial: free 7-day, no card required
+- Pricing: Starter $19/mo (1 NAICS, 5 opps/day) \u00B7 Pro $79/mo (5 NAICS, unlimited, set-aside filter, webhooks) \u00B7 Radar+ $149/mo (recompete radar, AI match score) \u00B7 Team $99/mo \u00B7 Enterprise $299/mo \u00B7 annual = 2 months free
+- Payment: bank transfer via Payoneer (live); card checkout pending merchant review
+- Compliance: reads only public federal contracting data; no non-public scraping; no personal data resale
+
+## Pages
+### [Home](https://pixharvest.com/)
+Product overview with pain points (late discovery, 95% noise, missed set-asides), pricing table, free trial signup. This is the conversion page.
+
+### [Live radar \u2014 Today\u2019s opportunities](https://pixharvest.com/gov/daily)
+Today\u2019s new federal opportunities across all NAICS, refreshed hourly. Shows count of new opportunities today/this week, set-aside flags, top buyer agencies, and sample entries. Full details unlock with trial.
+
+### [Industry activity ranking](https://pixharvest.com/gov/rank)
+Live ranking of the most active federal contracting industries this week (TOP 20 NAICS by new opportunities today/this week), refreshed hourly. Free tier, no login needed.
+
+### [Industry pages](https://pixharvest.com/gov/naics/541511)
+Per-NAICS live opportunity pages, e.g. /gov/naics/541511 (IT services), /gov/naics/236220 (construction), /gov/naics/561720 (janitorial). Each lists current solicitations, set-asides, agencies, and links to recent awards in that industry. SEO landing pages for contractors searching their NAICS.
+
+### [Awards by industry](https://pixharvest.com/gov/awards)
+Who won recent federal contracts per NAICS: awardees, amounts, agencies (USAspending). Used to see incumbents and find recompete opportunities. Annual archive pages per NAICS.
+
+### [Live demo](https://pixharvest.com/try)
+Enter a NAICS code and see the 5 latest matching opportunities from live data, with official posting times.
+
+### [MCP server](https://gov.pixharvest.com/mcp)
+Streamable HTTP JSON-RPC endpoint. Tools: gov.search (explore/filter opportunities), gov.digest (daily briefing per NAICS), gov.near_expiry (deadline-driven triage). Registered in MCP directories.
+
+### [API & MCP docs](https://pixharvest.com/docs)
+Documentation for the REST API and MCP server, authentication, and examples.
+
+### [Pay](https://pixharvest.com/pay)
+Invoice/bank-transfer payment page. Choose plan, request invoice, payment details emailed within 24h, activation same day payment arrives.
+
+## Public API (no key required)
+
+### Live sample feed
+- Endpoint: GET https://pixharvest.com/api/gov/today.json
+- Returns 15 sample federal opportunities from the last 7 days (title, agency, type, NAICS, set-aside, postedAt, SAM.gov link), refreshed hourly. Deadlines, full descriptions and NAICS filtering are for subscribers.
+- Free, no key, no login, CORS-enabled \u2014 anyone can pull it, including AI agents and downstream tools.
+- Full history, NAICS filters, set-aside filtering, webhooks and daily digests require a subscription: https://pixharvest.com/#pricing
+
+## FAQ
+- **Where does the data come from?** SAM.gov (official U.S. federal contracting system) + USAspending.gov. Public domain.
+- **How fast are alerts?** Posted-to-radar latency \u226460 minutes \u2014 hourly sync, 24/7.
+- **What is a NAICS code?** U.S. government industry classification; GovContract Radar filters opportunities to the user\u2019s line of business.
+- **Is it compliant?** Yes \u2014 only public federal data is read; no non-public scraping; no personal data resale.
+- **Can I try before paying?** Free 7-day trial, no card required.
+- **Can I cancel?** Month-to-month, cancel anytime.
+
+## External links
+- SAM.gov (official): https://sam.gov
+- USAspending.gov (official): https://www.usaspending.gov
+- SAM.gov API docs: https://open.gsa.gov/api/opportunities-api/
+`;
+
+var LLMS_TXT = `# GovContract Radar \u2014 Never Miss a Federal Opportunity
+
+> Main business: US federal government contract opportunities intelligence. We watch SAM.gov (the official U.S. government contracting system) every hour around the clock, filter new solicitations by your NAICS codes and set-aside categories, and deliver new matches the same hour they post \u2014 posted-to-radar latency \u226460 minutes. Every opportunity carries its official posting date plus early-signal Special Notices that precede solicitations. Data is 100% public domain (SAM.gov + USAspending). Free 7-day trial, no card required.
+
+## Pages
+- [Home](https://pixharvest.com/): product overview, pain points, pricing (Starter $19, Pro $79, Radar+ $149, Team $99, Enterprise $299/mo; annual = 2 months free), free 7-day trial signup
+- [Live radar](https://pixharvest.com/gov/daily): today\u2019s new federal opportunities across all NAICS, refreshed hourly, with set-aside flags and buyer agencies
+- [Industry ranking](https://pixharvest.com/gov/rank): most active federal contracting industries this week (TOP 20 NAICS by new opportunities), refreshed hourly, free tier
+- [Public API feed](https://pixharvest.com/api/gov/today.json): live sample of the 15 most recent federal opportunities (7 days), free, no key, CORS-enabled, refreshed hourly - deadlines, full descriptions and NAICS filtering are for subscribers
+- [Industry pages](https://pixharvest.com/gov/naics/<code>): live opportunities filtered by NAICS code (e.g. /gov/naics/541511 for IT services)
+- [Awards](https://pixharvest.com/gov/awards): who won recent federal contracts by industry (USAspending data)
+- [Live demo](https://pixharvest.com/try): try your NAICS code against live data
+- [MCP server](https://gov.pixharvest.com/mcp): Streamable HTTP JSON-RPC, tools: gov.search, gov.digest, gov.near_expiry
+- [Docs](https://pixharvest.com/docs): API and MCP documentation
+- [Pay](https://pixharvest.com/pay): pay by bank transfer via Payoneer (card checkout pending merchant review)
 
 ## Pricing
-- Snapshot: free
-- Changes / intel per target: $0.05 / $0.50
-- Batch scans: $0.03 per target (up to 50)
-- Landscape reports: $5 (up to 10 targets)
-- Human subscriptions: Hobby $9/mo, Pro $99/mo, Business $499/mo, Enterprise $2000/mo
+- Starter $19/mo: 1 NAICS code, up to 5 opportunities/day, daily email digest
+- Pro $79/mo: up to 5 NAICS codes, unlimited opportunities, set-aside filtering, hourly refresh + webhooks, Signal summaries
+- Radar+ $149/mo: everything in Pro, recompete radar, AI match score, priority alerts
+- All plans: free 7-day trial, month-to-month, cancel anytime. Annual = 2 months free. Bank transfer via Payoneer available now.
 
 ## Docs
 - https://pixharvest.com/docs
-- Try live: https://pixharvest.com/try
-- Pricing: https://pixharvest.com/pricing
+- Try: https://pixharvest.com/#trial
+- Health: https://pixharvest.com/health`;
 
-- Free data samples: https://pixharvest.com/free-data
-- Alternative comparisons: https://pixharvest.com/docs/alternatives/scrapingbee
-- [ScrapingBee Alternative](https://pixharvest.com/docs/alternatives/scrapingbee)
-- [Apify Alternative](https://pixharvest.com/docs/alternatives/apify)
-- [Zyte Alternative](https://pixharvest.com/docs/alternatives/zyte)
-- [Bright Data Alternative](https://pixharvest.com/docs/alternatives/bright-data)
-- [SerpAPI Alternative](https://pixharvest.com/docs/alternatives/serpapi)
-- [Octoparse Alternative](https://pixharvest.com/docs/alternatives/octoparse)
-- [ParseHub Alternative](https://pixharvest.com/docs/alternatives/parsehub)
-- [Outscraper Alternative](https://pixharvest.com/docs/alternatives/outscraper)
-- [ScraperAPI Alternative](https://pixharvest.com/docs/alternatives/scraperapi)
-- [Proxycurl Alternative](https://pixharvest.com/docs/alternatives/proxycurl)
-- [Oxylabs Alternative](https://pixharvest.com/docs/alternatives/oxylabs)
-- [Diffbot Alternative](https://pixharvest.com/docs/alternatives/diffbot)
-- [Crawlbase Alternative](https://pixharvest.com/docs/alternatives/crawlbase)
-- [Smartproxy Alternative](https://pixharvest.com/docs/alternatives/smartproxy)
-- [Nimble Alternative](https://pixharvest.com/docs/alternatives/nimble)
-- [ScrapingAnt Alternative](https://pixharvest.com/docs/alternatives/scrapingant)
-- [Apify Actors Alternative](https://pixharvest.com/docs/alternatives/apify-actors)
-- [DataForSEO Alternative](https://pixharvest.com/docs/alternatives/dataforseo)
-- [Nanoreviews Alternative](https://pixharvest.com/docs/alternatives/nanoreviews)
-- [Webshare Alternative](https://pixharvest.com/docs/alternatives/webshare)
-- [CrawlingAPI Alternative](https://pixharvest.com/docs/alternatives/crawlingapi)
-- [MrScraper Alternative](https://pixharvest.com/docs/alternatives/mrscraper)`;
 
 const TARIFF_CSV = `hs_code,category,product,us_base_rate,china_stacked_2026,eu_rate,note
 8703.24,cars,Passenger vehicles,2.5%,37.5%,10.0%,Section 301 stacked estimate
@@ -543,6 +592,402 @@ async function handleMcpMain(request) {
     return err(-32601, "method not found");
   }
 
+const GOV_SET_ASIDES = [
+  ["8a", "8(a) Business Development", "8(a)"],
+  ["wosb", "Women-Owned Small Business", "WOSB"],
+  ["hubzone", "HUBZone", "HUBZone"],
+  ["sdvosb", "Service-Disabled Veteran-Owned", "SDVOSB"],
+  ["vosb", "Veteran-Owned", "VOSB"]
+];
+const GOV_NAICS = [
+  ["541511", "Custom Computer Programming Services", "Custom software, web and database programming contracts for federal agencies \u2014 the #1 NAICS for IT services."],
+  ["541512", "Computer Systems Design Services", "Federal computer systems design and integration contracts, including cloud migration and enterprise architecture."],
+  ["511210", "Software Publishers", "Federal software licensing, SaaS and enterprise software publishing opportunities."],
+  ["518210", "Data Processing, Hosting and Related Services", "Federal cloud hosting, data processing and IT infrastructure services contracts."],
+  ["541330", "Engineering Services", "Federal engineering services contracts \u2014 civil, mechanical, electrical and systems engineering."],
+  ["541690", "Technical Consulting Services", "Federal technical consulting, scientific and technical advisory services contracts."],
+  ["541611", "Administrative Management Consulting", "Federal management consulting contracts \u2014 operations, strategy and program management."],
+  ["541612", "Human Resources Consulting", "Federal HR consulting and organizational management services contracts."],
+  ["541613", "Marketing Consulting Services", "Federal marketing, branding and communication strategy consulting contracts."],
+  ["541620", "Environmental Consulting Services", "Federal environmental consulting, compliance and remediation advisory contracts."],
+  ["541360", "Geophysical Surveying and Mapping Services", "Federal geophysical surveying, mapping and subsurface exploration contracts."],
+  ["541370", "Surveying and Mapping Services", "Federal land surveying, cartography and GIS mapping services contracts."],
+  ["541380", "Testing Laboratories and Services", "Federal testing lab services \u2014 materials, environmental and product compliance testing."],
+  ["541715", "Research and Development in Physical Engineering", "Federal R&D contracts in physical, engineering and life sciences \u2014 a high-value set-aside category."],
+  ["541714", "Research and Development in Environmental Sciences", "Federal environmental R&D contracts, including climate and ecosystem research."],
+  ["541713", "Research and Development in Nanotechnology", "Federal nanotechnology R&D contracts with 8(a) and small business set-aside opportunities."],
+  ["541990", "All Other Professional, Scientific and Technical Services", "Federal contracts for other professional, scientific and technical services."],
+  ["541519", "Other Computer Related Services", "Federal IT services contracts not classified elsewhere \u2014 support, maintenance and consulting."],
+  ["561210", "Facilities Support Services", "Federal facilities operations and management contracts \u2014 the workhorse NAICS for facility support."],
+  ["561110", "Office Administrative Services", "Federal office administrative support and management services contracts."],
+  ["561499", "Other Business Support Services", "Federal business support contracts \u2014 administrative, logistics and operational support."],
+  ["561320", "Temporary Help Services", "Federal temporary staffing and personnel services contracts."],
+  ["561720", "Janitorial Services", "Federal janitorial and custodial services contracts \u2014 a steady small-business opportunity category."],
+  ["561730", "Landscaping Services", "Federal landscaping, grounds maintenance and tree services contracts."],
+  ["561421", "Telephone Answering Services", "Federal call center, telephone answering and dispatch services contracts."],
+  ["561612", "Security Guards and Patrol Services", "Federal security guard and patrol services contracts with set-aside opportunities."],
+  ["561621", "Security Systems Services", "Federal security systems installation and monitoring contracts."],
+  ["561990", "All Other Support Services", "Federal support services contracts not classified elsewhere."],
+  ["611430", "Professional and Management Development Training", "Federal professional development and management training contracts."],
+  ["611420", "Computer Training", "Federal computer and IT training services contracts."],
+  ["611710", "Educational Support Services", "Federal educational support services contracts."],
+  ["621111", "Offices of Physicians", "Federal healthcare contracts for physician practices and medical services."],
+  ["621498", "All Other Outpatient Care Centers", "Federal outpatient care contracts \u2014 clinics, rehab and specialty care centers."],
+  ["621340", "Offices of Physical Therapists", "Federal physical therapy and rehabilitation services contracts."],
+  ["621399", "Offices of All Other Miscellaneous Health Practitioners", "Federal contracts for other health practitioner services."],
+  ["621610", "Home Health Care Services", "Federal home health care services contracts for veterans and beneficiaries."],
+  ["623110", "Nursing Care Facilities", "Federal nursing care and long-term care facility contracts."],
+  ["622110", "General Medical and Surgical Hospitals", "Federal hospital and surgical services contracts."],
+  ["624230", "Emergency and Other Relief Services", "Federal emergency management and disaster relief services contracts."],
+  ["334111", "Electronic Computer Manufacturing", "Federal computer hardware manufacturing contracts."],
+  ["334118", "Computer Terminal and Other Computer Peripheral Equipment Manufacturing", "Federal computer terminal and peripheral equipment manufacturing contracts."],
+  ["334413", "Semiconductor and Related Device Manufacturing", "Federal semiconductor and microelectronics manufacturing contracts."],
+  ["334417", "Electronic Connector Manufacturing", "Federal electronic connector and cable assembly manufacturing contracts."],
+  ["334419", "Other Electronic Component Manufacturing", "Federal electronic component manufacturing contracts not elsewhere classified."],
+  ["334510", "Electromedical and Electrotherapeutic Apparatus Manufacturing", "Federal electromedical device manufacturing contracts for healthcare agencies."],
+  ["334511", "Search, Detection and Navigation Instrument Manufacturing", "Federal radar, sonar, navigation and detection instrument contracts."],
+  ["334516", "Analytical Laboratory Instrument Manufacturing", "Federal analytical laboratory instrument manufacturing contracts."],
+  ["335911", "Storage Battery Manufacturing", "Federal battery and energy storage manufacturing contracts."],
+  ["335313", "Switchgear and Switchboard Apparatus Manufacturing", "Federal switchgear and electrical switchboard manufacturing contracts."],
+  ["335314", "Relay and Industrial Control Manufacturing", "Federal relay, motor control and industrial control manufacturing contracts."],
+  ["339112", "Surgical and Medical Instrument Manufacturing", "Federal surgical and medical instrument manufacturing contracts."],
+  ["339113", "Surgical Appliance and Supplies Manufacturing", "Federal surgical appliances and medical supplies contracts."],
+  ["339991", "Laboratory Apparatus and Furniture Manufacturing", "Federal laboratory equipment and furniture manufacturing contracts."],
+  ["336411", "Aircraft Manufacturing", "Federal aircraft manufacturing contracts \u2014 a major defense contracting category."],
+  ["336412", "Aircraft Engine and Engine Parts Manufacturing", "Federal aircraft engine and engine parts manufacturing contracts."],
+  ["336413", "Other Aircraft Parts and Auxiliary Equipment Manufacturing", "Federal aircraft parts and auxiliary equipment manufacturing \u2014 one of the most active contract NAICS."],
+  ["336414", "Guided Missile and Space Vehicle Manufacturing", "Federal guided missile and space vehicle manufacturing contracts."],
+  ["336611", "Ship Building and Repairing", "Federal shipbuilding, repair and maintenance contracts."],
+  ["336390", "Other Motor Vehicle Parts Manufacturing", "Federal motor vehicle parts manufacturing contracts."],
+  ["332710", "Machine Shops", "Federal machine shop and precision machining contracts."],
+  ["332722", "Precision Turned Product Manufacturing", "Federal precision turned products and machining contracts."],
+  ["332911", "Industrial Valve Manufacturing", "Federal industrial valve manufacturing contracts \u2014 consistently active in the SAM pipeline."],
+  ["332919", "Other Metal Valve and Pipe Fitting Manufacturing", "Federal metal valve and pipe fitting manufacturing contracts."],
+  ["332510", "Hardware Manufacturing", "Federal hardware and fastener manufacturing contracts."],
+  ["332991", "Ball and Roller Bearing Manufacturing", "Federal ball and roller bearing manufacturing contracts."],
+  ["332112", "Nonferrous Forging", "Federal nonferrous forging contracts for defense and aerospace."],
+  ["332999", "All Other Miscellaneous Fabricated Metal Product Manufacturing", "Federal fabricated metal product contracts not elsewhere classified."],
+  ["333515", "Cutting Tool and Machine Tool Accessory Manufacturing", "Federal cutting tool and machine tool accessory manufacturing contracts."],
+  ["333618", "Other Power Transmission Equipment Manufacturing", "Federal power transmission equipment manufacturing contracts."],
+  ["333912", "Air and Gas Compressor Manufacturing", "Federal air and gas compressor manufacturing contracts."],
+  ["333914", "Measuring, Dispensing and Other Pump Manufacturing", "Federal pump manufacturing contracts for industrial and defense applications."],
+  ["811210", "Electronic and Precision Equipment Repair and Maintenance", "Federal electronic and precision equipment repair contracts \u2014 including avionics and lab equipment."],
+  ["811212", "Computer and Office Machine Repair", "Federal computer and office equipment repair contracts."],
+  ["811219", "Other Electronic and Precision Equipment Repair and Maintenance", "Federal specialty electronic equipment repair and maintenance contracts."],
+  ["811310", "Commercial and Industrial Machinery Repair", "Federal commercial and industrial machinery repair contracts."],
+  ["237310", "Highway, Street and Bridge Construction", "Federal highway, street and bridge construction contracts."],
+  ["237110", "Water and Sewer Line Construction", "Federal water and sewer infrastructure construction contracts."],
+  ["237130", "Power and Communication Line Construction", "Federal power and communication line construction contracts."],
+  ["237990", "Other Heavy and Civil Engineering Construction", "Federal heavy civil engineering construction contracts not elsewhere classified."],
+  ["236220", "Commercial and Institutional Building Construction", "Federal commercial and institutional building construction contracts \u2014 one of the most active categories."],
+  ["238210", "Electrical Contractors", "Federal electrical contracting and installation services."],
+  ["238220", "Plumbing, Heating and Air-Conditioning Contractors", "Federal HVAC, plumbing and mechanical contracting services."],
+  ["238990", "All Other Specialty Trade Contractors", "Federal specialty trade contractor services not elsewhere classified."],
+  ["423430", "Computer and Computer Peripheral Equipment Wholesalers", "Federal computer equipment wholesale and distribution contracts."],
+  ["488190", "Other Support Activities for Air Transportation", "Federal air transportation support services contracts."],
+  ["488310", "Port and Harbor Operations", "Federal port and harbor operations contracts."],
+  ["493110", "General Warehousing and Storage", "Federal warehousing and storage services contracts."],
+  ["562910", "Remediation Services", "Federal environmental remediation and cleanup contracts."],
+  ["562211", "Hazardous Waste Treatment and Disposal", "Federal hazardous waste treatment and disposal contracts."],
+  ["484121", "General Freight Trucking Long-Distance", "Federal long-distance freight trucking and logistics contracts."],
+["541110", "Offices of Lawyers", "Federal legal services contracts — litigation support, counsel and advisory legal work for agencies."],
+  ["541199", "All Other Legal Services", "Federal legal support contracts — title search, process serving, legal research and paralegal services."],
+  ["541210", "Architectural Services", "Federal architectural design contracts for buildings, federal facilities and historic preservation."],
+  ["541310", "Architectural and Landscape Architectural Services", "Federal landscape architecture and site planning contracts for federal grounds and installations."],
+  ["541410", "Interior Design Services", "Federal interior design and space planning contracts for federal offices and facilities."],
+  ["541614", "Process, Physical Distribution and Logistics Consulting", "Federal supply chain and logistics consulting contracts for agency operations."],
+  ["541618", "Other Management Consulting Services", "Federal management consulting contracts not classified elsewhere — including grant and program consulting."],
+  ["541810", "Advertising Agencies", "Federal advertising and public awareness campaign contracts for agencies and public health programs."],
+  ["541820", "Public Relations Agencies", "Federal public relations, media relations and communications consulting contracts."],
+  ["541830", "Media Buying Agencies", "Federal media buying and placement contracts for government advertising campaigns."],
+  ["541840", "Media Representatives", "Federal media representation contracts for agency outreach and public affairs."],
+  ["541850", "Display Advertising", "Federal outdoor, transit and display advertising contracts."],
+  ["541860", "Direct Mail Advertising", "Federal direct mail campaign contracts for government programs and services."],
+  ["541870", "Advertising Material Distribution Services", "Federal distribution of advertising and informational materials contracts."],
+  ["541890", "Other Services Related to Advertising", "Federal advertising support services — point-of-sale, specialty and promotional products."],
+  ["541910", "Marketing Research and Public Opinion Polling", "Federal market research and public opinion polling contracts for agencies and surveys."],
+  ["541921", "Photography Studios, Portrait", "Federal portrait and documentation photography services contracts."],
+  ["541922", "Commercial Photography", "Federal commercial photography contracts for publications, training and records."],
+  ["541930", "Translation and Interpretation Services", "Federal translation and interpretation contracts — a consistently active language services NAICS."],
+  ["541940", "Veterinary Services", "Federal veterinary services contracts for USDA, DOD and research facilities."],
+  ["561311", "Employment Placement Agencies", "Federal recruitment and employment placement services contracts."],
+  ["561312", "Executive Search Services", "Federal executive search and leadership recruitment contracts."],
+  ["561330", "Professional Employer Organizations", "Federal PEO and co-employment services contracts."],
+  ["561410", "Document Preparation Services", "Federal document preparation and forms processing services contracts."],
+  ["561431", "Private Mail Centers", "Federal mail center and mail handling services contracts."],
+  ["561440", "Collection Agencies", "Federal debt collection services contracts for receivables and overpayment recovery."],
+  ["561450", "Credit Bureaus", "Federal credit reporting and verification services contracts."],
+  ["561490", "Other Business Support Services", "Federal business support contracts not classified elsewhere."],
+  ["561510", "Travel Agencies", "Federal travel agency and official travel management services contracts."],
+  ["561520", "Tour Operators", "Federal tour operation and destination management services contracts."],
+  ["561591", "Convention and Trade Show Organizers", "Federal event, conference and trade show management contracts."],
+  ["561599", "All Other Travel Arrangement and Reservation Services", "Federal travel arrangement support contracts not classified elsewhere."],
+  ["561611", "Investigation Services", "Federal background investigation and due diligence services contracts."],
+  ["561613", "Armored Car Services", "Federal armored transport and secure courier services contracts."],
+  ["561622", "Locksmiths", "Federal locksmith and access control services contracts."],
+  ["561710", "Exterminating and Pest Control Services", "Federal pest control and fumigation contracts for federal facilities."],
+  ["561740", "Carpet and Upholstery Cleaning Services", "Federal carpet, upholstery and fabric cleaning contracts."],
+  ["561790", "Other Services to Buildings and Dwellings", "Federal building support services contracts not classified elsewhere."],
+  ["561910", "Packaging and Labeling Services", "Federal packaging, labeling and contract packaging services."],
+  ["561920", "Convention and Trade Show Services", "Federal trade show and event support services contracts."],
+  ["611310", "Colleges, Universities and Professional Schools", "Federal higher-education services and research contracts."],
+  ["611511", "Cosmetology and Barber Schools", "Federal training contracts for cosmetology and barber services programs."],
+  ["611519", "Other Technical and Trade Schools", "Federal technical and vocational training services contracts."],
+  ["611610", "Fine Arts Schools", "Federal fine arts and performing arts training contracts."],
+  ["611620", "Sports and Recreation Instruction", "Federal sports training and recreation instruction contracts."],
+  ["611691", "Exam Preparation and Tutoring", "Federal tutoring and exam preparation services contracts."],
+  ["611692", "Automobile Driving Schools", "Federal driver training and safety instruction contracts."],
+  ["621112", "Offices of Physicians, Mental Health", "Federal psychiatric and mental health physician services contracts."],
+  ["621210", "Offices of Dentists", "Federal dental services contracts for military, VA and federal clinics."],
+  ["621310", "Offices of Chiropractors", "Federal chiropractic services contracts."],
+  ["621320", "Offices of Optometrists", "Federal optometry and vision care services contracts."],
+  ["621330", "Offices of Mental Health Practitioners", "Federal mental health practitioner services contracts — counseling and therapy."],
+  ["621391", "Offices of Podiatrists", "Federal podiatry services contracts."],
+  ["621410", "Family Planning Centers", "Federal family planning and reproductive health services contracts."],
+  ["621420", "Outpatient Mental Health and Substance Abuse Centers", "Federal outpatient behavioral health services contracts."],
+  ["621491", "HMO Medical Centers", "Federal HMO and managed care services contracts."],
+  ["621492", "Kidney Dialysis Centers", "Federal kidney dialysis and renal care services contracts."],
+  ["621493", "Freestanding Ambulatory Surgical and Emergency Centers", "Federal ambulatory surgery center services contracts."],
+  ["621511", "Medical Laboratories", "Federal medical laboratory and diagnostic testing services contracts."],
+  ["621512", "Diagnostic Imaging Centers", "Federal diagnostic imaging contracts — radiology, MRI and CT services."],
+  ["621513", "Home Health Care Equipment", "Federal home health equipment and durable medical supply contracts."],
+  ["621910", "Ambulance Services", "Federal ambulance and emergency medical transport contracts."],
+  ["621991", "Blood and Organ Banks", "Federal blood, organ and tissue bank services contracts."],
+  ["621999", "All Other Miscellaneous Ambulatory Health Care Services", "Federal ambulatory health services contracts not classified elsewhere."],
+  ["622210", "Psychiatric and Substance Abuse Hospitals", "Federal psychiatric hospital and substance abuse treatment contracts."],
+  ["623210", "Residential Intellectual and Developmental Disability Facilities", "Federal residential care contracts for intellectual and developmental disability services."],
+  ["623220", "Residential Mental and Substance Abuse Facilities", "Federal residential behavioral health treatment contracts."],
+  ["623311", "Continuing Care Retirement Communities", "Federal continuing care retirement community contracts."],
+  ["623990", "Other Residential Care Facilities", "Federal other residential care facility contracts."],
+  ["624110", "Child and Youth Services", "Federal child and youth services contracts — foster care, adoption and youth programs."],
+  ["624120", "Services for the Elderly and Persons with Disabilities", "Federal services for the elderly and disabled — a recurring set-aside category."],
+  ["624190", "Other Individual and Family Services", "Federal individual and family support services contracts."],
+  ["624210", "Community Food Services", "Federal community food and nutrition services contracts."],
+  ["624310", "Vocational Rehabilitation Services", "Federal vocational rehabilitation and employment readiness contracts."],
+  ["624410", "Child Day Care Services", "Federal child day care and early education services contracts."],
+  ["811111", "General Automotive Repair", "Federal automotive repair and maintenance contracts for government fleets."],
+  ["811121", "Automotive Body, Paint and Interior Repair", "Federal vehicle body and paint repair contracts."],
+  ["811122", "Automotive Glass Replacement Shops", "Federal vehicle glass replacement services contracts."],
+  ["811191", "Automotive Oil Change and Lubrication Shops", "Federal fleet oil change and lubrication services contracts."],
+  ["811192", "Car Washes", "Federal vehicle washing and detailing services contracts."],
+  ["811198", "All Other Automotive Repair and Maintenance", "Federal other automotive repair and maintenance contracts."],
+  ["811213", "Communication Equipment Repair and Maintenance", "Federal communications equipment repair and maintenance contracts."],
+  ["811412", "Appliance Repair and Maintenance", "Federal appliance repair and maintenance contracts."],
+  ["811490", "Other Personal and Household Goods Repair and Maintenance", "Federal personal property repair contracts not classified elsewhere."],
+  ["812111", "Barber Shops", "Federal barber services contracts for military installations and VA facilities."],
+  ["812112", "Beauty Salons", "Federal beauty and grooming services contracts."],
+  ["812210", "Funeral Homes and Funeral Services", "Federal funeral and mortuary services contracts."],
+  ["812220", "Cemeteries and Crematories", "Federal cemetery and cremation services contracts."],
+  ["812310", "Coin-Operated Laundries and Drycleaners", "Federal laundry services contracts for facilities and installations."],
+];
+
+const GOV_GUIDES = [
+  ["construction-guide", "How to Find Federal Construction Contracts", "How to Find Federal Construction Contracts", "The U.S. federal government awards billions in construction contracts every year \u2014 buildings, highways, water systems and heavy civil works. Most small contractors miss the window because they find out about solicitations too late.", [["Why construction is a federal goldmine", "Agencies like the Army Corps of Engineers, GSA and the Department of Veterans Affairs post thousands of construction solicitations annually. NAICS 236220 (commercial building), 237310 (highways) and 237990 (heavy civil) are among the most active categories in the SAM pipeline."], ["How to find them before competitors", "New solicitations are posted on SAM.gov continuously but close fast. The reliable way to never miss one: subscribe to an automated radar that filters by your NAICS codes and set-asides, and delivers new matches by email the same day."], ["Set-asides favor small contractors", "8(a), SDVOSB, WOSB and HUBZone set-asides reserve contracts exclusively for small businesses. A radar with set-aside filtering surfaces exactly the opportunities you are eligible for."]], ["236220", "237310", "237110", "237130", "237990", "238210", "238220", "238990"]],
+  ["it-services-guide", "How to Win Federal IT Services Contracts", "How to Win Federal IT Services Contracts", "IT services is the largest category of federal procurement \u2014 software development, systems design, cloud and data services. Agencies are required to consider small businesses for a significant share of this spend.", [["The scale of federal IT spend", "Custom software (541511), systems design (541512) and data processing (518210) see constant posting volume on SAM.gov. The demand is stable year-round because agencies run on continuous technology modernization."], ["Why most bidders lose the timing race", "Solicitations are often open for only 2-4 weeks. Companies that watch SAM.gov manually check too rarely and miss eligible opportunities entirely \u2014 the silent killer for small IT firms."], ["Automated alerts change the math", "A daily digest filtered to your exact NAICS codes, with set-aside flags and direct SAM.gov links, keeps every eligible opportunity in front of you from posting day."]], ["541511", "541512", "518210", "541519", "541330", "541611", "611420"]],
+  ["manufacturing-guide", "Federal Manufacturing Contracts: The Complete Guide", "Federal Manufacturing Contracts: The Complete Guide", "From aircraft parts to precision valves, federal agencies buy manufactured goods worth hundreds of billions a year. Defense, aerospace and infrastructure programs are the biggest buyers.", [["Where the demand is", "Aircraft parts (336413), industrial valves (332911), precision turned products (332722) and electronic components (334417) are consistently among the most posted manufacturing NAICS on SAM.gov \u2014 real demand, every week."], ["Small manufacturers are favored", "The government sets aside a large share of manufacturing contracts for small business, including SDVOSB and 8(a) firms. That means less competition from primes \u2014 if you see the opportunity in time."], ["The radar advantage", "Manufacturing solicitations can close within weeks. An automated opportunity radar with NAICS filtering and set-aside alerts turns 'checking SAM.gov when I remember' into 'every new fit in my inbox the same day'."]], ["336413", "336412", "336414", "332911", "332722", "332919", "332510", "334417", "334419", "335313"]],
+  ["janitorial-guide", "Government Janitorial Contracts: A Steady Small-Business Market", "Government Janitorial Contracts: A Steady Small-Business Market", "Janitorial and custodial services (NAICS 561720) are among the most reliable federal contracts for small businesses \u2014 recurring, multi-year and heavily set aside for small firms.", [["Why it is a small-business favorite", "Facilities need cleaning every day, so janitorial contracts are typically multi-year with options \u2014 predictable recurring revenue. GSA schedules and agency-level buys keep postings flowing year-round."], ["Set-aside advantage", "A large share of janitorial solicitations are set aside for small business, 8(a), WOSB and SDVOSB. Your real competition is other small firms \u2014 not Fortune 500 giants."], ["How to never miss a posting", "Custodial solicitations are posted at irregular intervals across agencies. An automated radar watching NAICS 561720 delivers every new janitorial opportunity to your inbox on posting day, with the deadline and set-aside flag."]], ["561720", "561730", "561110", "561990", "561210"]],
+  ["healthcare-guide", "Federal Healthcare Contracts Guide for Providers", "Federal Healthcare Contracts Guide for Providers", "The VA, DOD and HHS buy healthcare services at scale \u2014 physician practices, outpatient care, therapy and home health. Provider networks win these contracts when they see opportunities early.", [["The size of the market", "Federal healthcare procurement spans clinical services (621111), outpatient care (621498), physical therapy (621340) and home health (621610) \u2014 with billions in annual awards."], ["Veterans care is the anchor", "The VA system is a massive, constant buyer of community care. Contracts are structured for small and rural providers, creating genuine opportunity for practices that respond in time."], ["Timing wins contracts", "Healthcare solicitations are posted throughout the year with strict deadlines. A filtered opportunity radar for your NAICS keeps every relevant solicitation in front of you from day one."]], ["621111", "621498", "621340", "621399", "621610", "623110", "622110"]],
+  ["logistics-guide", "Government Logistics and Transportation Contracts", "Government Logistics and Transportation Contracts", "Freight, warehousing, port operations and air transport support keep federal supply chains moving. These contracts are posted steadily and often fit small carriers and warehouses.", [["What the government buys", "Long-distance trucking (484121), warehousing (493110), port operations (488310) and air transport support (488190) appear consistently in the federal pipeline."], ["Small carriers are eligible", "Many logistics solicitations are small-business set-asides. A small fleet or warehouse can win federal work \u2014 the barrier is almost always visibility, not capability."], ["The visibility fix", "An automated radar filtering by your NAICS codes catches new logistics postings the day they appear, with deadlines and set-aside status, so you bid while the window is open."]], ["484121", "493110", "488310", "488190", "561210"]],
+  ["security-guide", "Federal Security Services Contracts: Guards and Systems", "Federal Security Services Contracts: Guards and Systems", "Federal buildings, bases and facilities need security guards (561612) and security systems (561621). These are recurring contracts with strong small-business set-aside rates.", [["A recurring, contract-heavy market", "Security services are bought on multi-year contracts with option years \u2014 stable revenue for firms that win. Postings appear across GSA, DHS, DOD and civilian agencies."], ["Set-asides work in your favor", "Security guard contracts are frequently set aside for small business, including 8(a) and SDVOSB. Eligibility is often the only edge you need."], ["Never miss a solicitation", "Security postings arrive at irregular intervals. A radar watching your NAICS delivers every new solicitation the day it posts, with deadline and set-aside flag \u2014 so you respond early, not late."]], ["561612", "561621", "561990"]],
+  ["rnd-guide", "Federal R&D and Engineering Contracts Guide", "Federal R&D and Engineering Contracts Guide", "Federal R&D \u2014 from physical engineering to environmental science \u2014 is a high-value market where small businesses win significant set-aside contracts every year.", [["Where R&D demand lives", "NAICS 541715 (physical/engineering R&D), 541714 (environmental) and 541713 (nanotechnology) carry steady solicitation volume, driven by DOD, DOE, NSF and NASA programs."], ["SBIR/STTR pipeline", "Beyond posted contracts, federal R&D flows through SBIR/STTR awards that favor small firms \u2014 a complementary channel to direct solicitations."], ["Track every opening", "R&D solicitations are technical and deadline-driven. An automated radar for your NAICS codes surfaces new openings the day they post, with agency, deadline and set-aside context."]], ["541715", "541714", "541713", "541330", "541690"]],
+  ["small-business-guide", "Government Set-Asides: 8(a), SDVOSB, WOSB and HUBZone Explained", "Government Set-Asides: 8(a), SDVOSB, WOSB and HUBZone Explained", "Set-asides reserve federal contracts for small businesses \u2014 8(a), service-disabled veteran-owned, women-owned and HUBZone firms. Understanding them is the fastest way to win your first federal contract.", [["What set-asides are", "The federal government reserves a percentage of contract dollars for small business categories. 8(a) firms, SDVOSB, WOSB and HUBZone businesses compete only against each other on set-aside solicitations \u2014 dramatically improving win odds."], ["Why they are your best entry point", "Set-aside solicitations are far less competitive than full-and-open ones. For a small company's first federal win, a set-aside opportunity you see early is worth more than any marketing effort."], ["How to filter for them", "The fastest way to benefit: a contract radar that flags set-aside status on every opportunity and filters to your NAICS codes \u2014 so you only see the solicitations you can actually win."]], ["541715", "236220", "561720", "541511", "336413"]],
+  ["sam-guide", "How to Search SAM.gov Effectively (and Stop Missing Opportunities)", "How to Search SAM.gov Effectively (and Stop Missing Opportunities)", "SAM.gov is the official system of record for federal contracting opportunities. Knowing how to search it \u2014 and its limits \u2014 is the difference between winning contracts and watching them expire.", [["What SAM.gov gives you", "SAM.gov (beta.sam.gov) hosts every federal solicitation: notices, deadlines, NAICS codes, set-aside status and agency links. It is free and authoritative."], ["Why manual searching fails", "SAM.gov has no alerting for new matches \u2014 you must return and re-search constantly. Solicitations close in weeks, and thousands post daily. Manual review is why most small firms miss the window."], ["The better way", "Use SAM.gov for verification, and a filtered radar for alerting: your NAICS codes + set-aside flags delivered by email the day anything posts. You stay in SAM.gov's data, without its blind spots."]], ["541511", "236220", "561720", "336413", "541330"]],
+  ["8a-guide", "How to Win 8(a) Contracts: The Small Business Advantage", "How to Win 8(a) Contracts: The Small Business Advantage", "The 8(a) Business Development program gives certified small disadvantaged firms a powerful edge: contracts set aside exclusively for 8(a) companies, plus sole-source authority up to $7 million ($4.5M for manufacturing).", [["Why 8(a) matters", "Every 8(a) solicitation on SAM.gov is restricted to program participants \u2014 you only compete against other 8(a) firms, not the Fortune 500. Agencies also use sole-source authority, which means no open competition at all."], ["What the program requires", "To qualify you must be a small business, majority-owned and controlled by one or more socially and economically disadvantaged individuals, and pass SBA certification. Once certified (usually 60-90 days), your firm is in the 8(a) pool for up to nine years."], ["How to turn 8(a) into revenue", "The edge only works if you see 8(a) solicitations the day they post. A radar filtered to 8(a) set-asides and your NAICS codes delivers every eligible opportunity to your inbox before the competition reads it."]], ["541511", "236220", "561720", "336413", "541330", "541715", "484121", "561612", "541512", "332911"]],
+  ["wosb-guide", "WOSB Federal Contracts: How Women-Owned Businesses Win", "WOSB Federal Contracts: How Women-Owned Businesses Win", "The WOSB/EDWOSB program reserves federal contracts in industries where women-owned small businesses are underrepresented \u2014 a direct path to prime contracts with reduced competition.", [["How the program works", "The federal government sets a 5% annual goal for women-owned small business contracting. WOSB-certified firms (via SBA or approved certifier) get set-aside solicitations in eligible NAICS industries, competing only among themselves."], ["Which industries benefit most", "WOSB set-asides concentrate in services and construction: janitorial (561720), professional services (541611), IT (541511), transportation (484121), construction (236220) and many more. Check your NAICS against the SBA's eligible list."], ["The practical play", "Certification is the entry ticket; visibility is the game. WOSB solicitations post and close on SAM.gov continuously \u2014 a filtered radar with WOSB flags keeps every eligible posting in front of you from day one."]], ["561720", "541611", "541511", "484121", "236220", "541990", "541330", "561210"]],
+  ["hubzone-guide", "HUBZone Contracts: The Geographically-Favored Advantage", "HUBZone Contracts: The Geographically-Favored Advantage", "HUBZone certification rewards businesses in historically underutilized business zones with set-aside contracts and a 10% price evaluation preference on full-and-open bids.", [["What qualifies as HUBZone", "Your principal office must be in a designated HUBZone, and 35% of employees must live in a HUBZone. SBA certification is free and processing is typically fast once the application is complete."], ["The competitive edge", "HUBZone firms get two advantages: set-aside contracts restricted to HUBZone businesses, and a price preference on competitive awards \u2014 the government can pay 10% more to keep the contract in the program."], ["Why timing decides wins", "HUBZone set-asides are posted at irregular intervals across agencies. Missing a posting by a week often means missing the bid entirely. A set-aside-filtered radar for your NAICS is the difference between first in line and never in line."]], ["236220", "561720", "541611", "541511", "336413", "561612", "484121", "541330"]],
+  ["sdvosb-guide", "SDVOSB Contracts: The Veteran-Owned Fast Track", "SDVOSB Contracts: The Veteran-Owned Fast Track", "Service-Disabled Veteran-Owned Small Business (SDVOSB) status unlocks exclusive set-aside contracts and sole-source awards \u2014 among the strongest small-business advantages in federal contracting.", [["The program in numbers", "The federal government targets at least 3% of contracting dollars for SDVOSBs. Certification is through the VA Center for Verification (CVE) or the SBA, and eligible firms gain access to contracts restricted to veteran-owned businesses."], ["Where the demand is", "SDVOSB set-asides appear across construction (236220), professional services (541611), janitorial (561720), logistics (484121), medical services and IT \u2014 recurring, multi-year opportunities built for small firms."], ["Turning eligibility into awards", "Eligibility alone wins nothing; seeing the solicitation in time wins contracts. An automated radar with SDVOSB set-aside filtering delivers every eligible posting the day it appears on SAM.gov."]], ["236220", "541611", "561720", "484121", "541511", "621111", "561612", "336413"]],
+  ["gwac-guide", "GSA Schedule Contracts: The Complete Guide", "GSA Schedule Contracts: The Complete Guide", "A GSA Schedule (MAS) contract is a multi-year agreement that makes your products or services available to every federal agency at pre-negotiated prices \u2014 the single most effective door into federal sales.", [["Why GSA Schedule is worth it", "With a schedule contract, agencies can buy from you directly without running a full competition. The GSA Advantage catalog is searched by thousands of federal buyers daily \u2014 listing is a standing invitation to sell."], ["How to get on schedule", "You apply via GSA eOffer, responding to the solicitation for your category (IT, professional services, facilities, etc.). Processing takes roughly 3-6 months; many firms use a consultant, but the do-it-yourself path is viable for organized companies."], ["The radar advantage before and after", "While your schedule application processes \u2014 and after you win it \u2014 open market opportunities under your NAICS still matter. A filtered opportunity radar catches the solicitations that fill the gap between schedule awards."]], ["541511", "541611", "561720", "236220", "336413", "811210", "334111"]],
+  ["bid-guide", "How to Write a Winning Government Bid Proposal", "How to Write a Winning Government Bid Proposal", "Your proposal is the entire decision. Agencies score against published evaluation criteria \u2014 and most losing bids fail for preventable reasons, not because the bidder was unqualified.", [["Read the evaluation criteria first", "Every solicitation states how it will be scored: technical approach, past performance, personnel, price. Structure your proposal section by section to mirror those exact criteria \u2014 evaluators award points for clarity, not creativity."], ["The five sections that win", "Executive summary \u00b7 technical approach \u00b7 management plan \u00b7 past performance \u00b7 price. Address the statement of work line by line, name the people who will actually do the work, and provide verifiable references. Compliance with formatting beats flair."], ["Bid on the right opportunities", "Writing a great proposal for the wrong contract is wasted effort. Only invest in solicitations that match your NAICS, set-asides and capacity \u2014 which means seeing every relevant posting early, while you still have time to build a strong response."]], ["541511", "541611", "236220", "561720", "541330", "336413"]],
+  ["subs-guide", "Federal Subcontracting Opportunities: How Small Firms Get In", "Federal Subcontracting Opportunities: How Small Firms Get In", "You do not need to be a prime contractor to win federal work. Thousands of small firms win subcontracts from primes every year \u2014 often with less competition and faster awards.", [["How subcontracting works", "Large prime contractors must submit small-business subcontracting plans on major federal contracts. They actively seek qualified small firms \u2014 especially 8(a), SDVOSB, WOSB and HUBZone certified suppliers \u2014 to meet those goals."], ["Where to find subcontracting demand", "The best sources: prime contractor supplier portals, GSA and agency industry days, and open solicitations that name subcontracting opportunities. Tracking the NAICS codes of large active primes in your space reveals the buyers."], ["Use the radar in both directions", "A government opportunity radar helps you find both prime solicitations you can lead and large contracts where you can plug in as a subcontractor \u2014 the same daily SAM.gov feed, read two different ways."]], ["541511", "541330", "336413", "236220", "541611", "561720"]],
+  ["uei-guide", "What Is a UEI Number and How to Register for SAM.gov", "What Is a UEI Number and How to Register for SAM.gov", "A UEI (Unique Entity ID) is the government's 12-character identifier for your business \u2014 the key that unlocks every federal contract, grant and cooperative agreement. Without it, you cannot bid.", [["What the UEI is", "SAM.gov assigns every entity a UEI (previously DUNS). It is free, generated once at registration, and stays with your entity. You will use it in every bid, invoice and reporting system from FPDS to USAspending."], ["How to register", "Go to SAM.gov, create a login.gov account, start a new entity registration and follow the steps: entity information, core data, points of contact, certifications, and financial information. Registration is free \u2014 beware third-party sites charging fees."], ["Register early, search constantly", "Registration and validation can take days to weeks, and lapses in annual renewal block awards. Do it now \u2014 then start watching opportunities immediately. A radar fills the gap between registration and your first eligible posting."]], ["541511", "236220", "561720", "541330", "336413"]],
+  ["agri-guide", "Federal Agriculture and Food Service Contracts", "Federal Agriculture and Food Service Contracts", "USDA, DOD and federal agencies buy food, agricultural products and related services worth billions yearly \u2014 a market where small farms and food businesses genuinely compete.", [["What the government buys", "Produce and food (111000-114000 series), food service support (722310), agricultural services (115110) and food testing (541380) appear steadily in the federal pipeline. USDA's AMS and DOD's fresh fruit and vegetable program are major buyers."], ["Why small suppliers win", "A significant share of food and agriculture procurement is set aside for small business. Local and regional sourcing initiatives give small farms an additional edge on GSA and agency-level buys."], ["The timing edge", "Food solicitations follow seasons and program cycles \u2014 a fast-moving calendar. An automated radar on your NAICS codes catches each solicitation on posting day, when your bid still has time to be competitive."]], ["111998", "115110", "311999", "722310", "424490", "541380", "311421"]],
+  ["environmental-guide", "Federal Environmental Services Contracts Guide", "Federal Environmental Services Contracts Guide", "Environmental consulting, remediation and compliance services are a steady federal market \u2014 driven by EPA, DOD and DOE cleanup programs that contract out year after year.", [["Where the demand is", "Environmental consulting (541620), remediation services (562910), hazardous waste handling (562211) and water treatment (221310) are recurring federal purchases. DOD installations alone generate thousands of remediation solicitations."], ["Small-business share", "Many environmental contracts are small-business set-asides \u2014 8(a) and SDVOSB firms are heavily represented. Certification plus timely visibility is a proven formula for first federal wins in this space."], ["Watch the pipeline daily", "Cleanup and compliance contracts are awarded on strict timelines tied to regulatory milestones. A NAICS-filtered radar surfaces each environmental solicitation the day it posts, with deadline and set-aside status."]], ["541620", "562910", "562211", "221310", "562212", "541380", "238910"]],
+  ["staffing-guide", "Federal Staffing and HR Services Contracts", "Federal Staffing and HR Services Contracts", "Federal agencies outsource recruiting, HR administration and temporary staffing at scale \u2014 a large, recurring market with strong small-business participation.", [["What agencies buy", "Temporary staffing (561320), HR consulting (541612), recruitment services (561311) and benefits administration (541214) are posted continuously. GSA and DOD are the biggest buyers of staffing services."], ["The competition reality", "Staffing contracts are frequently small-business set-asides. Agencies prefer suppliers with established clearance and compliance processes \u2014 which small firms can document once and reuse across bids."], ["Volume favors the prepared", "Staffing solicitations post year-round in high volume. The firms that win are the ones that respond fast. A radar filtered to your NAICS delivers every new posting on day one, so your response is never late."]], ["561320", "561311", "541612", "541214", "561110", "541611"]],
+  ["training-guide", "Federal Training and Consulting Contracts", "Federal Training and Consulting Contracts", "Agencies spend heavily on professional development, curriculum design and consulting \u2014 a market where subject-matter expertise beats scale, which makes it accessible to small firms.", [["What the government buys", "Professional and management training (611430), educational support (611710), curriculum design (611710) and management consulting (541611) see consistent posting volume. DHS, DOD and civilian agencies all buy training."], ["Why small firms fit", "Training contracts are awarded on expertise, not size. Subject-matter experts, veteran instructors and niche curriculum providers win work that large generalists cannot staff. Small-business set-asides further level the field."], ["The alert advantage", "Training solicitations are episodic \u2014 they appear when budgets and programs align. A radar on your NAICS codes ensures no window passes unseen, delivering each opportunity with deadline and set-aside details."]], ["611430", "611710", "541611", "611519", "541612"]],
+  ["telecom-guide", "Federal Telecommunications and Networking Contracts", "Federal Telecommunications and Networking Contracts", "From enterprise networks to managed IT services, federal telecom procurement is constant and large \u2014 with real space for small businesses on set-aside contracts.", [["The federal telecom market", "Telecommunications services (517311), network management (517312), data center services (518210) and wireless solutions (517121) are procured across DOD and civilian agencies, often through vehicles like EIS and agency-specific buys."], ["Small-business entry points", "Set-aside solicitations in NAICS 517311 and 517312 give small telecom firms direct access. Resellers and managed service providers are common award winners."], ["Winning by timing", "Telecom contracts run on procurement cycles that repeat \u2014 recompetes come around predictably. A radar watching your NAICS and flagging expiring contracts helps you line up before the incumbent's contract ends."]], ["517311", "517312", "518210", "517121", "541512", "561499"]],
+  ["vehicle-guide", "Federal Vehicle and Fleet Services Contracts", "Federal Vehicle and Fleet Services Contracts", "Federal agencies operate one of the world's largest vehicle fleets \u2014 and they buy vehicles, maintenance, rentals and fleet services from outside suppliers constantly.", [["What the government buys", "Vehicle rental and leasing (532112), fleet maintenance (811111), vehicle parts (336390) and fleet management services (488490) are recurring purchases. GSA's fleet program and DOD installations are the primary buyers."], ["Small firms in the fleet market", "Maintenance, parts supply and local rental services are frequently small-business set-asides. Certification plus a responsive local presence wins contracts that national chains ignore."], ["Catch the maintenance cycle", "Fleet contracts renew on predictable cycles \u2014 the recompete radar matters. A filtered opportunity feed surfaces new fleet solicitations the day they post and flags contracts about to expire."]], ["532112", "811111", "336390", "488490", "441110", "532120"]],
+  ["compliance-guide", "Government Contract Compliance: The Small Business Checklist", "Government Contract Compliance: The Small Business Checklist", "Compliance is where federal contracts are lost and won \u2014 from registration to reporting, the rules decide whether your award survives. Here is the small-business checklist that keeps you clean.", [["Registration and identity", "Keep your SAM.gov registration active and accurate: UEI, entity data, NAICS codes and points of contact. Revalidate annually. A lapse freezes new awards and can trigger payment delays on existing ones."], ["Reporting obligations", "Depending on your contract: report subcontract awards (eSRS), update representations and certifications, file for 8(a)/SDVOSB/WOSB/HUBZone annually, and track performance in CPARS. Missed reports risk option-year losses."], ["Build compliance into your flow", "Compliance is a habit, not a task \u2014 and it starts with only bidding on contracts that fit your registration. A filtered opportunity radar keeps your bidding aligned with your NAICS and set-aside profile, which is the first rule of staying compliant."]], ["541511", "236220", "561720", "541330", "336413"]],
+
+  ["vosb-guide","Veteran-Owned Small Business (VOSB) Federal Contracts","Veteran-Owned Small Business (VOSB) Federal Contracts","The federal government targets at least 3% of contracting dollars for veteran-owned small businesses.",[["Who qualifies as a VOSB","A veteran-owned small business is at least 51% owned and controlled by one or more veterans."],["Where VOSB opportunities concentrate","VOSB set-asides appear across construction, janitorial, professional services and logistics."],["Turn eligibility into awards","A set-aside-filtered radar delivers every VOSB posting the day it appears on SAM.gov."]],["236220","561720","541611","484121","541511","561612"]],
+  ["edwosb-guide","EDWOSB Contracts: Economically Disadvantaged Women-Owned Small Business","EDWOSB Federal Contracts","The EDWOSB program reserves federal contracts in specific NAICS industries for economically disadvantaged women-owned small businesses.",[["EDWOSB vs WOSB","WOSB opens women-owned set-asides; EDWOSB adds the economic disadvantage requirement, narrowing the pool further."],["Which industries are eligible","Concentrated in services and construction: janitorial, IT, professional services, transportation and building construction."],["The practical play","A filtered radar with EDWOSB flags keeps every eligible posting in front of you from day one."]],["561720","541511","541611","484121","236220","541330"]],
+  ["beginners-guide","Federal Contracting for Beginners: First Steps That Actually Win","Federal Contracting for Beginners","Federal contracting looks intimidating, but the path is mechanical: register, choose NAICS codes, find set-asides, respond before deadlines.",[["Step 1: Register for SAM.gov","Get a UEI and an active SAM.gov registration. This is free and mandatory for any federal contract."],["Step 2: Pick your NAICS and set-aside","Choose the NAICS codes that match what you sell, then check which set-asides you qualify for."],["Step 3: See opportunities before competitors","An automated radar on your NAICS delivers new solicitations the day they post."]],["541511","236220","561720","541611","336413","484121"]],
+  ["naics-guide","How to Choose the Right NAICS Code (and Why It Matters)","How to Choose the Right NAICS Code","Your NAICS codes determine which solicitations you see, which set-asides you qualify for and how agencies classify your past performance.",[["One code per line of business","Each NAICS code describes one industry. Register every line of business you sell."],["Set-aside eligibility is code-specific","WOSB and EDWOSB set-asides only exist in specific eligible NAICS codes."],["The radar solves the matching problem","A filtered radar watches your exact NAICS codes so every matching solicitation reaches you."]],["541511","541330","561720","236220","336413","484121"]],
+  ["bid-requirements-guide","Government Bid Requirements: The Document Checklist","Government Bid Requirements Checklist","Most losing bids lose on missing documents, not missing skill. Here is the standard checklist that keeps your response compliant.",[["The core bid set","Cover letter, technical approach, management plan, past performance references and price."],["Certifications and representations","SAM.gov registration and required certifications must be current. Expired certification means instant disqualification."],["Deadlines are absolute","A NAICS-filtered radar with deadline flags keeps every window in front of you from posting day."]],["541511","236220","541611","561720","541330","336413"]],
+  ["recompete-guide","Recompete Contracts: Win Incumbent Business When It Expires","Recompete Contracts: Win Incumbent Business","Federal contracts run 1-5 years with options, then get recompeted. The recompete window is the most predictable entry point in federal sales.",[["Why recompetes are winnable","Incumbents lose 30-40% of recompetes to new entrants. Requirements are known in advance."],["How to spot them early","Expiring contracts appear as presolicitations and posted recompetes on SAM.gov."],["The recompete radar","A near-expiry flag watches your NAICS and surfaces contracts about to close."]],["541511","236220","561720","541330","336413","561210"]],
+  ["past-performance-guide","CPARS and Past Performance: Build the Reference Record That Wins","CPARS and Past Performance","Past performance is weighted heavily in most federal evaluations. A clean CPARS record wins bids before price is discussed.",[["What CPARS is","CPARS is the Contractor Performance Assessment Reporting System. Ratings follow you across agencies."],["How to protect your record","Track assessment windows, respond to draft ratings and deliver documentation on time."],["Bid with your record","When you see a recompete early, you can line up the references that make your proposal credible."]],["541511","236220","541611","561720","541330","336413"]],
+  ["defense-guide","DOD Contracting for Small Businesses: The Defense Market Entry Guide","DOD Contracting for Small Businesses","The Department of Defense is the largest federal buyer and is legally required to seek small business participation.",[["Where small firms fit in defense","DOD set-asides and subcontracting plans create genuine small-firm lanes in defense procurement."],["Security and compliance basics","Many defense contracts require CMMC and security controls; starting with unclassified services lowers the barrier."],["The defense pipeline is posted on SAM.gov","A NAICS-filtered radar surfaces the defense opportunities you can actually pursue."]],["336413","541511","236220","336411","334511","332994"]],
+  ["sole-source-guide","Sole-Source Federal Contracts: How 8(a) and SDVOSB Firms Win Without Competition","Sole-Source Federal Contracts","Agencies can award contracts without full competition under specific authorities — most famously to 8(a) and SDVOSB firms.",[["How sole-source authority works","Agencies can award sole-source contracts to 8(a) firms up to $7 million and to SDVOSB firms. No open competition."],["Who qualifies","Active 8(a) certification or SDVOSB verification through the VA CVE."],["How to get offered sole-source work","Visibility starts with seeing the agency's upcoming buys early via a radar on your NAICS."]],["541511","236220","561720","541330","336413","561612"]],
+  ["grants-vs-contracts-guide","Federal Grants vs Contracts: Know the Difference Before You Apply","Federal Grants vs Contracts","Grants and contracts are different animals — different rules, different money, different buyers.",[["Grants fund programs; contracts buy goods and services","Grants flow through Grants.gov; contracts through SAM.gov under the FAR."],["Small businesses usually want contracts","Federal contracts are the direct revenue path for product and service businesses."],["Track both, bid the one that fits","A contract radar on your NAICS keeps the revenue path visible."]],["541511","236220","561720","541330","336413"]],
+  ["payment-guide","Getting Paid: Federal Contract Invoicing and Payment Timelines","Getting Paid on Federal Contracts","Payment terms are a top concern for first-time contractors. The rules are standardized and the government pays on schedule.",[["How federal payment works","Most contracts pay 30 days after receipt of a correct invoice, with prompt-payment interest for late payment."],["Invoice compliance wins","Rejected invoices are the #1 payment delay. Follow the invoicing instructions exactly."],["Cash flow planning","Budget 45-60 days between award and first payment. Planning cash flow lets you bid without desperation."]],["541511","236220","561720","541330","336413"]],
+  ["certifications-guide","Small Business Certifications: 8(a), WOSB, HUBZone, SDVOSB, VOSB, EDWOSB Explained","Small Business Certifications Guide","Federal certifications are the highest-leverage asset a small business can own — each unlocks set-aside solicitations restricted to your pool.",[["The certification menu","8(a), WOSB/EDWOSB, HUBZone, SDVOSB/VOSB — each with separate eligibility routes through SBA or the VA."],["Why certification changes the game","Set-aside solicitations pit you only against firms like yours — exclusive opportunities and sole-source authority."],["Certify first, then build visibility","A set-aside-filtered radar delivers every solicitation you are eligible for."]],["541511","236220","561720","541330","336413","484121"]],
+  ["mentor-protege-guide","SBA Mentor-Protege Program: How Small Firms Team With Big Primes","SBA Mentor-Protege Program","The mentor-protege program lets certified small businesses team with experienced primes — combining set-aside eligibility with capacity and past performance.",[["How the program works","An SBA-approved mentor and a certified small business form a joint venture or subcontracting relationship."],["Why it matters for your pipeline","Teaming turns large solicitations you could never prime into realistic revenue."],["Finding teaming opportunities","A radar on your NAICS reveals both prime solicitations and contracts where your certification is an asset."]],["541511","236220","336413","541330","561720","484121"]],
+  ["market-research-guide","Government Market Research: Find Out What Agencies Are Buying Before You Bid","Government Market Research","Agencies publish market research before they buy — your window to shape requirements and get on the bidders list.",[["What to watch","Sources sought and presolicitations tell you a buy is coming: NAICS, scope, set-aside."],["Why it beats cold outreach","The published pipeline tells you exactly who is buying what — no guessing."],["The signal radar","A radar on your NAICS surfaces sources sought the day they post."]],["541511","236220","541330","561720","336413"]],
+  ["first-contract-guide","Your First Federal Contract: A 30-Day Action Plan","Your First Federal Contract","Winning your first federal contract is a sequence of concrete steps — registration, eligibility and, above all, timing.",[["Week 1: Register and certify","Create login.gov, get your UEI, complete SAM.gov registration, start any certification you qualify for."],["Week 2: Define your watch","Pick 1-3 NAICS codes and set up a filtered radar so every matching solicitation reaches your inbox."],["Weeks 3-4: Bid one real opportunity","Submit one complete, on-time bid. One real bid beats a dozen half-bids."]],["541511","236220","561720","541330","336413","484121"]],
+  ["sam-posting-time-guide","How Fast Are Federal Opportunities Posted on SAM.gov? (And Why Speed Wins)", "How Fast Are Federal Opportunities Posted on SAM.gov?", "Federal contract opportunities are posted on SAM.gov throughout the day, and most close within weeks. The gap between 'posted' and 'you seeing it' is where bids are won and lost — here is exactly how posting timing works and how to stay inside the window.", [["How posting timing actually works","Agencies publish solicitations on SAM.gov continuously during business hours — often mid-morning through late afternoon. The SAM.gov list shows only the posting date; the exact official time (to the second) is available on each notice's detail page. Postings are not scheduled — they arrive when the contracting officer hits publish."], ["Why the discovery gap kills bids","Most contractors check SAM.gov manually — daily at best, weekly in practice. Solicitations for services and construction commonly close 2-4 weeks after posting. A posting you see three days late is often a bid you cannot realistically prepare. The firms that win are the ones whose watch runs every hour, not every few days."], ["The hourly-sync standard","A radar that checks SAM.gov around the clock turns 'when I remember' into 'every hour'. With hourly sync, posted-to-radar latency stays under 60 minutes: a notice published at 10:32 reaches you by 11:00. Every opportunity carries its official posting date (with exact time where the source provides it) plus early-signal Special Notices that precede formal solicitations — so you are often alerted before the competition has even seen the posting."], ["Prove it before you pay","A trustworthy radar shows its freshness, not just claims it: a public live radar page with the last check time, next check, and measured average posted-to-radar latency. Check https://pixharvest.com/gov/daily and compare against SAM.gov itself — every date is traceable to the official source."]],["541511","236220","561720","541330","336413","484121"]],
+  ["8a-set-aside-guide","How to Find 8(a) Set-Aside Contract Opportunities", "How to Find 8(a) Set-Aside Contract Opportunities", "8(a) set-asides are among the most valuable doors in federal contracting — contracts reserved for SBA 8(a) certified small businesses, often with reduced competition. Finding them before they close is the whole game.", [["What 8(a) set-asides are","Under FAR Part 19, agencies set aside contracts exclusively for SBA 8(a) program participants. Solicitations marked 8(a) on SAM.gov mean only certified firms can compete — a smaller field, which raises your odds of winning."], ["Where they are posted","Every 8(a) opportunity appears on SAM.gov as a contract opportunity with a set-aside flag. They are posted continuously, and many close within 2-4 weeks of posting. Browsing manually means checking SAM.gov daily and filtering by the 8(a) box yourself."], ["How to catch every 8(a) match","A contract radar that filters by set-aside shows you every new 8(a) posting matching your NAICS codes the same hour it is published — with the official posting date (exact time where available), the deadline, and the buyer agency. You keep the full window to prepare a response instead of discovering it late."]], ["541511","541330","541512","518210","561210","811310","541611"]],
+  ["alert-service-guide","How to Choose a SAM.gov Contract Alert Service", "How to Choose a SAM.gov Contract Alert Service", "A SAM.gov alert service promises to watch the federal pipeline for you — but services differ a lot in speed, filtering and transparency. Here is what to check before you pay for any of them.", [["1. Ask how fast they really are","Some services deliver digests once a day or once a week. Speed wins in federal contracting: a posting you learn about three days late is often a bid you can no longer prepare. Prefer a service that publishes its refresh cadence and its measured latency — not just claims 'real-time'."], ["2. Check the filters you actually need","You should be able to filter by NAICS code, set-aside type (8(a), WOSB, HUBZone, SDVOSB), buyer agency and deadline. The value of an alert is relevance: thousands of postings daily, and 95% do not fit your business."], ["3. Demand verifiable freshness","A trustworthy service shows a public live page with last check time, next check and average posted-to-radar latency, so you can compare against SAM.gov itself. If it hides its timing, assume it is slow."], ["4. Look for early signals and extras","Special Notices and presolicitations precede formal solicitations and give you a head start. Recompete tracking (expiring contracts you can take over) and AI match scoring are useful upgrades once the basics are solid."]], ["541511","236220","561720","541330","541611","336413"]],
+
+  ["speed-cost-guide","The Real Cost of Missing a Solicitation", "The Real Cost of Missing a Solicitation", "Every federal opportunity has a window — and the window is the whole game. Here is what a late discovery actually costs a small business, and why speed is not a feature but the product.", [["The window is shorter than you think","Services and construction solicitations commonly close 2-4 weeks after posting. A posting you see three days late is often a bid you cannot realistically prepare — missing the deadline means the work is gone, sometimes for years until recompete."], ["What manual watching costs","Checking SAM.gov once a day or once a week is the norm for busy owners — and it is exactly how eligible opportunities slip by. Multiply one missed contract by your average bid size and the annual cost of manual watching is easy to under-estimate."], ["The hourly-watch standard","A radar that checks SAM.gov around the clock turns 'when I remember' into 'every hour': posted-to-radar latency under 60 minutes, official posting dates included (exact time where available). You are alerted the same hour a matching opportunity is published — while the full bid window is still open."]], ["541511","236220","561720","541330","336413","484121"]],
+
+  ["how-to-find-government-contracts","How to Find Government Contracts (Free 2026 Guide)", "How to Find Government Contracts (Free 2026 Guide)", "Every year the U.S. federal government awards over $700 billion in contracts, with a large share reserved for small businesses. Finding the opportunities that fit you is the first and hardest step \u2014 here is the free way and the fast way.", [["Where opportunities are published","All federal contracting opportunities are officially published on SAM.gov (System for Award Management) \u2014 free to browse, no login required for search. Thousands of new solicitations, presolicitations, special notices and sources-sought are posted every week across every industry."], ["The free way: search SAM.gov yourself","You can filter SAM.gov by NAICS code, set-aside (8(a), WOSB, HUBZone, SDVOSB, SBA) and posting date. It works, but it is manual: you must remember to check, re-run the same filters, and scan for what changed since yesterday \u2014 most small businesses check once a day or once a week, which is exactly how windows get missed."], ["The fast way: hourly automated alerts","A radar that checks SAM.gov every hour and emails you only the opportunities matching your NAICS and set-asides turns 'when I remember' into 'same-hour delivery'. Posted-to-radar latency under 60 minutes keeps the full bid window open when you first hear about it. Start free \u2014 no card required: https://pixharvest.com/#trial"]], ["541511","541330","561720","236220","336413","541613"]],
+  ["naics-code-guide","What Is a NAICS Code & How to Find Yours", "What Is a NAICS Code & How to Find Yours", "NAICS is the U.S. government's industry classification system \u2014 and your NAICS code decides which federal opportunities you can see. Here is what it is, how to find yours, and why it determines your entire contracting pipeline.", [["What a NAICS code is","NAICS (North American Industry Classification System) groups businesses into 6-digit industry codes. Federal buyers tag every solicitation with the NAICS codes the work falls under \u2014 for example 541511 for custom computer programming, 561720 for janitorial services, 236220 for commercial construction."], ["How to find your NAICS code","The Census Bureau runs a free NAICS search at census.gov/naics. In practice, match the code to your actual services: what do you invoice for, and what does the agency buying that service search under? Your SAM.gov registration lets you list the NAICS codes you serve."], ["Why it decides your federal pipeline","One wrong code and you never see the opportunities you are eligible for; one right code and every matching posting can reach you. That is exactly what GovContract Radar filters on \u2014 see live opportunities for codes like 541511, 561720 and 811310 at https://pixharvest.com/gov/naics/541511"]], ["541511","561720","811310","541330","541613"]],
+  ["sam-registration-guide","How to Register on SAM.gov for Free (Step-by-Step)", "How to Register on SAM.gov for Free (Step-by-Step)", "SAM.gov registration is 100% free and required to bid on federal contracts. Beware third-party sites charging for it \u2014 here is the official, free path and what you need before you start.", [["Registration is free \u2014 do not pay for it","The official portal is sam.gov and registration costs nothing. Scam sites charge $49-$199 to 'help you register' \u2014 you never need to pay. The only legitimate paid step is an optional software subscription for opportunity alerts after you are registered."], ["What you need before you register","You need a UEI (Unique Entity ID \u2014 free, issued during registration), business banking details for payments, your NAICS codes, PSC codes, and entity information. Registration can take 1-2 weeks to activate after submission."], ["After registration: the real problem is discovery","Being registered unlocks bidding \u2014 it does not bring opportunities to you. You still have to find solicitations matching your NAICS before they close. Hourly alerts close that gap: see how at https://pixharvest.com/#trial"]], ["541511","236220","561720","541330"]],
+  ["how-to-read-a-solicitation","How to Read a Federal Solicitation (Bid Documents Explained)", "How to Read a Federal Solicitation (Bid Documents Explained)", "Federal solicitation documents look dense \u2014 but the information that decides whether you bid is in a few predictable places. Here is how to read one fast and bid with confidence.", [["The parts that matter first","Check the synopsis fields before the PDFs: response deadline, NAICS code, set-aside, place of performance and solicitation number. If the NAICS or set-aside does not fit you, stop there \u2014 your time is better spent on opportunities you can actually win."], ["Solicitation types explained","Sources Sought / RFI means the agency is gauging interest \u2014 respond to get on the radar. Presolicitation and Combined Synopsis/Solicitation are the real bidding documents: statement of work, evaluation criteria, terms and attachments. Special Notice means an early signal that a solicitation is coming."], ["Turn reading into bidding","The earlier you see a solicitation, the more of its window you keep for reading and preparing a proposal. Hourly alerts deliver new postings the same hour they publish: https://pixharvest.com/#trial"]], ["541511","236220","336413","561720"]],
+];
+
+async function handleGovMcp(request, env) {
+  let msg = {};
+  try { msg = await request.json(); } catch { return json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "parse error" } }, 400); }
+  const { id } = msg;
+  const ok = (result) => json({ jsonrpc: "2.0", id, result });
+  const err = (code, message) => json({ jsonrpc: "2.0", id, error: { code, message } });
+  const text = (t, isError) => json({ jsonrpc: "2.0", id, result: { content: [{ type: "text", text: t }] }, ...(isError ? { isError: true } : {}) });
+  if (msg.method === "initialize") return ok({ protocolVersion: "2025-06-18", capabilities: { tools: {} }, serverInfo: { name: "PixHarvest GovContract Radar", version: "1.2.0" }, instructions: "PixHarvest GovContract Radar provides live U.S. federal contract opportunity intelligence from public SAM.gov data, synced hourly via GovConAPI (posted-to-radar latency ≤60 minutes, SAM-quota-free), SAM fallback every 6h: new solicitations, presolicitations, special notices (early signals that precede solicitations) and awards, filtered by NAICS code, set-aside (8(a), WOSB, HUBZone, SDVOSB, SBA) and posting date. Every opportunity includes its official posting date (postedDate); exact posting time (postedAt) is included where the source provides it. Tool roles are distinct: gov.search is for exploring and answering questions about any opportunity (keyword + NAICS + set-aside + date combos, full fields). gov.digest is the daily briefing for one NAICS code - a compact list of the latest postings with deadlines, for routine monitoring. gov.near_expiry is purely deadline-driven triage: opportunities closing within N days, sorted by urgency, for last-minute bidding and pipeline management. Full subscription with hourly refresh and daily email digests: https://pixharvest.com/" });
+  if (msg.method === "notifications/initialized") return new Response(null, { status: 202 });
+  if (msg.method === "tools/list") return ok({ tools: [
+    { name: "gov.search", description: "Explore and answer questions about federal contract opportunities. Combine any filters - NAICS code, free-text keyword, set-aside type, posting window - and get full fields (title, agency, type, NAICS, set-aside, deadline, official posting date (postedDate) plus exact time (postedAt) where available, SAM.gov link). Use this when you need to research a specific market, match a capability, or compare opportunities. Data synced hourly via GovConAPI (latency ≤60 min); SAM fallback every 6h.", inputSchema: { type: "object", properties: { naics: { type: "string", description: "NAICS code to filter by, e.g. '541511'. Optional - omit for all." }, keyword: { type: "string", description: "Free-text keyword in the title, e.g. 'IT services'. Optional." }, setAside: { type: "string", description: "Set-aside filter: 8(a), WOSB, HUBZone, SDVOSB, SBA, or empty for all. Optional." }, days: { type: "number", description: "How many days back to search (default 7)." } }, required: [] }, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } },
+    { name: "gov.digest", description: "Daily briefing for one NAICS code: a compact, chronological list of the most recently posted opportunities (title, agency, type, deadline, posting time) for routine monitoring of your market. Unlike gov.search, it takes only a NAICS code and returns a short digest - no keyword/type filters, no full descriptions. Use this as the routine morning check on what is new for your industry.", inputSchema: { type: "object", properties: { naics: { type: "string", description: "NAICS code, e.g. '541511'. Required." }, limit: { type: "number", description: "Max digest items (default 5)." } }, required: ["naics"] }, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } },
+    { name: "gov.near_expiry", description: "Deadline-driven urgency triage: opportunities that close within N days, sorted by urgency (closest deadline first), each with daysLeft until close. Unlike gov.search or gov.digest, this ignores keywords and freshness - it is purely a time-window scan for last-minute bidding, bid deadline reminders and pipeline management.", inputSchema: { type: "object", properties: { days: { type: "number", description: "Closing within how many days (default 7)." }, naics: { type: "string", description: "Optional NAICS filter to narrow the window." } }, required: [] }, annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } }
+  ] });
+  if (msg.method === "tools/call") {
+    const a = msg.params?.arguments || {};
+    const n = msg.params?.name;
+    const today = new Date().toISOString().slice(0, 10);
+    const days = Math.max(1, Math.min(30, Number(a.days) || 7));
+    const from = new Date(Date.now() - days * 864e5).toISOString().slice(0, 10);
+    if (n === "gov.search" || n === "gov.digest" || n === "gov.near_expiry") {
+      const naics = String(a.naics || "").trim();
+      let source = "KV pool (hourly GovConAPI sync, SAM-quota-free)";
+      let items = [];
+      if (naics) {
+        const pool = await env.SHARED_KV.get("__gov_opps_pool", "json").catch(() => null);
+        if (pool && pool.naics && Array.isArray(pool.naics[naics])) items = pool.naics[naics];
+      }
+      if (!items.length) {
+        const cache = await env.SHARED_KV.get("__gov_opps:latest", "json");
+        if (cache && Array.isArray(cache.opportunities)) items = cache.opportunities;
+        if (naics) items = items.filter(o => govMatches(naics, o));
+      }
+      const kw = String(a.keyword || "").trim().toLowerCase();
+      if (kw) items = items.filter(o => String(o.title || "").toLowerCase().includes(kw));
+      const sa = String(a.setAside || "").trim().toLowerCase();
+      if (sa) items = items.filter(o => String(o.setAside || "").toLowerCase().includes(sa));
+      if (n === "gov.near_expiry") {
+        const soon = Number(a.days) || 7;
+        items = items.filter(o => o.responseDeadLine && new Date(o.responseDeadLine) <= new Date(Date.now() + soon * 864e5));
+        items = items.sort((x, y) => new Date(x.responseDeadLine) - new Date(y.responseDeadLine));
+      }
+      const limit = Math.max(1, Math.min(20, Number(a.limit) || 10));
+      const out = items.slice(0, limit).map(o => {
+        const hrs = o.postedAt ? Math.max(0, Math.round((Date.now() - new Date(o.postedAt).getTime()) / 36e5)) : null;
+        const daysLeft = o.responseDeadLine ? Math.max(0, Math.ceil((new Date(o.responseDeadLine).getTime() - Date.now()) / 864e5)) : null;
+        return { title: o.title, agency: o.agency, type: o.type, naics: o.naics, setAside: o.setAside, setAsideDesc: o.setAsideDesc, solicitationNumber: o.solicitationNumber, description: o.description, responseDeadLine: o.responseDeadLine, daysLeft, postedDate: o.postedDate, postedAt: o.postedAt || null, postedHoursAgo: hrs, url: o.uiLink };
+      });
+      const framing = n === "gov.digest" ? ("digest for NAICS " + (naics || "all") + " · latest " + limit + " of " + items.length + " · posted window " + from + " to " + today) : (n === "gov.near_expiry" ? "closing within " + (Number(a.days) || 7) + " days · sorted by urgency (daysLeft)" : "query result");
+      return text(JSON.stringify({ ok: true, query: { naics, keyword: kw, setAside: sa, days }, framing, source, found: items.length, shown: out.length, opportunities: out, note: "Daily email digests and set-aside alerts: https://pixharvest.com/" }));
+    }
+    return err(-32601, "unknown tool");
+  }
+  return err(-32601, "method not found");
+}
+
+function govNaicsPage(code, data) {
+  const info = GOV_NAICS.find(g => g[0] === code);
+  const opps = (data && Array.isArray(data.opportunities)) ? data.opportunities.filter(o => Array.isArray(o.naics) && o.naics.some(x => String(x).slice(0, 6) === code || String(x).slice(0, 4) === code.slice(0, 4))) : [];
+  const total = opps.length;
+  const dayStart = new Date(); dayStart.setUTCHours(0, 0, 0, 0);
+  const todayCount = opps.filter(o => o.postedAt && new Date(o.postedAt).getTime() >= dayStart.getTime()).length;
+  const weekCount = opps.filter(o => o.postedAt && new Date(o.postedAt).getTime() >= Date.now() - 7 * 864e5).length;
+  const setAsides = {};
+  const agencies = {};
+  opps.forEach(o => {
+    if (o.setAside && o.setAside !== "N/A" && o.setAside !== "null") setAsides[o.setAside] = (setAsides[o.setAside] || 0) + 1;
+    if (o.agency) agencies[o.agency] = (agencies[o.agency] || 0) + 1;
+  });
+  const setAsideTotal = Object.values(setAsides).reduce((a, b) => a + b, 0);
+  const topAgency = Object.entries(agencies).sort((a, b) => b[1] - a[1])[0] || null;
+  const setAsideNames = Object.keys(setAsides).sort((a, b) => setAsides[b] - setAsides[a]).slice(0, 3);
+  const statCard = (num, label) => '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:12px;padding:18px 14px;text-align:center;flex:1;min-width:130px"><div style="font-size:30px;font-weight:800;color:#0b1b3a">' + num + '</div><div style="font-size:12px;color:#5a6b8a;margin-top:4px">' + label + '</div></div>';
+  const statsRow = '<div style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0">' + statCard(todayCount, "new today") + statCard(weekCount, "new this week") + statCard(setAsideTotal, "set-aside flagged") + statCard(topAgency ? topAgency[0] : "N/A", "top buyer agency") + '</div>';
+  const samples = opps.slice(0, 3).map(o =>
+    '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:14px 16px;margin:10px 0">' +
+    '<div style="font-weight:700;color:#0b1b3a;font-size:14px">' + esc(String(o.title || "").slice(0, 80)) + '</div>' +
+    '<div style="font-size:12px;color:#8a97b5;margin-top:4px">' + esc(o.agency || "") + (o.setAside && o.setAside !== "N/A" ? ' \u00B7 <span style="color:#b8860b;font-weight:600">' + esc(o.setAsideDesc || o.setAside) + '</span>' : "") + ' \u00B7 NAICS ' + esc(Array.isArray(o.naics) ? o.naics.slice(0, 3).join("\u00B7") : (o.naics || "n/a")) + (o.responseDeadLine ? ' \u00B7 <span style="color:#c0392b;font-weight:600">closes ' + esc(String(o.responseDeadLine).slice(0, 10)) + '</span>' : '') + '</div></div>').join("") || '<p style="color:#8a97b5">We are watching this space \u2014 sign up and get alerted the moment new opportunities post for NAICS ' + esc(code) + '.</p>';
+  const industry = info ? info[1] : "Federal Contracting";
+  const blurb = info ? info[2] : "Federal contract opportunities for this industry, from public SAM.gov data.";
+  const updated = data && data.generated ? " \u00B7 data updated " + data.generated.slice(0, 10) : "";
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Federal Contract Opportunities for NAICS ' + code + ' \u2014 ' + industry + ' \u00B7 GovContract Radar</title><meta name="description" content="Live federal contract opportunities for NAICS ' + code + ' (' + industry + '). New SAM.gov solicitations with deadlines, set-asides and agency details \u2014 get alerted by email the moment they post."><link rel="canonical" href="https://pixharvest.com/gov/naics/' + code + '"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6;margin:0}.wrap{max-width:860px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:44px 0 48px}.hero h1{font-size:28px;margin:0 0 10px;line-height:1.25}.hero p{color:#b8c7e4;margin:0 0 22px;font-size:15px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:15px}.sec{padding:34px 0}.sec h2{font-size:20px;margin:0 0 6px}.sec p{color:#5a6b8a;margin:0 0 18px;font-size:14px}.wall{background:linear-gradient(135deg,#0b1b3a,#14305e);border-radius:14px;color:#fff;padding:28px;text-align:center;margin:26px 0}.wall h3{font-size:20px;margin:0 0 8px}.wall p{color:#b8c7e4;font-size:14px;margin:0 0 18px}.wall .cta{font-size:15px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>Federal Contract Opportunities for NAICS ' + code + '</h1><p>' + esc(blurb) + ' Intelligence built from public SAM.gov data \u2014 what the market is buying, who is buying, and which doors are set aside for small business.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free 7-Day Trial</a></div></section><section class="sec"><div class="wrap"><h2>Industry radar for NAICS ' + code + '</h2><p>Aggregated from live public procurement data' + updated + '. Full opportunity details \u2014 titles, deadlines and direct links \u2014 unlock with a free trial.</p>' + statsRow + '<p style="margin:6px 0 0;font-size:13px"><a href="/gov/awards/' + code + '" style="color:#0d7a3d;font-weight:700">Who won recent contracts in this industry \u2192</a></p>' + (setAsideNames.length ? '<p style="font-size:13px;color:#5a6b8a">Set-aside tags in the radar: <b>' + esc(setAsideNames.join(" \u00B7 ")) + '</b></p>' : '') + '<h2 style="margin-top:26px">A look inside the radar</h2><p style="font-size:13px;color:#8a97b5">Sample entries \u2014 current titles, full details behind the trial.</p>' + samples + '</div></section><section class="wall"><div class="wrap"><h3>Get the full picture \u2014 before your competitors</h3><p>Unlock every open opportunity for NAICS ' + esc(code) + ': titles, agencies, deadlines, set-asides \u2014 delivered every hour, the same hour they post on SAM.gov. Free 7-day trial, no card required.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free Trial</a>&nbsp;&nbsp;<a href="https://pixharvest.com/pay" style="color:#3ecf8e;font-weight:700;font-size:14px">Prefer invoice? Pay by bank transfer</a></div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 Built on public U.S. government data (SAM.gov, USAspending) \u00B7 <a href="/" style="color:#7f95bd">home</a></div></footer></body></html>';
+}
+
+
+function govSetAsidePage(code, slug, data) {
+  const info = GOV_NAICS.find(g => g[0] === code);
+  const def = GOV_SET_ASIDES.find(s => s[0] === slug);
+  if (!def) return null;
+  const sName = def[1], sWords = def[2];
+  const opps = (data && Array.isArray(data.opportunities)) ? data.opportunities.filter(o => Array.isArray(o.naics) && o.naics.some(x => String(x).slice(0, 6) === code || String(x).slice(0, 4) === code.slice(0, 4)) && String(o.setAside || "").toLowerCase().indexOf(sWords.toLowerCase()) >= 0) : [];
+  const total = opps.length;
+  const agencies = {};
+  opps.forEach(o => { if (o.agency) agencies[o.agency] = (agencies[o.agency] || 0) + 1; });
+  const topAgency = Object.entries(agencies).sort((a, b) => b[1] - a[1])[0] || null;
+  const statCard = (num, label) => '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:12px;padding:18px 14px;text-align:center;flex:1;min-width:130px"><div style="font-size:30px;font-weight:800;color:#0b1b3a">' + num + '</div><div style="font-size:12px;color:#5a6b8a;margin-top:4px">' + label + '</div></div>';
+  const statsRow = '<div style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0">' + statCard(total, sName + " opportunities in radar") + statCard(topAgency ? topAgency[0] : "N/A", "top buyer agency") + '</div>';
+  const samples = opps.slice(0, 3).map(o =>
+    '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:14px 16px;margin:10px 0">' +
+    '<div style="font-weight:700;color:#0b1b3a;font-size:14px">' + esc(String(o.title || "").slice(0, 80)) + '</div>' +
+    '<div style="font-size:12px;color:#8a97b5;margin-top:4px">' + esc(o.agency || "") + ' \u00B7 details behind the trial</div></div>').join("") || '<p style="color:#8a97b5">We are watching this space \u2014 sign up and get alerted the moment a ' + esc(sName) + ' opportunity posts for NAICS ' + esc(code) + '.</p>';
+  const industry = info ? info[1] : "Federal Contracting";
+  const blurb = info ? info[2] : "Federal contract opportunities for this industry.";
+  const updated = data && data.generated ? " \u00B7 data updated " + data.generated.slice(0, 10) : "";
+  const pageTitle = esc(sName) + " Contracts for NAICS " + code + " \u2014 " + esc(industry) + " \u00B7 GovContract Radar";
+  const desc = "Live " + esc(sName) + " federal contract opportunities for NAICS " + code + " (" + esc(industry) + "). New SAM.gov set-aside solicitations with deadlines and agencies \u2014 get alerted the moment they post.";
+  const canon = "https://pixharvest.com/gov/naics/" + code + "/" + slug;
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + pageTitle + '</title><meta name="description" content="' + desc + '"><link rel="canonical" href="' + canon + '"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6;margin:0}.wrap{max-width:860px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:44px 0 48px}.hero h1{font-size:26px;margin:0 0 10px;line-height:1.25}.hero p{color:#b8c7e4;margin:0 0 22px;font-size:15px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:15px}.sec{padding:34px 0}.sec h2{font-size:20px;margin:0 0 6px}.sec p{color:#5a6b8a;margin:0 0 18px;font-size:14px}.wall{background:linear-gradient(135deg,#0b1b3a,#14305e);border-radius:14px;color:#fff;padding:28px;text-align:center;margin:26px 0}.wall h3{font-size:20px;margin:0 0 8px}.wall p{color:#b8c7e4;font-size:14px;margin:0 0 18px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>' + esc(sName) + ' Contracts \u2014 NAICS ' + code + '</h1><p>Set-aside contract opportunities for ' + esc(industry) + ' businesses \u2014 ' + esc(sName) + ' solicitations fresh from public SAM.gov data.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free 7-Day Trial</a></div></section><section class="sec"><div class="wrap"><h2>' + esc(sName) + ' radar for NAICS ' + code + '</h2><p>Aggregated from live public SAM.gov procurement data' + updated + '. Full opportunity details unlock with a free trial.</p>' + statsRow + '<h2 style="margin-top:26px">A look inside the radar</h2><p style="font-size:13px;color:#8a97b5">Sample entries \u2014 current titles, full details behind the trial.</p>' + samples + '</div></section><section class="wall"><div class="wrap"><h3>Don\u2019t miss the ' + esc(sName) + ' opportunity that fits you</h3><p>Get every matching set-aside contract for NAICS ' + esc(code) + ' by email \u2014 the day it posts. Free 7-day trial, no card required.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free Trial</a></div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 Built on public U.S. government data (SAM.gov, USAspending) \u00B7 <a href="/" style="color:#7f95bd">home</a></div></footer></body></html>';
+}
+
+const GOV_ALTS = [
+  ["govtribe", "GovTribe", "GovTribe Alternative — Daily Federal Contract Alerts at 1/3 the Price", "Looking for a GovTribe alternative? GovContract Radar delivers the same SAM.gov intelligence — NAICS filters, set-asides, deadlines — with alerts by email and webhook, starting at $19/mo. GovTribe starts at $1,350/year; we start at $190/year.", 1350],
+  ["bidprime", "BidPrime", "BidPrime Alternative — Unlimited Contract Alerts for Less", "Looking for a BidPrime alternative? GovContract Radar gives you unlimited federal contract alerts with set-aside filtering, hourly alerts and Signal summaries from $79/mo. BidPrime plans run $4,600+/year; our Pro is $790/year.", 4600],
+  ["highergov", "HigherGov", "HigherGov Alternative — Contract Opportunities + Market Intel", "Looking for a HigherGov alternative? Get daily SAM.gov opportunities, agency intel and recompete radar from $19/mo. HigherGov starts around $500+/year; our Radar+ is $1,490/year with far more alerting depth.", 500],
+  ["bidsparq", "BidSparq", "BidSparq Alternative — Set-Aside Contract Alerts Without the Enterprise Price", "Looking for a BidSparq alternative? GovContract Radar flags 8(a), WOSB, HUBZone, SDVOSB set-asides with email and webhook alerts from $79/mo. BidSparq runs $2,388/year; our Pro annual is $790.", 2388],
+  ["govwin", "GovWin", "GovWin Alternative — Lightweight Federal Opportunity Tracking", "Looking for a GovWin alternative? Skip the six-figure enterprise suite: GovContract Radar tracks open federal opportunities, expiring recompetes and set-asides with a clean dashboard and daily email, from $19/mo.", null],
+  ["samgov-alerts", "SAM.gov", "SAM.gov Alerts Alternative — No More Manual Searching", "Looking for a SAM.gov alert tool? GovContract Radar automates SAM.gov monitoring: filter by NAICS, get set-aside flags, deadlines and Signal summaries pushed to email or webhook the moment opportunities post. Free 7-day trial.", null],
+  ["fpds", "FPDS", "FPDS Alternative — Award Data Made Usable", "Looking for an FPDS alternative? GovContract Radar turns federal award and opportunity data into structured alerts and AI digests — no SQL, no flat files, no spreadsheet wrangling. From $19/mo.", null],
+  ["usaspending", "USAspending", "USAspending Alternative — Opportunity Intelligence, Not Just Data Dumps", "Looking for a USAspending alternative? Get contract opportunities and recompete signals delivered as daily intelligence — set-aside filtered, Signal summarized, webhook-ready. From $19/mo.", null],
+  ["deltek", "Deltek", "Deltek Alternative — Government Contracting Intel Without the Suite", "Looking for a Deltek alternative? GovContract Radar covers the alerting that matters: new SAM.gov opportunities, set-asides and expiring contracts, at a price a small business can actually afford.", null],
+  ["fedbizopps", "FedBizOpps", "FedBizOpps Alternative — The Modern Way to Watch Federal Contracts", "Looking for a FedBizOpps alternative? FedBizOpps may be gone, but the opportunities live on in SAM.gov — and GovContract Radar watches them for you: daily digests, instant webhooks, Signal summaries. From $19/mo.", null],
+  ["bidchamp", "BidChamp", "BidChamp Alternative — Set-Aside Filtering Included", "Looking for a BidChamp alternative? GovContract Radar adds set-aside filtering, Signal summaries, a public API and MCP server at $79/mo — so the data can feed your own tools.", 49],
+  ["govbidwire", "GovBidWire", "GovBidWire Alternative — Set-Aside Filtering Included", "Looking for a GovBidWire alternative? GovContract Radar includes set-aside filtering, Signal summaries and webhooks at $79/mo — capabilities GovBidWire-style services typically skip at that price.", 39],
+  ["jorpex", "Jorpex", "Jorpex Alternative — Federal Alerts with AI Summaries", "Looking for a Jorpex alternative? GovContract Radar adds Signal summaries, set-aside filters, recompete radar and a developer API at a comparable price — plus a free 7-day trial.", 49],
+  ["sweetspot", "Sweetspot", "Sweetspot Alternative — Deeper Set-Aside Coverage", "Looking for a Sweetspot alternative? GovContract Radar covers 8(a), WOSB, HUBZone and SDVOSB set-asides with daily email and instant webhooks, from $19/mo with a free trial.", 60],
+  ["findrfp", "FindRFP", "FindRFP Alternative — Unlimited Federal Alerts", "Looking for a FindRFP alternative? GovContract Radar removes the caps: unlimited opportunities, up to 5 NAICS codes, set-aside flags and Signal summaries from $79/mo. Free 7-day trial, no card.", 30],
+  ["govprocure", "GovProcure", "GovProcure Alternative — Federal + Set-Aside in One Radar", "Looking for a GovProcure alternative? GovContract Radar covers federal opportunities with set-aside filtering, recompete radar and AI digests — one subscription, no add-ons. From $19/mo.", 25]
+];
+function govAltPage(slug) {
+  const a = GOV_ALTS.find(x => x[0] === slug);
+  if (!a) return null;
+  const [ , comp, title, desc, compPrice ] = a;
+  const compLine = compPrice ? '<tr><td>' + esc(comp) + ' pricing</td><td style="text-align:right"><b>$' + compPrice + '+/yr</b></td></tr>' : '<tr><td>' + esc(comp) + ' pricing</td><td style="text-align:right">Enterprise / custom</td></tr>';
+  const pageTitle = title + " \u00B7 GovContract Radar";
+  const canon = "https://pixharvest.com/gov/alternatives/" + slug;
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + pageTitle + '</title><meta name="description" content="' + esc(desc) + '"><link rel="canonical" href="' + canon + '"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6;margin:0}.wrap{max-width:860px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:44px 0 48px}.hero h1{font-size:27px;margin:0 0 10px;line-height:1.25}.hero p{color:#b8c7e4;margin:0 0 22px;font-size:15px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:15px}.sec{padding:34px 0}.sec h2{font-size:20px;margin:0 0 6px}.sec p{color:#5a6b8a;margin:0 0 18px;font-size:14px}table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(11,27,58,.08)}td{padding:11px 16px;border-bottom:1px solid #eef2f8;font-size:14px}tr:last-child td{border-bottom:none}td:first-child{color:#5a6b8a}td b{color:#0b1b3a}.save{color:#3ecf8e;font-weight:800}.wall{background:linear-gradient(135deg,#0b1b3a,#14305e);border-radius:14px;color:#fff;padding:28px;text-align:center;margin:26px 0}.wall h3{font-size:20px;margin:0 0 8px}.wall p{color:#b8c7e4;font-size:14px;margin:0 0 18px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>' + esc(title) + '</h1><p>' + esc(desc) + '</p><a class="cta" href="https://pixharvest.com/#trial">Start Free 7-Day Trial</a></div></section><section class="sec"><div class="wrap"><h2>Why switch</h2><p>Same public SAM.gov data \u2014 but filtered, summarized and pushed to you the moment opportunities post.</p><table><tr><td>NAICS filtering</td><td><b>Up to 5 codes</b></td></tr><tr><td>Set-aside flags (8(a)/WOSB/HUBZone/SDVOSB)</td><td><b>Included on Pro</b></td></tr><tr><td>Recompete radar (expiring contracts)</td><td><b>Included on Radar+</b></td></tr><tr><td>Delivery</td><td><b>Hourly email + instant webhook \u00B7 posted-to-radar \u226460 min</b></td></tr><tr><td>Signal summaries</td><td><b>Every opportunity</b></td></tr><tr><td>Developer access</td><td><b>Public API + MCP server</b></td></tr>' + compLine + '<tr><td>GovContract Radar Starter</td><td style="text-align:right"><b>$19/mo \u00B7 $190/yr</b></td></tr><tr><td>Pro (recommended)</td><td style="text-align:right"><b>$79/mo \u00B7 <span class="save">$790/yr \u2014 save $158</span></b></td></tr><tr><td>Radar+</td><td style="text-align:right"><b>$149/mo \u00B7 $1,490/yr</b></td></tr><tr><td>Team</td><td style="text-align:right"><b>$99/mo \u00B7 $990/yr</b></td></tr><tr><td>Enterprise</td><td style="text-align:right"><b>$299/mo \u00B7 $2,990/yr</b></td></tr></table><p style="font-size:12px;color:#8a97b5;margin-top:10px">Competitor pricing shown is from public pricing pages and may change; verify before switching. Free 7-day trial \u2014 no card required. Limited-time: 20% off annual with code SAVE20.</p></div></section><section class="wall"><div class="wrap"><h3>See it before you switch</h3><p>Try GovContract Radar free for 7 days \u2014 full NAICS coverage, set-aside flags and Signal summaries. No card, no commitment.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free Trial</a>&nbsp;&nbsp;<a href="https://pixharvest.com/pay" style="color:#3ecf8e;font-weight:700;font-size:14px">Request invoice</a></div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 Built on public U.S. government data (SAM.gov, USAspending) \u00B7 <a href="/" style="color:#7f95bd">home</a> \u00B7 <a href="/gov/alternatives" style="color:#7f95bd">all alternatives</a></div></footer></body></html>';
+}
+function govAltIndex() {
+  const cards = GOV_ALTS.map(a => '<a href="/gov/alternatives/' + a[0] + '" style="display:block;background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:14px 18px;margin:8px 0;color:#0b1b3a;text-decoration:none;font-size:14px;font-weight:600">' + esc(a[1]) + ' alternative <span style="color:#8a97b5;font-weight:400">\u2192</span></a>').join("");
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Government Contract Tool Alternatives \u2014 GovContract Radar</title><meta name="description" content="Affordable alternatives to GovTribe, BidPrime, HigherGov, BidSparq, Deltek and more. Hourly-synced SAM.gov contract alerts with set-aside filtering and Signal summaries from $19/mo."><link rel="canonical" href="https://pixharvest.com/gov/alternatives"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6;margin:0}.wrap{max-width:760px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:44px 0 48px}.hero h1{font-size:27px;margin:0 0 10px}.hero p{color:#b8c7e4;margin:0 0 22px;font-size:15px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:15px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>Government Contract Tool Alternatives</h1><p>Paying too much for federal contract intelligence? Same public SAM.gov data, delivered better \u2014 set-aside flags, Signal summaries, webhooks \u2014 from $19/mo.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free Trial</a></div></section><section style="padding:30px 0"><div class="wrap">' + cards + '</div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 <a href="/" style="color:#7f95bd">home</a></div></footer></body></html>';
+}
+
+function govGuidePage(slug) {
+  const g = GOV_GUIDES.find(x => x[0] === slug);
+  if (!g) return null;
+  const related = (g[5] || []).map(code => {
+    const info = GOV_NAICS.find(n => n[0] === code);
+    return info ? '<a href="https://pixharvest.com/gov/naics/' + code + '" style="display:inline-block;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:8px 14px;margin:6px 8px 6px 0;font-size:13px;color:#0b1b3a;text-decoration:none;font-weight:600">' + esc(code) + ' \u00B7 ' + esc(info[1]) + '</a>' : "";
+  }).join("");
+  const secs = (g[4] || []).map(s => '<div style="margin:0 0 22px"><h2 style="font-size:19px;margin:0 0 8px;color:#0b1b3a">' + esc(s[0]) + '</h2><p style="font-size:14px;color:#5a6b8a;margin:0">' + esc(s[1]) + '</p></div>').join("");
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + esc(g[1]) + ' \u00B7 GovContract Radar</title><meta name="description" content="' + esc(g[2]) + ' Practical guide to winning federal ' + esc(g[2].split(" ")[2] || "") + ' contracts with SAM.gov data and automated alerts."><link rel="canonical" href="https://pixharvest.com/gov/guides/' + slug + '"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6;margin:0}.wrap{max-width:820px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:44px 0 48px}.hero h1{font-size:28px;margin:0 0 12px;line-height:1.25}.hero p{color:#b8c7e4;margin:0 0 22px;font-size:15px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:15px}.body{padding:34px 0}.body .card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 10px rgba(11,27,58,.05);margin-bottom:18px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>' + esc(g[2]) + '</h1><p>Practical, current guidance built on real SAM.gov data \u2014 written for small businesses that want to win federal work.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free 7-Day Trial</a></div></section><section class="body"><div class="wrap"><div class="card">' + secs + '</div><div class="card"><h2 style="font-size:18px;margin:0 0 6px;color:#0b1b3a">Related NAICS codes</h2><p style="font-size:13px;color:#5a6b8a;margin:0 0 12px">Live opportunity pages for this industry:</p><div>' + related + '</div></div><div class="card" style="text-align:center"><h2 style="font-size:18px;margin:0 0 6px;color:#0b1b3a">Never miss the next one</h2><p style="font-size:14px;color:#5a6b8a;margin:0 0 16px">Free 7-day trial \u00B7 No card required \u00B7 Daily email digest of new opportunities matching your NAICS and set-asides.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free Trial</a>&nbsp;&nbsp;<a href="https://pixharvest.com/pay" style="color:#3ecf8e;font-weight:700;font-size:14px">Prefer invoice? Pay by bank transfer</a></div></div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 Built on public U.S. government data (SAM.gov, USAspending) \u00B7 <a href="/" style="color:#7f95bd">home</a></div></footer></body></html>';
+}
+
 
 function freeDataPage() {
   const head = '<link rel="canonical" href="https://pixharvest.com/free-data">';
@@ -572,10 +1017,10 @@ var MCP_JSON = JSON.stringify({
     "hiring-change-intelligence": { "url": "https://s-hiring.pixharvest.com/mcp", "description": "Hiring growth signals from public job boards" }
   }
 }, null, 2);
-var SERVER_CARD_JSON = "{\"$schema\": \"https://schema.mcp.run/server-card/v1.json\", \"name\": \"change-intel-hub\", \"display_name\": \"PixHarvest Change Intelligence\", \"version\": \"2.1.0\", \"mcp_version\": \"2.1\", \"description\": \"US import tariff data (HTS/Section 301/EU) plus five change-intelligence data feeds: Shopify, GitHub, Hacker News, App Store and hiring signals. Free public snapshots; paid intel, alerts and batch via x402 (USDC on Base).\", \"url\": \"https://pixharvest.com\", \"transport\": {\"type\": \"http\", \"streaming\": true, \"endpoint\": \"https://pixharvest.com/mcp\"}, \"auth\": {\"type\": \"none\", \"description\": \"Free anonymous quota; paid tools settle via HTTP 402 x402 challenges (USDC on Base)\"}, \"tools\": {\"count\": 9, \"namespaces\": [\"tariff\", \"hts\", \"rates\", \"changes\"], \"tags\": [\"tariff\", \"hts\", \"trade\", \"customs\", \"api\"]}, \"contact\": {\"email\": \"contentforge.press@outlook.com\"}, \"license\": \"proprietary\", \"visibility\": \"public\"}";
-var SEO_JSONLD = "{\"@context\": \"https://schema.org\", \"@type\": \"Dataset\", \"name\": \"PixHarvest Change Intelligence\", \"description\": \"US import tariff data (HTS/Section 301/EU) plus five change-intelligence data feeds: Shopify, GitHub, Hacker News, App Store and hiring signals. Free public snapshots; paid intel, alerts and batch via x402 (USDC on Base).\", \"url\": \"https://pixharvest.com/\", \"provider\": {\"@type\": \"Organization\", \"name\": \"PixHarvest\", \"url\": \"https://pixharvest.com/\"}, \"license\": \"https://pixharvest.com/terms\", \"keywords\": [\"tariff\", \"hts\", \"trade\", \"customs\", \"api\"], \"isAccessibleForFree\": true}";
+var SERVER_CARD_JSON = "{\"$schema\": \"https://schema.mcp.run/server-card/v1.json\", \"name\": \"gov-contract-radar\", \"display_name\": \"GovContract Radar\", \"version\": \"1.0.0\", \"mcp_version\": \"2.1\", \"description\": \"US federal contract opportunities from SAM.gov: NAICS-filtered solicitations, set-aside alerts, near-expiry deadlines, updated daily.\", \"url\": \"https://gov.pixharvest.com\", \"transport\": {\"type\": \"http\", \"streaming\": true, \"endpoint\": \"https://gov.pixharvest.com/mcp\"}, \"auth\": {\"type\": \"none\", \"description\": \"Free anonymous quota; paid plans via subscription\"}, \"tools\": {\"count\": 3, \"namespaces\": [\"gov\"], \"tags\": [\"gov\", \"contracts\", \"sam\", \"naics\", \"procurement\"]}, \"contact\": {\"email\": \"contentforge.press@outlook.com\"}, \"license\": \"proprietary\", \"visibility\": \"public\"}";
+var SEO_JSONLD = "{\"@context\": \"https://schema.org\", \"@type\": \"Dataset\", \"name\": \"GovContract Radar\", \"description\": \"US federal contract opportunities from SAM.gov: NAICS-filtered solicitations, set-aside alerts, near-expiry deadlines, updated daily. Public-domain data, fully compliant.\", \"url\": \"https://pixharvest.com/\", \"provider\": {\"@type\": \"Organization\", \"name\": \"PixHarvest\", \"url\": \"https://pixharvest.com/\"}, \"license\": \"https://pixharvest.com/terms\", \"keywords\": [\"gov\", \"contracts\", \"sam\", \"naics\", \"procurement\"], \"isAccessibleForFree\": true}";
 var DOCS = {
-  index: { t: "PixHarvest API Docs \u2014 US Import Tariff Data + Five Data Products", d: "Documentation for PixHarvest: the US import tariff data API (HS code lookup, 2026 HTS schedule, Section 301 stacked estimates, change alerts) plus five independent data products \u2014 Shopify, GitHub, Hacker News, App Store and hiring intelligence. Free tier, USDC payment via x402.", h: "PixHarvest API Docs", body: `` },
+  index: { t: "GovContract Radar \u2014 API & MCP Docs", d: "Documentation for GovContract Radar by PixHarvest: US federal contract opportunity alerts from SAM.gov. NAICS-filtered solicitations, set-aside filtering, near-expiry recompete radar. MCP server at gov.pixharvest.com/mcp. Free 7-day trial, $19/$79/$99/$149/$299 per month.", h: "GovContract Radar Docs", body: `<p class="lead"><b>Main business:</b> US federal government contract opportunity intelligence. GovContract Radar watches SAM.gov (official U.S. government contracting system), filters new solicitations by your NAICS codes and set-aside categories (8(a), WOSB, HUBZone, SDVOSB), and delivers daily digests plus instant alerts \u2014 so you never miss an opportunity that fits your business.</p><p class="lead">All data is public domain (SAM.gov + USAspending). Free 7-day trial, no card required. Pricing: Starter $19/mo, Pro $79/mo (recommended), Radar+ $149/mo, Team $99/mo, Enterprise $299/mo.</p><p><a href="/#trial">Start free trial \u2192</a> \u00B7 <a href="/gov/mcp">MCP endpoint \u2192</a> \u00B7 <a href="/gov/naics/541511">Sample industry page \u2192</a></p><p class="lead" style="margin-top:16px">Legacy US import tariff API documentation remains available below (tariff, auth, tariff-batch) for existing integrations.</p>` },
   shopify: { t: "Shopify Store Snapshot API \u2014 Free Shopify Data for AI Agents", d: "Free live Shopify store snapshot API for AI agents and e-commerce teams. Track products, prices and stock; paid change detection and competitor intel reports.", h: "Shopify Store Intelligence API", feed: "Shopify stores", sub: "s-shopify.pixharvest.com", snap: "GET /v1/snapshot?store=allbirds.com", snapDesc: "Free live catalog snapshot \u2014 product count, price range, availability sample.", paid: [["GET /v1/changes?store=\u2026", "$0.05", "new/removed products, price moves, stock changes vs history"], ["GET /v1/intel?store=\u2026", "$0.50", "competitor-intelligence report with takeaways"], ['POST /v1/batch  {"stores":[\u2026]}', "$0.03/store", "up to 50 stores in one call"], ["POST /v1/landscape", "$5", "landscape across up to 10 stores"]] },
   github: { t: "GitHub Repository Watch API \u2014 Repo Change Intelligence for AI", d: "Free GitHub repository snapshot API for AI agents: stars, forks, activity. Paid repo change detection, watch lists and landscape reports, USDC on Base.", h: "GitHub Repository Intelligence API", feed: "GitHub repositories", sub: "s-github.pixharvest.com", snap: "GET /v1/snapshot?repo=owner/name", snapDesc: "Free live repo snapshot \u2014 stars, forks, open issues, recent activity.", paid: [["GET /v1/changes?repo=\u2026", "$0.05", "stars/forks/activity changes vs history"], ["GET /v1/intel?repo=\u2026", "$0.50", "repo-intelligence report with takeaways"], ['POST /v1/batch  {"repos":[\u2026]}', "$0.03/repo", "up to 50 repos in one call"], ["POST /v1/landscape", "$5", "landscape across up to 10 repos"]] },
   hackernews: { t: "Hacker News Mentions API \u2014 Track HN Mentions for AI Agents", d: "Free Hacker News mention API for AI agents: track when a topic, brand or product is discussed on HN. Paid mention change detection and sentiment intel.", h: "Hacker News Mention Intelligence API", feed: "Hacker News mentions", sub: "s-hn.pixharvest.com", snap: "GET /v1/snapshot?query=openai", snapDesc: "Free live mention snapshot \u2014 recent stories, comments, points.", paid: [["GET /v1/changes?query=\u2026", "$0.05", "mention volume/points changes vs history"], ["GET /v1/intel?query=\u2026", "$0.50", "mention-intelligence report with takeaways"], ['POST /v1/batch  {"queries":[\u2026]}', "$0.03/query", "up to 50 queries in one call"], ["POST /v1/landscape", "$5", "landscape across up to 10 queries"]] },
@@ -831,6 +1276,9 @@ function notFoundDoc() {
   return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>404 \u2014 Page not found \xB7 PixHarvest</title></head><body style="font:16px/1.7 system-ui;background:#0b0e14;color:#e8ecf4;padding:60px 24px;max-width:720px;margin:0 auto"><h1>404 \u2014 not found</h1><p>This docs page does not exist. <a href="/docs" style="color:#5b8cff">Browse all docs \u2192</a></p></body></html>';
 }
 __name(notFoundDoc, "notFoundDoc");
+function govDocsIndex() {
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GovContract Radar \u2014 API &amp; Documentation</title><meta name="description" content="GovContract Radar API docs: federal contract opportunity feed, signup, account and MCP server. Built on public SAM.gov data."><link rel="canonical" href="https://pixharvest.com/docs"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.7;margin:0}.wrap{max-width:760px;margin:0 auto;padding:30px 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{max-width:760px;margin:0 auto;padding:0 20px;font-weight:800;font-size:17px}.brand span{color:#3ecf8e}h1{font-size:26px;margin:0 0 6px}p{color:#5a6b8a;font-size:14px}.card{background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:16px 20px;margin:14px 0}.card h2{font-size:16px;margin:0 0 8px}.card p{margin:6px 0;font-size:13.5px}.card code{background:#eef2f8;padding:2px 6px;border-radius:4px;font-size:12.5px;color:#0b1b3a}.card a{color:#0d7a3d;font-weight:700;text-decoration:none}.legacy{background:#fff7e6;border:1px solid #f0c36d;border-radius:10px;padding:14px 18px;margin:20px 0;font-size:13px;color:#7a5b12}footer{color:#8a97b5;font-size:12px;margin-top:24px}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span> \u00B7 Docs</div></header><div class="wrap"><h1>GovContract Radar \u2014 API &amp; Docs</h1><p>Federal contract opportunity alerts built on public SAM.gov data. Everything below is free to try \u2014 no card required.</p><div class="card"><h2>\u{1F4EC} Live opportunity feed \u2014 hourly sync</h2><p><code>GET /v1/gov/feed?key=&lt;api_key&gt;</code> \u2014 opportunities matching your NAICS, filtered by plan tier (Starter 5/day, Pro+ unlimited with set-aside &amp; full fields).</p><p>We check SAM.gov every hour, 24/7: <b>posted-to-radar latency \u226460 minutes</b>. Every item carries the official posting date (<code>postedDate</code>), exact time (<code>postedAt</code>) where the source provides it, and our ingestion time (<code>fetchedAt</code>), plus a <code>sync</code> block with measured average latency.</p><p><code>GET /gov/daily</code> \u2014 public live radar page with hourly sync stats.</p><p>Get a key: <a href="/#trial">Start free 7-day trial</a>.</p></div><div class="card"><h2>\u{1F511} Trial signup</h2><p><code>POST /api/gov/signup</code> with <code>{email, naics}</code> \u2014 creates a trial, emails your setup instructions (API key, account link).</p></div><div class="card"><h2>\u{1F464} Account center</h2><p><code>GET /account?key=&lt;api_key&gt;</code> \u2014 view plan, NAICS codes, daily quota and renewal status.</p></div><div class="card"><h2>\u{1F4B3} Payment \u2014 self-serve</h2><p>Bank transfer (Payoneer wire or ACH) is live now via <a href="/pay">/pay</a> for all plans \u2014 annual saves 2 months. Card checkout is pending merchant review and will be announced when live; until then invoices are issued and accounts are activated the day payment arrives.</p></div><div class="card"><h2>\u{1F916} MCP server</h2><p><code>gov.pixharvest.com/mcp</code> \u2014 Model Context Protocol server for AI agents (official MCP Registry). Live SAM.gov data, hourly sync, official posting dates (exact time where available).</p></div><div class="card"><h2>\u{1F4D6} Guides &amp; alternatives</h2><p><a href="/gov/guides">Federal contracting guides</a> \u00B7 <a href="/gov/awards">Recent award winners</a> \u00B7 <a href="/gov/alternatives">GovTribe / BidPrime alternatives</a></p></div><div class="legacy">\u26A0\uFE0F Legacy: the former US tariff API (<code>/v1/tariff</code>) remains available for existing integrations. It is frozen and no longer marketed. Full docs for it: <a href="/docs/tariff" style="color:#b8860b">/docs/tariff</a>.</div><footer>GovContract Radar by PixHarvest \u00B7 <a href="/">home</a> \u00B7 <a href="/terms">terms</a> \u00B7 <a href="/sitemap.xml">sitemap</a></footer></div></body></html>';
+}
 function docsPage(slug) {
   const ext = docsPageFor(slug);
   if (ext) return ext;
@@ -849,22 +1297,30 @@ function docsPage(slug) {
       const x = DOCS[s];
       return `<a class="card" href="/docs/${s}"><b>${x.h}</b><span class="muted">${x.feed} \xB7 free snapshot, paid change intel</span><span class="end">${x.sub}</span></a>`;
     }).join("");
-    body = `<p class="lead"><b>Main business:</b> the US import tariff data API. Look up duty rates by HS code or product \u2014 free, no key. Unlock the complete 2026 HTS schedule, Section 301 stacked estimates, EU rates and change alerts on <a href="/pricing">/pricing</a>.</p>
-<h2>Tariff data API</h2>
-<div class="cards"><a class="card" href="/docs/tariff"><b>Tariff Lookup API</b><span class="muted">HS code \u00B7 product \u00B7 free tier</span><span class="end">GET /v1/tariff?hs=8703.24</span></a>
-<a class="card" href="/docs/tariff-batch"><b>Batch &amp; Alerts</b><span class="muted">Mass lookup \u00B7 change notifications</span><span class="end">$0.03 per target</span></a>
-<a class="card" href="/free-data"><b>Free tariff CSV</b><span class="muted">30 real product categories</span><span class="end">Download \u2192</span></a></div>
-<pre><code># Free \u2014 look up a rate, no key needed
-curl "https://pixharvest.com/v1/tariff?hs=8703.24"
-# \u2192 usBase 2.5% \u00B7 China 2026 stacked 37.5% \u00B7 EU 10.0%
+    body = `<p class="lead"><b>Main business:</b> GovContract Radar \u2014 US federal government contract opportunity intelligence. We watch SAM.gov (the official U.S. contracting system), filter new solicitations by your NAICS codes and set-aside categories (8(a), WOSB, HUBZone, SDVOSB), and deliver daily digests plus instant alerts. Free 7-day trial, no card required.</p>
+<h2>GovContract Radar</h2>
+<div class="cards">
+<a class="card" href="/gov/mcp"><b>MCP Server</b><span class="muted">gov.pixharvest.com/mcp</span><span class="end">gov.search \u00B7 gov.digest \u00B7 gov.near_expiry</span></a>
+<a class="card" href="/v1/gov/feed"><b>Opportunity API</b><span class="muted">Filter by NAICS \u00B7 set-aside \u00B7 limit</span><span class="end">GET /v1/gov/feed?key=&amp;naics=</span></a>
+<a class="card" href="/gov/naics/541511"><b>Industry Pages</b><span class="muted">179 NAICS intelligence pages</span><span class="end">Sample: IT services \u2192</span></a>
+<a class="card" href="/gov/alternatives"><b>Alternatives</b><span class="muted">GovTribe, BidPrime, HigherGov &amp; more</span><span class="end">16 compare pages \u2192</span></a>
+<a class="card" href="/gov/guides"><b>Guides</b><span class="muted">8(a), WOSB, HUBZone, GSA, UEI &amp; more</span><span class="end">All guides \u2192</span></a>
+<a class="card" href="/gov/daily"><b>Daily Digest</b><span class="muted">Today's new federal opportunities</span><span class="end">Free weekly summary \u2192</span></a></div>
+<h2>Pricing</h2>
+<p>Starter $19/mo \u00B7 Pro $79/mo (recommended) \u00B7 Team $99/mo \u00B7 Radar+ $149/mo \u00B7 Enterprise $299/mo. Annual saves 2 months; pay by invoice/bank transfer via Payoneer \u2014 no card needed. <a href="/pay">Request an invoice \u2192</a></p>
+<pre><code># Free trial \u2014 7 days, no card
+curl "https://pixharvest.com/api/gov/signup" -X POST -H "content-type: application/json" \\
+  -d '{"email":"you@company.com","naics":"541511"}'
 
-# Paid \u2014 full schedule + batch on /pricing
-#    One key also works across all five data products</code></pre>
-<h2>Independent data products</h2><div class="cards">${cards}</div>
+# Feed API (paid plans, key from your account)
+curl "https://pixharvest.com/v1/gov/feed?key=YOUR_KEY&naics=541511&setAside=8a&limit=10"</code></pre>
 <h2>Payment</h2>
-<p>Agents: paid calls return HTTP 402 with a payment challenge; settle USDC on Base via x402 and retry. Humans: choose a plan, send the exact USDC amount, key issued automatically. <a href="/pricing">See pricing \u2192</a></p>
+<p>Humans: request an invoice on <a href="/pay">/pay</a> and pay by ACH/wire via Payoneer \u2014 no card required. Card checkout pending merchant review \u2014 bank transfer (Payoneer) is live now. AI agents: the MCP server and feed API support key-based auth for agent access.</p>
+<h2>Legacy tariff API (unchanged)</h2>
+<p>The US import tariff lookup API remains live for existing integrations: <a href="/docs/tariff">Tariff API docs</a> \u00B7 <a href="/free-data">Free tariff CSV</a> \u00B7 <a href="/try">Live demo</a>. Plus the independent data feeds below.</p>
+<h2>Independent data products</h2><div class="cards">${cards}</div>
 <h2>Also</h2>
-<p><a href="/docs/auth">Authentication &amp; payment details</a> \u00B7 <a href="/docs/tariff">Tariff API docs</a> \u00B7 <a href="/try">Live demo</a> \u00B7 <a href="/pricing">Pricing</a></p>`;
+<p><a href="/docs/auth">Authentication &amp; payment details</a> \u00B7 <a href="/docs/tariff">Tariff API docs</a> \u00B7 <a href="/try">Live demo</a> \u00B7 <a href="/pay">Pay by invoice</a></p>`;
   } else if (k === "auth") {
     body = `<h2>One access key, five APIs</h2>
 <p>All five feeds authenticate with the same access key. Pass it as <code>?key=YOUR_KEY</code> on paid endpoints, or as <code>Authorization: Bearer YOUR_KEY</code>.</p>
@@ -930,8 +1386,41 @@ async function beacon(kv, body) {
   }
 }
 __name(beacon, "beacon");
-function demoPage() {
-  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shopify Intel \u2014 Live Demo \xB7 PixHarvest</title><style>body{margin:0;background:#0b0e14;color:#e8ecf4;font:15px/1.55 -apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:#7db4ff}.top{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#141925;border-bottom:1px solid #222a3a;font-size:13px;color:#8b95a7}header{padding:34px 18px 18px;max-width:980px;margin:0 auto}h1{font-size:30px;margin:0 0 8px;letter-spacing:-.5px}h1 span{background:linear-gradient(90deg,#7db4ff,#9d7bff);-webkit-background-clip:text;background-clip:text;color:transparent}p{margin:0 0 18px;color:#b8c0d0}form{display:flex;gap:10px;flex-wrap:wrap}input{flex:1;min-width:220px;padding:12px 14px;border-radius:10px;border:1px solid #2a3348;background:#10151f;color:#e8ecf4;font-size:15px;outline:none}input:focus{border-color:#3b82f6}button{padding:12px 22px;border:0;border-radius:10px;background:#2563eb;color:#fff;font-size:15px;font-weight:600;cursor:pointer}button:disabled{opacity:.5;cursor:wait}#note{font-size:12px;color:#6b7689;margin-top:8px}main{max-width:980px;margin:8px auto 0;padding:0 18px}.ph,.err{background:#141925;border:1px solid #222a3a;border-radius:12px;padding:28px;text-align:center;color:#8b95a7}.err{color:#f59e9e;border-color:#7f1d1d}.sum{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.sum>div{flex:1;min-width:130px;background:#141925;border:1px solid #222a3a;border-radius:12px;padding:14px;text-align:center}.sum b{display:block;font-size:22px;color:#7db4ff}.sum span{font-size:12px;color:#8b95a7}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}.card{display:block;background:#141925;border:1px solid #222a3a;border-radius:12px;padding:14px;color:#e8ecf4;text-decoration:none;transition:border-color .15s}.card:hover{border-color:#3b82f6}.t{font-size:13px;min-height:40px;margin-bottom:10px;color:#c8d0de}.row{display:flex;justify-content:space-between;align-items:center}.px{font-weight:700;color:#7db4ff}.st{font-size:11px;padding:3px 8px;border-radius:999px}.st.ok{background:#123a1f;color:#56d364}.st.no{background:#3a1f12;color:#f59e9e}.note{font-size:12px;color:#6b7689;margin:14px 0 6px}.cta{max-width:980px;margin:26px auto 0;padding:0 18px 40px}.cta h2{font-size:22px;margin:0 0 14px}.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.plan{background:#141925;border:1px solid #222a3a;border-radius:12px;padding:16px}.plan.hot{border-color:#3b82f6}.plan b{font-size:24px;color:#7db4ff}.plan span{display:block;font-size:12px;color:#8b95a7;margin:6px 0 12px}.plan a{display:block;text-align:center;padding:9px;border-radius:9px;background:#2563eb;color:#fff;text-decoration:none;font-weight:600}</style></head><body><div class="top"><a href="/">pixharvest.com</a><span>Shopify Intel \xB7 live demo</span></div><header><h1>See any <span>Shopify store</span>, instantly</h1><p>Type a store domain and get a live product snapshot \u2014 real data, free, no sign-up.</p><form id="f"><input id="s" value="allbirds.com" placeholder="e.g. gymshark.com"><button id="b">Load snapshot</button></form><div id="note">Tip: try allbirds.com, gymshark.com, or any store domain that runs on Shopify.</div></header><main id="out"><div class="ph">Enter a store and hit Load snapshot.</div></main><footer class="cta"><h2>Turn this into your data pipeline</h2><div class="plans"><div class="plan"><b>$19</b><span>Starter \xB7 1,000 calls / month</span><a href="' + BUY.standard + '">Order starter</a></div><div class="plan hot"><b>$79</b><span>Pro \xB7 10,000 calls / month + change history</span><a href="' + BUY.pro + '">Order pro</a></div><div class="plan"><b>$499</b><span>Custom \xB7 dedicated store tracking</span><a href="' + BUY.business + `">Talk to us</a></div></div></footer><script>var form=document.getElementById("f"),inp=document.getElementById("s"),btn=document.getElementById("b"),out=document.getElementById("out");function esc(x){return String(x).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#39;"}[c];});}form.addEventListener("submit",function(e){e.preventDefault();var store=inp.value.trim();if(!store)return;btn.disabled=true;btn.textContent="Loading\u2026";out.innerHTML="<div class=ph>Fetching "+esc(store)+" \u2026</div>";fetch("/api/shopify-snapshot?store="+encodeURIComponent(store)).then(function(r){return r.json();}).then(function(d){render(d,store);}).catch(function(){out.innerHTML="<div class=err>Request failed \u2014 is that a real Shopify store domain?</div>";}).then(function(){btn.disabled=false;btn.textContent="Load snapshot";});});function render(d,store){if(!d||!d.sample||!d.sample.length){out.innerHTML="<div class=err>No products found for "+esc(store)+". Try a Shopify domain like allbirds.com.</div>";return;}var prices=d.sample.map(function(p){return p.minPrice||0;}).filter(function(x){return x>0;});var min=Math.min.apply(null,prices),max=Math.max.apply(null,prices);var inStock=0,outN=0;d.sample.forEach(function(p){if(p.available)inStock++;else outN++;});var cards=d.sample.map(function(p){return "<a class=card href="+esc(p.url||"#")+" target=_blank rel=noopener><div class=t>"+esc(p.title)+"</div><div class=row><span class=px>$"+esc(p.minPrice)+"</span><span class="st "+(p.available?"ok":"no")+"">"+(p.available?"In stock":"Sold out")+"</span></div></a>";}).join("");out.innerHTML="<div class=sum><div><b>"+d.productCount+"</b><span>products tracked</span></div><div><b>$"+min+"\u2013$"+max+"</b><span>price range (sample)</span></div><div><b>"+inStock+"/"+(inStock+outN)+"</b><span>in stock (sample)</span></div></div><div class=grid>"+cards+"</div>" +"<div class=note>Showing "+d.sample.length+" of "+d.productCount+" products \xB7 free public snapshot \xB7 <a href=\\"https://s-shopify.pixharvest.com/v1/snapshot?store="+encodeURIComponent(store)+"\\" target=_blank>view raw JSON</a></div>";}<\/script></body></html>`;
+function demoPage(data, sync, naics) {
+  const opps0 = (data && Array.isArray(data.opportunities)) ? data.opportunities : [];
+  const opps = opps0.slice().sort((a, b) => {
+    const ta = (a.postedAt || a.postedDate || ""), tb = (b.postedAt || b.postedDate || "");
+    if (ta && tb) return ta < tb ? 1 : ta > tb ? -1 : 0;
+    return (ta ? -1 : 0) - (tb ? -1 : 0);
+  });
+  const q = String(naics || "").trim();
+  const shown = (q ? opps.filter(o => govMatches(q, o)) : opps).slice(0, 5);
+  const syncLine = sync ? (() => {
+    const last = String(sync.lastSync || "").slice(11, 19);
+    const nextIn = sync.nextSync ? Math.max(0, Math.round((new Date(sync.nextSync).getTime() - Date.now()) / 6e4)) : null;
+    const d = sync.delay;
+    let s = "Hourly sync \u00B7 last check " + (last ? last + " UTC" : "") + (nextIn !== null ? " \u00B7 next in ~" + nextIn + " min" : "");
+    if (d) s += ' \u00B7 avg posted-to-radar <b style="color:#3ecf8e">~' + d.avg + " min</b>";
+    return s;
+  })() : "Hourly refresh \u00B7 same-day delivery";
+  const fresh = (o) => {
+    if (!o.postedAt) return "";
+    const hrs = Math.max(0, Math.round((Date.now() - new Date(o.postedAt).getTime()) / 36e5));
+    return ' \u00B7 <b style="color:#3ecf8e">' + (hrs < 1 ? "under an hour ago" : hrs + "h ago") + "</b>";
+  };
+  const closes = (o) => {
+    if (!o.responseDeadLine) return "";
+    const days = Math.round((new Date(o.responseDeadLine).getTime() - Date.now()) / 864e5);
+    if (days < 0) return ' \u00B7 <b style="color:#f87171">closed</b>';
+    if (days === 0) return ' \u00B7 <b style="color:#f87171">closes today</b>';
+    if (days <= 14) return ' \u00B7 <b style="color:#b8860b">closes in ' + days + 'd (' + String(o.responseDeadLine).slice(0, 10) + ')</b>';
+    return ' \u00B7 closes ' + String(o.responseDeadLine).slice(0, 10);
+  };
+  const rows = shown.map(o =>
+    '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:13px 16px;margin:9px 0">' +
+    '<div style="font-weight:700;color:#0b1b3a;font-size:14px">' + esc(String(o.title || "").slice(0, 90)) + '</div>' +
+    '<div style="font-size:12px;color:#8a97b5;margin-top:4px">' + esc(o.agency || "") + fresh(o) + closes(o) + (o.setAside && o.setAside !== "N/A" ? ' \u00B7 <span style="color:#b8860b;font-weight:600">' + esc(o.setAside) + '</span>' : "") + (o.type ? ' \u00B7 ' + esc(o.type) : "") + '</div></div>').join("") || '<p style="color:#8a97b5">No matching opportunities right now \u2014 new ones are fetched every hour.</p>';
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Live Demo \u2014 GovContract Radar \u00B7 PixHarvest</title><meta name="description" content="Live demo of GovContract Radar: federal contract opportunities from SAM.gov, synced every hour, with official posting dates (exact time where available). Try your NAICS code free."><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6}.wrap{max-width:860px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:40px 0 44px}.hero h1{font-size:28px;margin:0 0 10px}.hero p{color:#b8c7e4;font-size:15px;margin:0 0 20px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:12px 26px;border-radius:8px;text-decoration:none;font-size:14px}.sec{padding:30px 0}.sync{font-size:13px;color:#5a6b8a;background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:10px 14px;margin:16px 0}form{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}input{flex:1;min-width:200px;padding:12px 14px;border:1px solid #e3e9f3;border-radius:8px;font-size:15px}button{background:#0b1b3a;color:#fff;font-weight:700;padding:12px 22px;border:none;border-radius:8px;cursor:pointer;font-size:14px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}footer a{color:#7f95bd}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span> \u00B7 Live Demo</div></header><section class="hero"><div class="wrap"><h1>Federal opportunities, the hour they post</h1><p>This is live data \u2014 synced from SAM.gov every hour, official posting dates included. Type your NAICS code and see what you would have received.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free 7-Day Trial</a></div></section><section class="sec"><div class="wrap"><h2 style="font-size:20px;margin-bottom:6px">Try it \u2014 your NAICS code</h2><p style="font-size:13px;color:#5a6b8a;margin:0 0 8px">e.g. 541511 (IT services), 236220 (construction), 561720 (janitorial)</p><form method="get"><input name="naics" placeholder="NAICS code, e.g. 541511" value="` + esc(q) + `"><button type="submit">Show opportunities</button></form><div class="sync">` + syncLine + `</div>` + rows + `<p style="font-size:13px;color:#5a6b8a;margin-top:14px">This demo shows the latest 5 matches. A subscription delivers <b>every</b> matching opportunity by email, the same hour it posts \u2014 with set-aside flags, deadlines and Signal summaries. <a href="https://pixharvest.com/#trial" style="color:#3ecf8e;font-weight:700">Start free trial \u2192</a></p></div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 Built on public U.S. government data (SAM.gov, USAspending) \u00B7 <a href="/">home</a> \u00B7 <a href="/gov/daily">live radar</a> \u00B7 <a href="/pay">pricing</a></div></footer></body></html>`;
 }
 __name(demoPage, "demoPage");
 var TOOLS_MATRIX = [
@@ -1210,7 +1699,7 @@ async function tariffSitemap() {
 }
 __name(tariffSitemap, "tariffSitemap");
 var LEGAL = {
-  "terms": { t: "Terms of Service", b: "<h2>1. Agreement</h2><p>By accessing or using PixHarvest (pixharvest.com and its subdomains, including the change-intelligence product family: Shopify Intel, GitHub Intel, Hacker News Intel, App Store Intel and Hiring Intelligence), you agree to these Terms of Service. If you use our services on behalf of a company, you represent that you have authority to bind it.</p><h2>2. Services</h2><p>PixHarvest provides data APIs, dashboards and related content: US import tariff data (duty rates, Section 301/232 estimates) and change-intelligence data (store, repo, mention, app-store and hiring signals). Free tiers and samples are provided as-is; paid plans grant usage limits described on /pricing.</p><h2>3. Accounts &amp; API keys</h2><p>Paid plans issue an access key after payment. Keys are personal to the subscriber; sharing, reselling or embedding keys in public repositories without permission is prohibited. You are responsible for activity under your key.</p><h2>4. Acceptable use</h2><p>You may not: use the services for unlawful activity; attempt to overload, probe or circumvent rate limits; scrape or mirror bulk data beyond your plan's allowance; or repackage our data as a competing dataset without a data-resale agreement.</p><h2>5. Payments</h2><p>Payments are processed by Dodo Payments (card) and via USDC on Base (x402). Prices are listed in USD. Paid plans do not auto-renew unless stated at checkout. Refunds are governed by our Refund Policy.</p><h2>6. Intellectual property</h2><p>The PixHarvest name, logo, website and software are our property. Public tariff and marketplace data referenced by our APIs remains subject to its original sources; we provide source links on each result.</p><h2>7. Disclaimer</h2><p>Data is provided for information purposes, sourced from public schedules and live public signals, and may contain errors or lag. We are not providing legal, customs or financial advice. Verify critical rates with an official source before acting.</p><h2>8. Limitation of liability</h2><p>To the maximum extent permitted by law, PixHarvest shall not be liable for indirect, incidental or consequential damages, or for lost profits, arising from use of the services.</p><h2>9. Changes</h2><p>We may update these Terms from time to time. Material changes will be announced on this page. Continued use after changes constitutes acceptance.</p><h2>10. Contact</h2><p>Questions: contentforge.press@outlook.com</p>" },
+  "terms": { t: "Terms of Service", b: "<h2>1. Agreement</h2><p>By accessing or using GovContract Radar (pixharvest.com and its subdomains), you agree to these Terms of Service. If you use our services on behalf of a company, you represent that you have authority to bind it.</p><h2>2. Services</h2><p>PixHarvest provides GovContract Radar: daily federal contract opportunity alerts filtered by NAICS code and set-aside, built on public SAM.gov data. Free trials are provided as-is; paid plans grant the usage limits described on /pricing and /pay.</p><h2>3. Accounts &amp; API keys</h2><p>Paid plans issue an access key after payment. Keys are personal to the subscriber; sharing, reselling or embedding keys in public repositories without permission is prohibited. You are responsible for activity under your key.</p><h2>4. Acceptable use</h2><p>You may not: use the services for unlawful activity; attempt to overload, probe or circumvent rate limits; scrape or mirror bulk data beyond your plan's allowance; or repackage our data as a competing dataset without a data-resale agreement.</p><h2>5. Payments</h2><p>Payments are processed by Dodo Payments (card) and via USDC on Base (x402). Prices are listed in USD. Paid plans do not auto-renew unless stated at checkout. Refunds are governed by our Refund Policy.</p><h2>6. Intellectual property</h2><p>The PixHarvest name, logo, website and software are our property. Public tariff and marketplace data referenced by our APIs remains subject to its original sources; we provide source links on each result.</p><h2>7. Disclaimer</h2><p>Data is provided for information purposes, sourced from public schedules and live public signals, and may contain errors or lag. We are not providing legal, customs or financial advice. Verify critical rates with an official source before acting.</p><h2>8. Limitation of liability</h2><p>To the maximum extent permitted by law, PixHarvest shall not be liable for indirect, incidental or consequential damages, or for lost profits, arising from use of the services.</p><h2>9. Changes</h2><p>We may update these Terms from time to time. Material changes will be announced on this page. Continued use after changes constitutes acceptance.</p><h2>10. Contact</h2><p>Questions: contentforge.press@outlook.com</p>" },
   "privacy": { t: "Privacy Policy", b: "<h2>1. What we collect</h2><p>Contact form: name, email, company, product of interest and message, only when you submit it. Server logs: IP address and user agent, collected automatically for security and rate limiting. Payment data: handled entirely by our payment processors (Dodo Payments, and on-chain USDC via x402); we never see or store card numbers or wallet private keys.</p><h2>2. How we use it</h2><p>To respond to inquiries, issue and manage API keys, prevent abuse, and improve our services. We do not sell personal data.</p><h2>3. Third parties</h2><p>Cloudflare (edge network and logs), Dodo Payments (card processing), and the public blockchains used for x402 settlements. Each processes data under its own privacy policy.</p><h2>4. Cookies &amp; tracking</h2><p>We do not use advertising cookies or cross-site trackers. Local storage is used only for functional state on our own pages.</p><h2>5. Retention</h2><p>Contact inquiries are retained up to 12 months. Logs are retained up to 30 days.</p><h2>6. Your rights</h2><p>You may request access to, correction of, or deletion of your personal data at any time by emailing contentforge.press@outlook.com.</p><h2>7. Children</h2><p>Our services are not directed to children under 13, and we do not knowingly collect their data.</p><h2>8. Changes &amp; contact</h2><p>We may update this policy; the latest version is always here. Contact: contentforge.press@outlook.com</p>" },
   "refunds": { t: "Refund Policy", b: "<h2>1. Subscriptions</h2><p>Subscription plans (monthly/annual) qualify for a full refund if requested within 14 days of purchase and the plan's included usage has not been consumed. If usage has been consumed, refunds are prorated for unused time.</p><h2>2. Pay-per-use</h2><p>Pay-per-result API calls (e.g. $0.05 changes, $0.50 intel, batch calls) are non-refundable once delivered, because they are consumed immediately. Prepaid balances not yet used are refundable on request.</p><h2>3. How to request</h2><p>Email contentforge.press@outlook.com within the applicable window, stating your payment method and order reference. We respond within 2 business days.</p><h2>4. Refund method</h2><p>Card payments are refunded to the original card via our payment processor. USDC payments are returned to the originating wallet address, less network fees if already spent.</p><h2>5. Disputes</h2><p>If you believe a charge was incorrect, contact us first - we will investigate before any chargeback is filed.</p><h2>6. Contact</h2><p>contentforge.press@outlook.com</p>" },
 };
@@ -1219,39 +1708,911 @@ function legalPage(slug){
   if(!pg) return null;
   return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + pg.t + ' \u00B7 PixHarvest</title><meta name="description" content="' + pg.t + ' for PixHarvest data services."><style>body{margin:0;background:#0b0e14;color:#e8ecf4;font:15px/1.7 -apple-system,Segoe UI,Roboto,Arial,sans-serif}a{color:#7db4ff}.top{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:#141925;border-bottom:1px solid #222a3a;font-size:13px;color:#8b95a7}main{max-width:780px;margin:0 auto;padding:30px 20px 60px}h1{font-size:28px;margin:0 0 6px}h2{font-size:17px;color:#7db4ff;margin:26px 0 8px}p{color:#c2cad8;margin:8px 0}.m{color:#8b95a7;font-size:13px;margin:22px 0 0}</style></head><body><div class="top"><a href="/">pixharvest.com</a><span>PixHarvest \u00B7 legal</span></div><main><h1>' + pg.t + '</h1>' + pg.b + '<p class="m">Questions: <a href="mailto:contentforge.press@outlook.com">contentforge.press@outlook.com</a></p></main></body></html>';
 }
+const GOV_LANDING = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GovContract Radar — Never Miss a Federal Opportunity</title><meta name="description" content="Hourly-synced alerts for new federal contract opportunities matching your NAICS codes — posted-to-radar latency under 60 minutes. Set-aside filtering, Signal summaries, early-signal Special Notices. Free 7-day trial."><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6}.wrap{max-width:980px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:18px 0}.brand{font-weight:800;font-size:17px;letter-spacing:.5px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:60px 0 70px;text-align:center}.hero h1{font-size:36px;line-height:1.25;font-weight:800;max-width:760px;margin:0 auto 16px}.hero p{font-size:17px;color:#b8c7e4;max-width:640px;margin:0 auto 28px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;font-size:16px;padding:14px 34px;border-radius:8px;text-decoration:none}.trust{margin-top:20px;font-size:13px;color:#8ba3cc}.pains{padding:56px 0}.pains h2{text-align:center;font-size:26px;margin-bottom:32px}.pains-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.pain{background:#fff;border-radius:10px;padding:24px;box-shadow:0 2px 10px rgba(11,27,58,.06)}.pain h3{font-size:16px;margin-bottom:8px}.pain p{font-size:14px;color:#5a6b8a}.pricing{padding:56px 0 20px}.pricing h2{text-align:center;font-size:26px;margin-bottom:8px}.pricing .sub{text-align:center;color:#5a6b8a;margin-bottom:36px;font-size:15px}.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}.plan{background:#fff;border-radius:12px;padding:28px 24px;border:1px solid #e3e9f3;position:relative}.plan.featured{border:2px solid #3ecf8e;box-shadow:0 8px 30px rgba(62,207,142,.18)}.plan .name{font-weight:800;font-size:15px;color:#3b4a6b}.plan .price{font-size:34px;font-weight:800;margin:10px 0 4px}.plan .price span{font-size:14px;color:#8a97b5;font-weight:500}.plan ul{list-style:none;margin:16px 0 22px}.plan li{font-size:13.5px;color:#4a5a7a;padding:5px 0 5px 22px;position:relative}.plan li:before{content:"✓";color:#3ecf8e;font-weight:800;position:absolute;left:0}.plan a{display:block;text-align:center;background:#0b1b3a;color:#fff;font-weight:700;padding:12px;border-radius:8px;text-decoration:none;font-size:14px}.plan.featured a{background:#3ecf8e;color:#0b1b3a}.data{padding:56px 0;background:#fff}.data h2{text-align:center;font-size:26px;margin-bottom:28px}.data-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}.data .n{font-size:28px;font-weight:800;color:#0b1b3a}.data .l{font-size:13px;color:#5a6b8a;margin-top:4px}.form-sec{padding:56px 0;background:#0b1b3a;color:#fff;text-align:center}.form-sec h2{font-size:26px;margin-bottom:10px}.form-sec p{color:#b8c7e4;margin-bottom:28px}.trial-form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:560px;margin:0 auto}.trial-form input{padding:14px 16px;border-radius:8px;border:none;font-size:15px;width:200px}.trial-form input[type=email]{width:250px}.trial-form button{background:#3ecf8e;color:#0b1b3a;font-weight:800;font-size:15px;padding:14px 26px;border:none;border-radius:8px;cursor:pointer}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:24px 0;text-align:center;border-top:1px solid #1c2f55}.fine{margin-top:14px;font-size:12px;color:#7f95bd}@media(max-width:720px){.pains-grid,.plans,.data-grid{grid-template-columns:1fr}.hero h1{font-size:28px}}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span><nav style="float:right;font-size:13px;font-weight:500;margin-top:3px"><a href="#pricing" style="color:#b8c7e4;margin-left:14px;text-decoration:none">Pricing</a><a href="#faq" style="color:#b8c7e4;margin-left:14px;text-decoration:none">FAQ</a><a href="#about" style="color:#b8c7e4;margin-left:14px;text-decoration:none">About</a><a href="#contact" style="color:#b8c7e4;margin-left:14px;text-decoration:none">Contact</a></nav></div></header><section class="hero"><div class="wrap"><h1>Never Miss a Federal Opportunity That Fits Your Business</h1><p>New contract opportunities are posted on SAM.gov every day. GovContract Radar watches every hour, filters by your NAICS codes and set-asides, and delivers the ones that matter — before your competitors see them. <b style="color:#fff">Posted-to-radar latency: ≤60 minutes — hourly sync, 24/7.</b></p><a class="cta" href="#trial">Start Free 7-Day Trial</a><div class="trust">Data from public U.S. government sources (SAM.gov + USAspending) · No card required</div></div></section><section class="pains"><div class="wrap"><h2>Manually watching SAM.gov is costing you contracts</h2><div class="pains-grid"><div class="pain"><h3>⏰ You find out too late</h3><p>Opportunities close fast. If you don't see a solicitation within days, you miss the window entirely.</p></div><div class="pain"><h3>📄 95% of postings don't fit you</h3><p>Thousands of postings daily. Sorting through ones outside your NAICS wastes hours every week.</p></div><div class="pain"><h3>🏷️ Set-asides are easy to miss</h3><p>8(a), WOSB, HUBZone, SDVOSB — the small-business opportunities that favor you get buried in the noise.</p></div></div></div></section><section class="pricing" id="pricing"><div class="wrap"><h2>Simple pricing</h2><p class="sub">Pay monthly, or save 2 months with annual billing.</p><p style="text-align:center;font-size:13px;color:#5a6b8a;margin-top:-22px;margin-bottom:30px">Prefer invoice / bank transfer? <a href="/pay" style="color:#3ecf8e;font-weight:700">Request an invoice</a> and pay by wire via Payoneer — no card needed.</p><div class="plans"><div class="plan"><div class="name">Starter</div><div class="price">$190<span>/yr</span></div><div style="font-size:12px;color:#8a97b5;font-weight:500;margin:2px 0 10px">or $19/mo · annual saves $38</div><ul><li>1 NAICS code</li><li>Up to 5 opportunities/day</li><li>Daily email digest</li><li>Direct SAM.gov links</li></ul><a href="#trial">Start Free Trial</a></div><div class="plan featured"><div class="name">Pro <span style="background:#3ecf8e;color:#0b1b3a;font-size:10px;padding:2px 8px;border-radius:20px;vertical-align:middle">Best value</span></div><div class="price">$790<span>/yr</span></div><div style="font-size:12px;color:#8a97b5;font-weight:500;margin:2px 0 10px">or $79/mo · annual saves $158</div><ul><li>Up to 5 NAICS codes</li><li>Unlimited opportunities</li><li><b>Hourly refresh</b> — same-hour delivery</li><li><b>Set-aside filtering</b> (8(a)/WOSB/HUBZone/SDVOSB)</li><li>Signal summary of each opportunity</li></ul><a href="#trial">Start Free Trial</a></div><div class="plan"><div class="name">Radar+</div><div class="price">$1,490<span>/yr</span></div><div style="font-size:12px;color:#8a97b5;font-weight:500;margin:2px 0 10px">or $149/mo · annual saves $298</div><ul><li>Everything in Pro</li><li><b>Recompete radar</b> (expiring contracts you can take over)</li><li>AI match score vs your past wins</li><li>Priority alerts</li></ul><a href="#trial">Start Free Trial</a></div></div><p style="text-align:center;font-size:14px;color:#5a6b8a;margin-top:22px">Need more? <b>Team $99/mo</b> — 10+ NAICS, multi-user, bulk export · <b>Enterprise $299/mo</b> — custom bundles, data licensing, SLA. <a href="/pay" style="color:#3ecf8e;font-weight:700">Request an invoice</a> for any plan.</p></div></section><section class="data"><div class="wrap"><h2>The market is real. The data is public.</h2><div class="data-grid"><div><div class="n">$700B+</div><div class="l">Federal contracting spend / year</div></div><div><div class="n">$173B</div><div class="l">Small business set-aside share / year</div></div><div><div class="n">Thousands</div><div class="l">New opportunities posted daily</div></div><div><div class="n">100%</div><div class="l">Public domain data, fully compliant</div></div></div></div><p style="text-align:center;margin:18px 0 0"><a href="/gov/awards" style="color:#0d7a3d;font-weight:700">See who won recent federal contracts →</a></p></section><section class="form-sec" id="trial"><div class="wrap"><h2>Start your free 7-day trial</h2><p>Set up in 2 minutes. Get your first digest within hours.</p><form class="trial-form" id="gf"><input type="email" id="ge" placeholder="Work email" required><input type="text" id="gn" placeholder="NAICS code (e.g. 541511)" required><button type="submit">Start Free Trial</button></form><div class="fine" id="gmsg">No card required · This is you signing up — we never send unsolicited email.</div></div></section><section class="pains" id="faq"><div class="wrap"><h2>Frequently asked questions</h2><div class="pains-grid"><div class="pain"><h3>Where does the data come from?</h3><p>All opportunities come from SAM.gov (beta.sam.gov / SAM API), the official U.S. federal government system of record. USAspending powers our spend context. Everything is public-domain data.</p></div><div class="pain"><h3>What is a NAICS code?</h3><p>NAICS is the government's industry classification. We use it to filter opportunities to exactly your line of business — e.g. 541511 for IT services, 561210 for facilities support, 811310 for equipment repair.</p></div><div class="pain"><h3>How fast do alerts arrive?</h3><p>We check SAM.gov every hour, around the clock — posted-to-radar latency is always under 60 minutes — and email new matches the same hour they post; Pro gets the full filtered digest, Radar+ adds priority delivery.</p></div><div class="pain"><h3>Can I try before paying?</h3><p>Yes — every plan starts with a free 7-day trial. No card required. You get your first digest the next morning.</p></div><div class="pain"><h3>Is this compliant with government rules?</h3><p>Yes. We only read public federal contracting data. We do not scrape non-public systems, and we never resell personal data.</p></div><div class="pain"><h3>Can I cancel anytime?</h3><p>Yes. Plans are month-to-month; cancel anytime and access continues until the end of the paid period.</p></div></div></div></section><section class="data" id="about"><div class="wrap"><h2>About GovContract Radar</h2><div class="data-grid"><div><div class="n">PixHarvest</div><div class="l">Independent, remote, self-funded</div></div><div><div class="n">SAM.gov</div><div class="l">Official federal data source</div></div><div><div class="n">24h</div><div class="l">Support response time</div></div><div><div class="n">100%</div><div class="l">Public-domain, fully compliant</div></div></div><p style="font-size:14px;color:#5a6b8a;margin-top:18px">GovContract Radar is built by PixHarvest — a small independent team. No venture money, no lock-in. We watch the federal contracting market so small businesses and agencies stop missing opportunities that fit them. Data is public; our value is filtering, speed and delivery.</p></div></section><section class="form-sec" id="contact"><div class="wrap"><h2>Talk to a human</h2><p>Questions, custom NAICS bundles, data licensing or an SLA? We answer every message within 24 hours, worldwide.</p><form class="trial-form" id="cf"><input type="text" id="cn" placeholder="Your name" style="width:160px"><input type="email" id="ce" placeholder="Work email" style="width:240px" required><input type="text" id="cm" placeholder="How can we help?" style="width:260px" required><button type="submit">Send</button></form><div class="fine" id="cmsg">Or email directly: <a href="mailto:contentforge.press@outlook.com" style="color:#3ecf8e">contentforge.press@outlook.com</a></div></div></section><footer><div class="wrap">GovContract Radar by PixHarvest · Built on public U.S. government data (SAM.gov, USAspending) · <a href="/docs" style="color:#7f95bd">docs</a> · <a href="/terms" style="color:#7f95bd">terms</a> · <a href="/privacy" style="color:#7f95bd">privacy</a> · <a href="/refunds" style="color:#7f95bd">refunds</a> · <a href="mailto:contentforge.press@outlook.com" style="color:#7f95bd">contact</a><div class="fine">MCP: <a href="/gov/mcp" style="color:#7f95bd">gov.pixharvest.com/mcp</a> · <a href="/llms.txt" style="color:#7f95bd">llms.txt</a> · <a href="/sitemap.xml" style="color:#7f95bd">sitemap</a></div></div></footer><script>var f=document.getElementById("gf"),e=document.getElementById("ge"),n=document.getElementById("gn"),m=document.getElementById("gmsg");f.addEventListener("submit",function(ev){ev.preventDefault();var email=e.value.trim(),naics=n.value.trim();if(!email||!naics)return;m.textContent="Creating your trial…";fetch("/api/gov/signup",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:email,naics:naics})}).then(function(r){return r.json();}).then(function(d){m.textContent=d.ok?"Trial created — setup instructions sent to "+email+".":"Error: "+(d.error||"unknown");}).catch(function(){m.textContent="Network error — please try again.";});});var cf=document.getElementById("cf"),cne=document.getElementById("cn"),cee=document.getElementById("ce"),cme=document.getElementById("cm"),cms=document.getElementById("cmsg");if(cf){cf.addEventListener("submit",function(ev){ev.preventDefault();var email=cee.value.trim(),msg=cme.value.trim();if(!email||!msg)return;cms.textContent="Sending…";fetch("/api/lead",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:email,message:msg,name:cne.value.trim()||""})}).then(function(r){return r.json();}).then(function(d){cms.textContent=d.ok?"Thanks — we'll reply within 24h.":"Error: "+(d.error||"unknown");}).catch(function(){cms.textContent="Network error — please try again.";});});}</script></body></html>`;
+
+/* ============ GovContract Radar: trial automation ============ */
+function esc(x) { return String(x).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function govRssFeed(data) {
+  const opps = (data && data.opportunities) || [];
+  const items = opps.slice(0, 20).map(o => {
+    const pd = o.postedAt ? new Date(o.postedAt).toUTCString().replace("GMT", "+0000") : "";
+    const deadline = o.responseDeadLine ? "Closes " + String(o.responseDeadLine).slice(0, 10) : "Deadline TBA";
+    const desc = [o.type, o.setAside && o.setAside !== "N/A" ? o.setAside + " set-aside" : "", o.naics && o.naics.length ? "NAICS " + o.naics.join(", ") : "", deadline, o.agency ? "Buyer: " + o.agency : ""].filter(Boolean).join(" · ");
+    return "<item><title>" + esc(o.title) + "</title><link>" + esc(o.uiLink) + "</link><guid isPermaLink=\"false\">" + esc(o.noticeId) + "</guid><pubDate>" + esc(pd) + "</pubDate><description>" + esc(desc) + "</description></item>";
+  }).join("");
+  const gen = (data && data.generated) ? new Date(data.generated).toUTCString().replace("GMT", "+0000") : "";
+  return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>GovContract Radar — New Federal Contract Opportunities</title><link>https://pixharvest.com/gov/daily</link><description>Hourly-synced federal contract opportunities from public SAM.gov data — posted-to-radar latency under 60 minutes. Full details and daily alerts at pixharvest.com.</description><lastBuildDate>" + esc(gen) + "</lastBuildDate>" + items + "</channel></rss>";
+}
+function govWidgetHtml(data, naics) {
+  const opps = (data && data.opportunities) || [];
+  const rows = opps.slice(0, 5).map(o => {
+    const hrs = o.postedAt ? Math.max(0, Math.round((Date.now() - new Date(o.postedAt).getTime()) / 36e5)) : null;
+    return '<a class="r" href="' + esc(o.uiLink) + '" target="_blank" rel="noopener"><div class="t">' + esc(o.title) + '</div><div class="m">' + esc(o.agency || "") + (o.setAside && o.setAside !== "N/A" ? ' · <span class="sa">' + esc(o.setAside) + '</span>' : "") + (hrs != null ? ' · posted ' + hrs + 'h ago' : '') + '</div></a>';
+  }).join("");
+  const title = naics ? ('LIVE · Federal Opportunities · NAICS ' + esc(naics)) : 'LIVE · Federal Opportunities';
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>' + title + '</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#0b1b3a;color:#fff;padding:12px;min-height:100vh}.h{font-size:13px;font-weight:800;color:#3ecf8e;margin-bottom:8px}.r{display:block;background:#14305e;border-radius:8px;padding:9px 11px;margin-bottom:7px;text-decoration:none;color:#e8eefb}.t{font-size:12.5px;font-weight:600;line-height:1.35}.m{font-size:11px;color:#8ba3cc;margin-top:3px}.sa{color:#fbbf24;font-weight:600}.f{font-size:10.5px;color:#8ba3cc;text-align:center;padding:7px 0 2px}.f b{color:#3ecf8e}.e{font-size:11px;color:#5a6b8a;text-align:center;padding:10px 0}</style></head><body><div class="h">' + title + '</div>' + (rows || '<div class="e">New opportunities are fetched hourly — check back soon.</div>') + '<div class="f">Data: <b>GovContract Radar</b> · <a href="https://pixharvest.com/try" style="color:#3ecf8e;font-weight:700">Get hourly alerts →</a></div></body></html>';
+}
+function govSendMail(env, to, subject, html) {
+  const key = env.RESEND_KEY;
+  if (!key) return Promise.resolve({ ok: false, error: "no resend key" });
+  return fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { "authorization": "Bearer " + key, "content-type": "application/json" },
+    body: JSON.stringify({ from: "GovContract Radar <radar@mail.pixharvest.com>", to: [to], subject, html })
+  }).then(async r => { const t = await r.text(); return { ok: r.ok, status: r.status, body: t.slice(0, 200) }; })
+    .catch(e => ({ ok: false, error: String(e && e.message || e) }));
+}
+/* 奖标情报：USAspending 公开 API（免费无 key）→ 最近中标者/金额/机构。KV 缓存 6h。 */
+async function govAwards(env, naics, limit, year) {
+  const want = Math.min(20, Math.max(3, Number(limit) || 10));
+  const cacheKey = "__gov_awards:" + (naics || "all") + (year ? ":" + year : "");
+  const hit = await env.SHARED_KV.get(cacheKey, "json").catch(() => null);
+  if (hit && Array.isArray(hit.items) && hit.items.length) return { items: hit.items.slice(0, want), cached: true };
+  /* 数据池：本机预取的 USAspending 奖标数据（同步脚本 ops/awards/sync_awards.py），避免 Worker→USAspending 525 */
+  const poolKey = naics ? ("__gov_awards_pool") : null;
+  if (poolKey) {
+    const pool = await env.SHARED_KV.get(poolKey, "json").catch(() => null);
+    if (pool) {
+      if (year) {
+        const yhit = pool.years && pool.years[naics] && Array.isArray(pool.years[naics][String(year)]) ? pool.years[naics][String(year)] : null;
+        if (yhit && yhit.length) return { items: yhit.slice(0, want), cached: true, source: "pool-year" };
+      } else {
+        const hit2 = pool.naics && Array.isArray(pool.naics[naics]) ? pool.naics[naics] : null;
+        if (hit2 && hit2.length) return { items: hit2.slice(0, want), cached: true, source: "pool" };
+      }
+    }
+  }
+  const filters = { award_type_codes: ["A", "B", "C", "D"] };
+  if (naics) filters.naics_codes = [String(naics).slice(0, 6)];
+  if (year) filters.time_period = [{ start_date: year + "-01-01", end_date: year + "-12-31" }];
+  const body = {
+    filters,
+    fields: ["Award ID", "Recipient Name", "Award Amount", "Awarding Agency", "Start Date", "End Date", "Description"],
+    limit: 15, order: "desc", sort: "Start Date"
+  };
+  let res, errInfo = "";
+  try {
+    const r = await fetch("https://api.usaspending.gov/api/v2/search/spending_by_award/", {
+      method: "POST", headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/126.0 Safari/537.36" },
+      body: JSON.stringify(body), signal: AbortSignal.timeout(18e3)
+    });
+    res = r.ok ? await r.json() : null;
+    if (!r.ok) errInfo = "http " + r.status;
+  } catch (e) { res = null; errInfo = String(e && e.message || e); }
+  if (!res || !Array.isArray(res.results)) return { items: [], error: errInfo || "upstream" };
+  const now = Date.now();
+  const futureLimit = now + 60 * 864e5;
+  let items = res.results
+    .map(o => ({ recipient: String(o["Recipient Name"] || "").trim(), amount: Number(o["Award Amount"]) || 0, agency: String(o["Awarding Agency"] || "").trim(), startDate: String(o["Start Date"] || "").slice(0, 10), endDate: String(o["End Date"] || "").slice(0, 10), description: String(o["Description"] || "").slice(0, 200), awardId: String(o["Award ID"] || "") }))
+    .filter(o => o.recipient && o.startDate && (!year || o.startDate.startsWith(String(year))));
+  const plausible = items.filter(o => new Date(o.startDate).getTime() <= futureLimit);
+  if (!year && plausible.length >= Math.min(3, want)) items = plausible;
+  items = items.slice(0, want);
+  if (items.length) await env.SHARED_KV.put(cacheKey, JSON.stringify({ items, ts: new Date().toISOString() }), { expirationTtl: 21600 }).catch(() => {});
+  return { items, cached: false };
+}
+/* 奖标 SEO 页：/gov/awards/{naics} 单页 */
+function govAwardsPage(code, info, awards) {
+  const name = info ? info[1] : ("NAICS " + code);
+  const desc = info ? info[2] : "Federal contract awards in NAICS code " + code + ".";
+  const rows = (awards && awards.items && awards.items.length ? awards.items : []).map(a => {
+    const amt = a.amount >= 1e6 ? "$" + (a.amount / 1e6).toFixed(1) + "M" : a.amount >= 1e3 ? "$" + (a.amount / 1e3).toFixed(0) + "K" : "$" + a.amount.toFixed(0);
+    return '<div class="aw"><div class="at"><b>' + esc(a.recipient) + '</b> <span class="amt">' + amt + '</span></div><div class="am">' + esc(a.agency) + ' · started ' + esc(a.startDate) + (a.endDate ? ' · ends ' + esc(a.endDate) : '') + (a.description ? ' · ' + esc(a.description) : '') + '</div></div>';
+  }).join("");
+  const empty = '<div class="e">No recent award records for this NAICS right now — new award data lands daily. Try a related code.</div>';
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>' + esc(name) + ' Federal Contract Awards 2026 \u2014 Who Won Recent ' + esc(name) + ' Contracts \u00B7 GovContract Radar</title><meta name="description" content="Who won recent federal ' + esc(name.toLowerCase()) + ' contracts (NAICS ' + esc(code) + '): recent awardees, award amounts and agencies from public USAspending data \u2014 plus live ' + esc(name.toLowerCase()) + ' solicitations, the hour they post."><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.5}.w{max-width:860px;margin:0 auto;padding:28px 20px 40px}.h{font-size:26px;font-weight:800;margin-bottom:6px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.aw{background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:12px 14px;margin-bottom:9px}.at{font-size:15px;margin-bottom:3px}.amt{color:#0d7a3d;font-weight:800;font-size:13.5px;margin-left:6px}.am{font-size:12.5px;color:#5a6b8a}.e{font-size:13px;color:#8a97b5;padding:14px 0}.duo{display:flex;gap:10px;margin:18px 0 6px;flex-wrap:wrap}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:0;flex:1;min-width:220px;text-decoration:none}.cta.g{background:#fff;color:#0d7a3d;border:2px solid #0d7a3d}.n{font-size:11.5px;color:#8a97b5;text-align:center}.n a{color:#0d7a3d}.faq{margin-top:16px;padding:16px 18px;background:#fff;border:1px solid #e3e9f3;border-radius:10px}.faq h2{font-size:16px;margin:0 0 10px}.faq p{font-size:13px;color:#4a5a7a;margin:0 0 9px}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}</style></head><body><div class="w"><div class="h">' + esc(name) + ' Federal Contract Awards</div><div class="s">' + esc(name) + ' (NAICS ' + esc(code) + ') \u2014 who won recent federal contracts, from public USAspending data. Data refreshes weekly; verify any record on <a href="https://www.usaspending.gov/" style="color:#0d7a3d">USAspending</a>.' + (desc ? ' ' + esc(desc) : '') + '</div>' + (rows || empty) + '<div class="duo"><a class="cta" href="/try">Get every new solicitation in NAICS ' + esc(code) + ' within 60 minutes \u2192</a><a class="cta g" href="/gov/naics/' + esc(code) + '">See live opportunities in NAICS ' + esc(code) + ' \u2192</a></div><div class="n">Free 3-day trial \u00B7 <a href="/gov/awards">All award pages</a> \u00B7 <a href="/gov/daily">Today\'s opportunities</a> \u00B7 <a href="/gov/awards/' + esc(code) + '/2025">2025 awards</a> \u00B7 <a href="/gov/awards/' + esc(code) + '/2024">2024 awards</a></div><div class="faq"><h2>About ' + esc(name) + ' federal contract awards</h2><p><b>Where does this data come from?</b> Award records come from USAspending.gov, the official U.S. federal spending database, which mirrors contract awards reported through SAM.gov and FPDS. It is public-domain data \u2014 fully compliant to republish.</p><p><b>Who wins these contracts?</b> Recent winners in NAICS ' + esc(code) + ' include the firms above \u2014 the incumbents you compete with. Knowing who holds your market tells you where the next recompete opportunities will come from.</p><p><b>How do I win contracts like these?</b> The first step is seeing new solicitations the hour they post. GovContract Radar checks SAM.gov every hour and alerts you when a new opportunity matches your NAICS code \u2014 free 7-day trial, no card required.</p></div><div class="f">' + (awards && awards.cached ? "cached \u00B7 " : "") + 'Source: USAspending.gov public API \u00B7 GovContract Radar \u00B7 <a href="/gov/awards" style="color:#0d7a3d">All award pages</a></div></div></body></html>';
+}
+function govAwardsYearPage(code, info, year, awards) {
+  const name = info ? info[1] : ("NAICS " + code);
+  const desc = info ? info[2] : "";
+  const rows = (awards && awards.items && awards.items.length ? awards.items : []).map(a => {
+    const amt = a.amount >= 1e6 ? "$" + (a.amount / 1e6).toFixed(1) + "M" : a.amount >= 1e3 ? "$" + (a.amount / 1e3).toFixed(0) + "K" : "$" + a.amount.toFixed(0);
+    return '<div class="aw"><div class="at"><b>' + esc(a.recipient) + '</b> <span class="amt">' + amt + '</span></div><div class="am">' + esc(a.agency) + ' \u00B7 ' + esc(a.startDate) + (a.description ? ' \u00B7 ' + esc(a.description) : '') + '</div></div>';
+  }).join("");
+  const empty = '<div class="e">No ' + esc(year) + ' award records for this NAICS in our archive yet \u2014 see the latest awards or live opportunities below.</div>';
+  const yearNav = ["2025", "2024", "2023"].map(y => y === String(year) ? '<b>' + esc(y) + '</b>' : '<a href="/gov/awards/' + esc(code) + '/' + esc(y) + '">' + esc(y) + '</a>').join(" \u00B7 ");
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>' + esc(name) + ' Federal Contract Awards ' + esc(year) + ' \u2014 Who Won Recent ' + esc(name) + ' Contracts in ' + esc(year) + ' \u00B7 GovContract Radar</title><meta name="description" content="Who won federal ' + esc(name.toLowerCase()) + ' contracts in ' + esc(year) + ' (NAICS ' + esc(code) + '): awardees, award amounts and agencies from public USAspending data."><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.5}.w{max-width:860px;margin:0 auto;padding:28px 20px 40px}.h{font-size:26px;font-weight:800;margin-bottom:6px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.aw{background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:12px 14px;margin-bottom:9px}.at{font-size:15px;margin-bottom:3px}.amt{color:#0d7a3d;font-weight:800;font-size:13.5px;margin-left:6px}.am{font-size:12.5px;color:#5a6b8a}.e{font-size:13px;color:#8a97b5;padding:14px 0}.duo{display:flex;gap:10px;margin:18px 0 6px;flex-wrap:wrap}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:0;flex:1;min-width:220px;text-decoration:none}.cta.g{background:#fff;color:#0d7a3d;border:2px solid #0d7a3d}.n{font-size:11.5px;color:#8a97b5;text-align:center}.n a{color:#0d7a3d}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}</style></head><body><div class="w"><div class="h">' + esc(name) + ' Federal Contract Awards ' + esc(year) + '</div><div class="s">NAICS ' + esc(code) + ' \u2014 who won federal contracts in ' + esc(year) + ', from public USAspending data.' + (desc ? ' ' + esc(desc) : '') + ' Archive years: ' + yearNav + '</div>' + (rows || empty) + '<div class="duo"><a class="cta" href="/gov/awards/' + esc(code) + '">See latest ' + esc(name) + ' awards \u2192</a><a class="cta g" href="/gov/naics/' + esc(code) + '">See live opportunities in NAICS ' + esc(code) + ' \u2192</a></div><div class="n">' + yearNav + ' \u00B7 <a href="/gov/awards">All award pages</a> \u00B7 <a href="/try">Get every new solicitation within 60 minutes \u2192</a></div><div class="f">Source: USAspending.gov public API \u00B7 GovContract Radar</div></div></body></html>';
+}
+
+/* 奖标索引页 /gov/awards：热门 NAICS 最近中标速览 */
+function govAwardsIndex(rowsByNaics) {
+  const blocks = rowsByNaics.map(([code, name, awards]) => {
+    const sample = (awards && awards.length ? awards.slice(0, 3) : []).map(a => {
+      const amt = a.amount >= 1e6 ? "$" + (a.amount / 1e6).toFixed(1) + "M" : a.amount >= 1e3 ? "$" + (a.amount / 1e3).toFixed(0) + "K" : "$" + a.amount.toFixed(0);
+      return '<div class="aw"><b>' + esc(a.recipient) + '</b> <span class="amt">' + amt + '</span> <span class="am">· ' + esc(a.agency.slice(0, 30)) + ' · ' + esc(a.startDate) + '</span></div>';
+    }).join("");
+    return '<div class="bl"><a class="bt" href="/gov/awards/' + code + '">' + esc(name) + ' <span class="na">NAICS ' + code + '</span></a>' + (sample || '<div class="e">loading…</div>') + '</div>';
+  }).join("");
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Recent Federal Contract Awards by Industry — GovContract Radar</title><meta name="description" content="See who won recent federal contracts by NAICS industry: awardees, amounts and agencies from public USAspending data."><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.5}.w{max-width:900px;margin:0 auto;padding:28px 20px 40px}.h{font-size:26px;font-weight:800}.s{color:#5a6b8a;font-size:14px;margin:14px 0 18px}.bl{background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:12px 14px;margin-bottom:10px}.bt{font-size:15.5px;font-weight:800;color:#0b1b3a;text-decoration:none}.na{color:#3ecf8e;font-size:12px;font-weight:700;margin-left:6px}.aw{font-size:12.5px;color:#4a5a7a;padding:5px 0 0 2px}.amt{color:#0d7a3d;font-weight:800}.am{color:#8a97b5}.e{color:#8a97b5;font-size:12px;padding:4px 0}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:20px 0 4px;text-decoration:none}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}</style></head><body><div class="w"><div class="h">Recent Federal Contract Awards by Industry</div><div class="s">Who won what — recent federal contract awards grouped by NAICS industry, from the public USAspending API. Each page lists recent awardees, amounts and agencies. Use the award intelligence to see who holds your market, then get alerted on every new solicitation.</div>' + blocks + '<a class="cta" href="/try">Try the full opportunity radar free for 3 days →</a><div class="f">Source: USAspending.gov public API · GovContract Radar · <a href="/gov/daily" style="color:#0d7a3d">Today\'s opportunities</a></div></div></body></html>';
+}
+function govSam(env, postedFrom, postedTo, naics, limit) {
+  const key = env.SAM_API_KEY;
+  if (!key) return Promise.resolve({ items: [], error: "no sam key" });
+  const fmt = (d) => { const p = String(d).split("-"); return p.length === 3 ? p[1] + "/" + p[2] + "/" + p[0] : d; };
+  const q = new URLSearchParams({ api_key: key, limit: String(limit || 200), postedFrom: fmt(postedFrom), postedTo: fmt(postedTo) });
+  if (naics) q.set("ncode", String(naics).slice(0, 6));
+  return fetch("https://api.sam.gov/opportunities/v2/search?" + q, { signal: AbortSignal.timeout(25e3) })
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("sam http " + r.status)))
+    .then(d => {
+      const arr = (d && (d.opportunities || d.opportunitiesData)) || [];
+      const items = arr.map(o => ({
+        noticeId: o.noticeId || "",
+        title: o.title || "",
+        type: o.type || "",
+        postedDate: o.postedDate || "",
+        responseDeadLine: o.responseDeadLine || o.responseDeadline || null,
+        naics: (Array.isArray(o.naicsCode) ? o.naicsCode.map(String) : o.naicsCode ? [String(o.naicsCode)] : (Array.isArray(o.classificationCodes) ? o.classificationCodes.map(String) : [])),
+        setAside: (o.setAside && String(o.setAside).replace(/_/g, " ")) || "",
+        setAsideDesc: (o.typeOfSetAsideDescription && String(o.typeOfSetAsideDescription).slice(0, 140)) || "",
+        description: (o.description && String(o.description).slice(0, 420)) || "",
+        solicitationNumber: o.solicitationNumber || "",
+        classificationCode: o.classificationCode || "",
+        placeOfPerformance: o.placeOfPerformance || {},
+        agency: String(o.department || o.agency || "").toUpperCase(),
+        uiLink: o.uiLink || ("https://sam.gov/opp/" + (o.noticeId || ""))
+      }));
+      return { items };
+    })
+    .catch(e => ({ items: [], error: String(e && e.message || e) }));
+}
+/* 第二源：SAM 无 key 详情端点 → 精确到秒的 postedDate（列表只有日期）。用于发布时间精确化。 */
+async function govSamDetail(noticeId) {
+  const url = "https://sam.gov/api/prod/opps/v2/opportunities/" + encodeURIComponent(noticeId) + "?api_key=null&random=" + Date.now();
+  try {
+    const r = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36", "Accept": "application/json, text/plain, */*" }, signal: AbortSignal.timeout(15e3) });
+    if (!r.ok) return null;
+    const d = await r.json();
+    return d.postedDate || (d.data2 && d.data2.postedDate) || null;
+  } catch (e) { return null; }
+}
+const GOV_PLANS = {
+  trial:    { naicsMax: 1,  dailyMax: 5,   depth: "base",  setAside: false, priority: false, recompete: false, matchScore: false, seats: 1,  export: false },
+  starter:  { naicsMax: 1,  dailyMax: 5,   depth: "base",  setAside: false, priority: false, recompete: false, matchScore: false, seats: 1,  export: false },
+  pro:      { naicsMax: 5,  dailyMax: 9999, depth: "full", setAside: true,  priority: false, recompete: false, matchScore: false, seats: 1,  export: false },
+  "radar+": { naicsMax: 10, dailyMax: 9999, depth: "full", setAside: true,  priority: true,  recompete: true,  matchScore: true,  seats: 1,  export: false },
+  team:     { naicsMax: 99, dailyMax: 9999, depth: "full", setAside: true,  priority: false, recompete: true,  matchScore: true,  seats: 3,  export: true },
+  enterprise: { naicsMax: 999, dailyMax: 9999, depth: "full", setAside: true, priority: true, recompete: true, matchScore: true, seats: 25, export: true },
+};
+
+
+async function refreshOppsPool(env) {
+  const kv = env.SHARED_KV;
+  const today = new Date().toISOString().slice(0, 10);
+  const from = new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10);
+  const CORE = ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613"];
+  const HOT = env.ALL_NAICS ? ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110", "511210", "541612", "541360", "541370", "541380", "541715", "541714", "541713", "541519", "561311"] : CORE;
+  const pool = { generated: new Date().toISOString(), naics: {} };
+  let i = 0;
+  while (i < HOT.length) {
+    const batch = HOT.slice(i, i + 5);
+    i += 5;
+    await Promise.all(batch.map(async c => {
+      try {
+        const r = await govSam(env, from, today, c, 20);
+        if (r.items && r.items.length) pool.naics[c] = r.items.slice(0, 20);
+      } catch (e) {}
+    }));
+  }
+  await kv.put("__gov_opps_pool", JSON.stringify(pool), { expirationTtl: 604800 });
+  console.log("opps pool refreshed: " + Object.keys(pool.naics).length + " NAICS, " + HOT.length + " total");
+  return pool;
+}function govPlanName(p) { p = String(p || "trial").toLowerCase(); if (p === "radar+") return "radar+"; return ["trial","starter","pro","team","enterprise"].includes(p) ? p : "trial"; }
+
+
+/* GovConAPI 公共：机会记录 → 本站字段（招标类型过滤，与池口径一致） */
+function mapGovConItems(arr) {
+  const TENDER = ["Presolicitation", "Combined Synopsis/Solicitation", "Solicitation", "Sources Sought", "Special Notice"];
+  return (arr || []).map(o => ({
+    noticeId: String(o.notice_id || o.noticeId || o.id || ""),
+    title: String(o.title || ""),
+    type: String(o.notice_type || o.type || ""),
+    postedAt: o.posted_at || o.postedAt || null,
+    postedDate: String(o.posted_date || o.postedDate || "").slice(0, 10),
+    responseDeadLine: o.response_dead_line || o.responseDeadLine || o.due_date || o.due || null,
+    naics: (Array.isArray(o.naics) ? o.naics.map(String) : o.naics ? [String(o.naics)] : []),
+    setAside: String(o.set_aside || o.setAside || ""),
+    setAsideDesc: String(o.set_aside_description || o.setAsideDesc || "").slice(0, 140),
+    description: String(o.description || o.summary || "").slice(0, 420),
+    solicitationNumber: String(o.solicitation_number || o.solicitationNumber || ""),
+    classificationCode: String(Array.isArray(o.psc) ? o.psc.join(",") : (o.psc || o.classificationCode || "")),
+    placeOfPerformance: o.place_of_performance || o.placeOfPerformance || {},
+    agency: String(o.agency || o.agency_name || o.department || "").toUpperCase(),
+    uiLink: o.sam_url || o.ui_link || o.url || ("https://sam.gov/opp/" + (o.notice_id || ""))
+  })).filter(o => TENDER.includes(o.type));
+}
+
+/* GovConAPI 增量同步（主源，每小时）：免费层 50 req/day，每小时 1 次增量绰绰有余 */
+async function govConDelta(env, sinceIso) {
+  const key = env.GOVCON_KEY;
+  if (!key) return { items: [], error: "no govcon key" };
+  const q = new URLSearchParams({ since: sinceIso || new Date(Date.now() - 3 * 864e5).toISOString(), limit: "100" });
+  return fetch("https://govconapi.com/api/v1/opportunities/delta?" + q, {
+    headers: { Authorization: "Bearer " + key, "User-Agent": "PixHarvest/1.0" },
+    signal: AbortSignal.timeout(30e3)
+  })
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("govcon http " + r.status)))
+    .then(d => ({ items: mapGovConItems(d && (d.opportunities || d.results || d.items || d.data)) }))
+    .catch(e => ({ items: [], error: String(e && e.message || e) }));
+}
+
+/* GovConAPI 按 NAICS 搜索（每天 20 核心补池，配额预算内） */
+async function govConNAICS(env, naics, limit) {
+  const key = env.GOVCON_KEY;
+  if (!key) return { items: [], error: "no govcon key" };
+  const q = new URLSearchParams({ naics: String(naics), limit: String(limit || 20) });
+  return fetch("https://govconapi.com/api/v1/opportunities/search?" + q, {
+    headers: { Authorization: "Bearer " + key, "User-Agent": "PixHarvest/1.0" },
+    signal: AbortSignal.timeout(30e3)
+  })
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("govcon search http " + r.status)))
+    .then(d => ({ items: mapGovConItems(d && (d.opportunities || d.results || d.items || d.data)) }))
+    .catch(e => ({ items: [], error: String(e && e.message || e) }));
+}
+
+/* IndexNow：免费即时收录推送（代替 GSC，0 成本"广告位"引擎）——变化驱动：只推 sitemap + 当日有新增数据的 NAICS 页，避免 host 级 429 限流 */
+async function pushIndexNow(env, kv) {
+  const key = env.INDEXNOW_KEY;
+  if (!key) return { ok: false, error: "no INDEXNOW_KEY", pushed: 0 };
+  kv = kv || env.SHARED_KV;
+  /* seen 集合：IndexNow 对已提交 URL 重复提交返回 429——只推从未推过的新 URL */
+  const seen = (await kv.get("__gov_meta:indexnow_seen", "json").catch(() => null)) || { urls: [] };
+  const seenSet = new Set(Array.isArray(seen.urls) ? seen.urls : []);
+  const urls = [];
+  const add = u => { if (!seenSet.has(u)) { urls.push(u); seenSet.add(u); } };
+  add("https://pixharvest.com/sitemap.xml");
+  try {
+    const dd = await kv.get("__gov_opps:latest", "json");
+    const list = Array.isArray(dd) ? dd : (dd && Array.isArray(dd.opportunities) ? dd.opportunities : []);
+    const start = Date.now() - 864e5;
+    const freshNaics = new Set();
+    list.forEach(o => { if (o.postedAt && new Date(o.postedAt).getTime() >= start && Array.isArray(o.naics)) o.naics.forEach(n => freshNaics.add(String(n))); });
+    freshNaics.forEach(c => add("https://pixharvest.com/gov/naics/" + c));
+  } catch (e) {}
+  GOV_GUIDES.forEach(g => add("https://pixharvest.com/gov/guides/" + g[0]));
+  add("https://pixharvest.com/gov/daily");
+  add("https://pixharvest.com/gov");
+  /* sitemap 每 7 天重推一次（即便在 seen 中）：让 Bing 重爬感知全站内容更新 */
+  const lastSitemapAt = Number(seen.lastSitemapAt || 0);
+  if (Date.now() - lastSitemapAt > 7 * 864e5 && !urls.includes("https://pixharvest.com/sitemap.xml")) {
+    urls.push("https://pixharvest.com/sitemap.xml");
+    seenSet.add("https://pixharvest.com/sitemap.xml");
+  }
+  if (!urls.length) return { ok: true, status: 200, pushed: 0, skipped: seenSet.size, error: "" };
+  /* 分批推送（≤25/批 + 间隔），规避 IndexNow 429 限流；部分失败不中断 */
+  const CHUNK = 25;
+  let okAll = true, lastStatus = 200, errMsg = "";
+  for (let i = 0; i < urls.length; i += CHUNK) {
+    const chunk = urls.slice(i, i + CHUNK);
+    const body = JSON.stringify({ host: "pixharvest.com", key: key, keyLocation: "https://pixharvest.com/" + key + ".txt", urlList: chunk });
+    const r = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "content-type": "application/json; charset=utf-8", "user-agent": "PixHarvest/1.0" },
+      body: body
+    }).catch(e => ({ ok: false, status: 0, error: String(e && e.message || e) }));
+    if (!r.ok) { okAll = false; lastStatus = r.status; errMsg = r.error || ("http " + r.status); }
+    if (i + CHUNK < urls.length) await new Promise(res => setTimeout(res, 1500));
+  }
+  try { await kv.put("__gov_meta:indexnow_seen", JSON.stringify({ urls: Array.from(seenSet), lastSitemapAt: Date.now() }), { expirationTtl: 15552000 }); } catch (e) {}
+  return { ok: okAll, status: okAll ? 200 : lastStatus, pushed: urls.length, skipped: seenSet.size, error: errMsg };
+}
+
+/* 公共：合并写 latest 池 + 本地建 30 热门 NAICS 索引（0 额外配额） */
+async function mergeOpps(kv, fresh, cap) {
+  const nowIso = new Date().toISOString();
+  const old = await kv.get("__gov_opps:latest", "json");
+  let merged = { generated: nowIso, count: fresh.length, opportunities: fresh };
+  if (old && Array.isArray(old.opportunities)) {
+    const seen = new Set(fresh.map(o => o.noticeId));
+    const extra = old.opportunities.filter(o => !seen.has(o.noticeId));
+    merged.opportunities = fresh.concat(extra).slice(0, cap || 1000);
+    merged.count = merged.opportunities.length;
+  }
+  await kv.put("__gov_opps:latest", JSON.stringify(merged), { expirationTtl: 604800 });
+  const HOT = ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110", "511210", "541612", "541360", "541370", "541380", "541715", "541714", "541713", "541519", "561311"];
+  const poolIdx = { generated: nowIso, naics: {} };
+  for (const c of HOT) {
+    const m = merged.opportunities.filter(o => govMatches(c, o));
+    if (m.length) poolIdx.naics[c] = m.slice(0, 20);
+  }
+  await kv.put("__gov_opps_pool", JSON.stringify(poolIdx), { expirationTtl: 604800 });
+  return merged;
+}function govFieldSet(o, plan) {
+  const hrs = o.postedAt ? Math.max(0, Math.round((Date.now() - new Date(o.postedAt).getTime()) / 36e5)) : null;
+  const base = { title: o.title, agency: o.agency, type: o.type, setAside: o.setAside, deadline: o.responseDeadLine, url: o.uiLink, naics: o.naics || [], postedAt: o.postedAt || null, postedHoursAgo: hrs, fetchedAt: o.fetchedAt || null };
+  if (GOV_PLANS[plan].depth !== "full") return base;
+  return { ...base, description: o.description, solicitationNumber: o.solicitationNumber, setAsideDesc: o.setAsideDesc, classificationCode: o.classificationCode, placeOfPerformance: o.placeOfPerformance, postedDate: o.postedDate };
+}
+function govMatchScore(o, naics) {
+  let s = 0;
+  const t = String(o.title || "").toLowerCase();
+  if (o.type && /(solicitation|combined)/i.test(o.type)) s += 2;
+  if (o.responseDeadLine) { const d = (new Date(o.responseDeadLine) - Date.now()) / 864e5; if (d > 0 && d <= 14) s += 3; else if (d > 0) s += 1; }
+  if (o.setAside && /(8a|wosb|hubzone|sdvosb|vosb|sba)/i.test(o.setAside)) s += 2;
+  if (/set.aside|small business|8\(a\)|wosb|hubzone|sdvosb/i.test(t)) s += 1;
+  if (o.agency && /defense|dod|va|veterans/i.test(o.agency)) s += 1;
+  return s;
+}
+function govRecompete(o) {
+  if (!o.postedDate) return false;
+  const age = (Date.now() - new Date(o.postedDate).getTime()) / 864e5;
+  return age >= 1 && o.type && /(solicitation|combined|presolicitation)/i.test(o.type);
+}
+function govSignalSummary(o) {
+  const p = [];
+  if (o.type) p.push(o.type.replace(/([a-z])([A-Z])/g, "$1 $2"));
+  if (o.setAsideDesc || o.setAside) p.push((o.setAsideDesc || o.setAside) + " set-aside");
+  if (o.responseDeadLine) p.push("closes " + String(o.responseDeadLine).slice(0, 10));
+  if (o.agency) p.push("buyer: " + o.agency);
+  return p.join(" \u00B7 ") || "New federal opportunity";
+}
+function govMatches(naics, o) {
+  const n = String(naics || "").trim();
+  if (!n || !o || !Array.isArray(o.naics)) return false;
+  return o.naics.some(x => {
+    const c = String(x || "").trim();
+    if (!c) return false;
+    if (c === n) return true;
+    if (n.length >= 4 && c.slice(0, n.length) === n) return true;
+    if (n.length === 6 && c.length > 6 && c.slice(0, 6) === n) return true;
+    return false;
+  });
+}
+function govSummary(o) {
+  const parts = [];
+  if (o.type) parts.push("Type: " + o.type);
+  if (o.setAsideDesc || o.setAside) parts.push("Set-aside: " + (o.setAsideDesc || o.setAside));
+  if (o.agency) parts.push("Agency: " + o.agency);
+  if (o.responseDeadLine) parts.push("Deadline: " + o.responseDeadLine);
+  return parts.join(" \u00B7 ");
+}
+function govOppHtml(items) {
+  if (!items || !items.length) return '<p style="color:#7f95bd">No matching opportunities in this batch \u2014 we are watching and will email the moment one posts.</p>';
+  return items.map(o =>
+    '<div style="background:#f6f8fb;border:1px solid #e3e9f3;border-radius:8px;padding:14px 16px;margin:10px 0">' +
+    '<a href="' + o.uiLink + '" style="font-weight:700;color:#0b1b3a;text-decoration:none;font-size:15px">' + esc(o.title) + '</a>' +
+    '<div style="font-size:13px;color:#5a6b8a;margin-top:6px">' + esc(govSummary(o)) + '</div>' +
+    (o.description ? '<div style="font-size:13px;color:#4a5a7a;margin-top:6px">' + esc(String(o.description).slice(0, 160)) + '</div>' : '') +
+    (o.solicitationNumber ? '<div style="font-size:12px;color:#8a97b5;margin-top:4px">Ref: ' + esc(o.solicitationNumber) + '</div>' : '') +
+    '<div style="font-size:12px;color:#8a97b5;margin-top:4px">NAICS: ' + esc((o.naics || []).join(", ")) + '</div>' +
+    '</div>').join("");
+}
+function govWelcomeHtml(key, naics, items) {
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:22px;color:#0b1b3a;margin:0 0 6px">Your GovContract Radar trial is ready \u2705</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 20px">Watching federal opportunities for NAICS <b>' + esc(naics) + '</b>. Your 7-day trial is active.</p>' +
+    '<div style="background:#0b1b3a;color:#fff;border-radius:8px;padding:16px;margin:0 0 20px">' +
+    '<div style="font-size:12px;color:#8ba3cc;margin-bottom:4px">Your trial API key (use with /v1/gov/feed)</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:1px">' + esc(key) + '</div></div>' +
+    '<h2 style="font-size:16px;color:#0b1b3a">Recently posted opportunities matching you</h2>' + govOppHtml(items) +
+    '<h2 style="font-size:16px;color:#0b1b3a;margin-top:22px">Your next 7 days with GovContract Radar</h2>' +
+    '<div style="background:#f6f8fb;border:1px solid #e3e9f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#4a5a7a">' +
+    '<div style="padding:3px 0"><b>Day 1</b> \u2014 This email. Your trial key is ready: <code style="background:#eef2f8;padding:2px 6px;border-radius:4px">' + esc(key) + '</code> \u00B7 GET /v1/gov/feed?key=' + esc(key) + '</div>' +
+    '<div style="padding:3px 0"><b>Day 1</b> \u2014 <b>Save your first watch.</b> One click locks in alerts for NAICS ' + esc(naics) + ': <a href="https://pixharvest.com/account?key=' + esc(key) + '" style="color:#3ecf8e;font-weight:700">Confirm your radar watch \u2192</a></div>' +
+    '<div style="padding:3px 0"><b>Days 2\u20136</b> \u2014 We scan SAM.gov and email you the moment new opportunities match NAICS <b>' + esc(naics) + '</b>.</div>' +
+    '<div style="padding:3px 0"><b>Day 7</b> \u2014 Trial wraps. Keep getting a free weekly digest, or upgrade \u2014 annual saves 2 months ($790/yr Pro) \u00B7 monthly $79 also available.</div>' +
+    '</div>' +
+    '<div style="background:#fff7e6;border:1px solid #f0c36d;border-radius:8px;padding:12px 16px;margin-top:16px;font-size:13px;color:#7a5b12">' +
+    '<b>Limited-time offer:</b> upgrade within your 7-day trial and save <b>20%</b> \u2014 mention code <b style="background:#ffe9bd;padding:2px 8px;border-radius:4px">SAVE20</b> when you request an invoice. It expires when your trial does.</div>' +
+    '<p style="font-size:13px;color:#7f95bd;margin-top:20px">Questions? Reply to this email \u2014 a human answers within 24h. Upgrade to Pro ($79/mo) for hourly alerts, set-aside filtering and unlimited alerts. <a href="https://pixharvest.com/" style="color:#3ecf8e">pixharvest.com</a></p>' +
+    '</div>';
+}
+function govDailyHtml(naics, items, plan) {
+  const isPaid = plan && plan !== "trial" && plan !== "starter";
+  const upsell = isPaid
+    ? '<div style="background:#e6f7ee;border:1px solid #9fd8bd;border-radius:8px;padding:10px 14px;margin-top:16px;font-size:12px;color:#0d7a3d">Your ' + esc(plan) + ' radar is live \u2014 need more NAICS codes or team seats? <a href="https://pixharvest.com/pay" style="color:#0d7a3d;font-weight:700">Manage subscription</a></div>'
+    : '<div style="background:#fff7e6;border:1px solid #f0c36d;border-radius:8px;padding:10px 14px;margin-top:16px;font-size:12px;color:#7a5b12">' +
+      'Upgrade during your trial and save 20% \u2014 code <b>SAVE20</b> at invoice time. <a href="https://pixharvest.com/pay" style="color:#b8860b;font-weight:700">Request invoice</a></div>';
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:20px;color:#0b1b3a;margin:0 0 4px">\u{1F6A8} ' + items.length + ' new opportunity' + (items.length > 1 ? "ies" : "") + ' for your NAICS</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 16px">NAICS ' + esc(naics) + ' \u00B7 from SAM.gov \u00B7 GovContract Radar \u00B7 ' + esc(plan || "trial") + '</p>' +
+    govOppHtml(items) +
+    upsell +
+    '<p style="font-size:12px;color:#8a97b5;margin-top:18px">Radar refreshes every hour \u2014 same-day delivery. Set-aside filtering, webhooks and Signal summaries on Pro+: <a href="https://pixharvest.com/" style="color:#3ecf8e">pixharvest.com</a></p></div>';
+}
+function govRenewHtml(naics, plan) {
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:20px;color:#0b1b3a;margin:0 0 6px">Your GovContract Radar plan is up for renewal \u{1F4B3}</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 16px">Plan: <b>' + esc(plan) + '</b> \u00B7 NAICS ' + esc(naics) + '</p>' +
+    '<p style="font-size:14px;color:#14213d;margin:0 0 18px">Your access window has ended. To keep your radar watching ' + esc(naics) + ' without interruption, request a renewal invoice \u2014 we email payment details (Payoneer wire / ACH) within 24h and reactivate the same day payment arrives.</p>' +
+    '<p style="margin:0 0 18px"><a href="https://pixharvest.com/pay" style="background:#0b1b3a;color:#fff;font-weight:800;padding:12px 22px;border-radius:8px;text-decoration:none">Request renewal invoice \u2192</a></p>' +
+    '<p style="font-size:12px;color:#8a97b5">No automatic charges \u2014 every renewal is manually approved on our side. Questions? Reply to this email.</p></div>';
+}
+function govExpireHtml(naics) {
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:22px;color:#0b1b3a;margin:0 0 6px">Your 7-day trial ends tomorrow \u23F3</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 18px">Your GovContract Radar trial for NAICS <b>' + esc(naics) + '</b> ends tomorrow. Keep your daily digests coming \u2014 no gaps, no re-setup.</p>' +
+    '<div style="background:#0b1b3a;color:#fff;border-radius:8px;padding:16px;margin:0 0 18px">' +
+    '<div style="font-size:12px;color:#8ba3cc;margin-bottom:6px">Plans \u2014 annual = 2 months free</div>' +
+    '<div style="font-size:15px;line-height:1.9">Starter $190/yr \u00B7 <b style="color:#3ecf8e">Pro $790/yr (recommended)</b> \u00B7 Radar+ $1,490/yr \u00B7 Team $990/yr \u00B7 Enterprise $2,990/yr</div>' +
+    '<div style="font-size:12px;color:#8ba3cc;margin-top:4px">or monthly: $19 / $79 / $99 / $149 / $299</div></div>' +
+    '<p style="font-size:14px;color:#14213d;margin:0 0 8px">Pro adds hourly alerts, set-aside filtering (8(a)/WOSB/HUBZone/SDVOSB), unlimited alerts, webhooks and Signal summaries \u2014 the small-business opportunities that favor you.</p>' +
+    '<div style="background:#fff7e6;border:1px solid #f0c36d;border-radius:8px;padding:10px 14px;margin:0 0 14px;font-size:13px;color:#7a5b12">' +
+    '<b>Last chance \u2014 20% off if you upgrade before your trial ends:</b> code <b>SAVE20</b> at invoice time.</div>' +
+    '<p style="font-size:13px;color:#7f95bd;margin:0 0 18px">Pay by card instantly (self-serve checkout, account upgrades the moment payment lands) or by bank transfer via Payoneer: <a href="https://pixharvest.com/pay" style="color:#3ecf8e">pixharvest.com/pay</a></p>' +
+    '<p style="font-size:12px;color:#8a97b5">Questions? Reply to this email \u2014 a human answers within 24h.</p></div>';
+}
+function govAccountPage(rec, activated, lastSeen, upMsg) {
+  const plan = rec.plan || "trial";
+  const exp = rec.expires ? new Date(rec.expires).toUTCString() : "—";
+  const last = lastSeen ? new Date(lastSeen).toUTCString() : "—";
+  const actBadge = activated
+    ? '<span style="background:#e6f7ee;color:#0d7a3d;font-weight:700;padding:4px 10px;border-radius:20px;font-size:13px">✓ Radar watch active</span>'
+    : '<a href="/api/gov/activate?key=' + rec.key + '" style="background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:14px">Confirm my radar watch →</a>';
+  const upBadge = upMsg ? '<div style="background:#e6f7ee;border:1px solid #9fd8bd;border-radius:8px;padding:12px 14px;font-size:14px;color:#0d7a3d;margin:0 0 14px">✅ ' + upMsg + '</div>' : '';
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your GovContract Radar account</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6}.wrap{max-width:640px;margin:0 auto;padding:30px 20px}.card{background:#fff;border-radius:12px;padding:26px;box-shadow:0 2px 10px rgba(11,27,58,.06);margin:0 0 16px}.h{font-weight:800;font-size:18px;margin-bottom:6px}.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #eef2f8;font-size:14px}.row:last-child{border-bottom:none}.row span{color:#5a6b8a}.row b{color:#0b1b3a}code{background:#eef2f8;padding:2px 6px;border-radius:4px;font-size:13px}a{color:#3ecf8e;font-weight:700;text-decoration:none}</style></head><body><div class="wrap"><h1 style="font-size:24px;margin-bottom:4px">Your GovContract Radar</h1><p style="color:#5a6b8a;font-size:14px;margin-bottom:20px">Account status for your trial key. Last activity: ' + last + '</p>' + upBadge + '<div class="card"><div class="h">Subscription</div><div class="row"><span>Plan</span><b>' + esc(plan) + '</b></div><div class="row"><span>Data depth</span><b>' + (GOV_PLANS[govPlanName(plan)].depth === "full" ? "Full profile (description \u00B7 ref \u00B7 set-aside meaning)" : "Core profile (title \u00B7 agency \u00B7 deadline)") + '</b></div><div class="row"><span>Set-aside filter</span><b>' + (GOV_PLANS[govPlanName(plan)].setAside ? "\u2713" : "\u2014 Pro+") + '</b></div><div class="row"><span>Daily limit</span><b>' + (GOV_PLANS[govPlanName(plan)].dailyMax >= 9999 ? "Unlimited" : GOV_PLANS[govPlanName(plan)].dailyMax + "/day") + '</b></div><div class="row"><span>API key</span><b><code>' + esc(rec.key) + '</code></b></div><div class="row"><span>NAICS watch</span><b>' + esc(rec.naics || "—") + '</b></div><div class="row"><span>Access until</span><b>' + esc(exp) + '</b></div><div class="row" style="border-bottom:none;padding-top:14px">' + actBadge + '</div></div><div class="card"><div class="h">What you get</div><p style="font-size:14px;color:#5a6b8a">Daily digests of new SAM.gov opportunities matching your NAICS. Upgrade for hourly alerts, set-aside filtering (8(a)/WOSB/HUBZone/SDVOSB), webhooks and Signal summaries.</p><p style="margin-top:12px"><a href="https://pixharvest.com/pay" style="background:#0b1b3a;color:#fff;padding:11px 20px;border-radius:8px;font-weight:700">Upgrade / pay by card or invoice →</a></p></div><p style="font-size:12px;color:#8a97b5;text-align:center;margin-top:20px">Questions? Reply to the digest emails — a human answers within 24h.</p></div></body></html>';
+}
+function govNudgeHtml(naics, key) {
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:20px;color:#0b1b3a;margin:0 0 6px">Your radar watch is set — confirm it in one click \u2705</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 16px">You started a GovContract Radar trial for NAICS <b>' + esc(naics) + '</b>, but we have not seen you confirm your watch yet. One click locks in your daily alerts:</p>' +
+    '<p style="margin:0 0 18px"><a href="https://pixharvest.com/account?key=' + esc(key) + '" style="background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:12px 22px;border-radius:8px;text-decoration:none">Confirm my radar watch \u2192</a></p>' +
+    '<p style="font-size:13px;color:#5a6b8a">Every morning you will get new SAM.gov opportunities matching your codes \u2014 before the window closes. Set-aside flags, Signal summaries and hourly alerts unlock with Pro: <a href="https://pixharvest.com/pay" style="color:#3ecf8e">$79/mo \u00B7 $790/yr</a>.</p>' +
+    '<p style="font-size:12px;color:#8a97b5;margin-top:18px">No account? <a href="https://pixharvest.com/" style="color:#8a97b5">pixharvest.com</a> \u00B7 questions? Reply to this email.</p></div>';
+}
+function govRetainHtml(naics) {
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:20px;color:#0b1b3a;margin:0 0 6px">We have stopped emailing you \u2014 here is how to keep the radar on</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 16px">Your GovContract Radar trial for NAICS <b>' + esc(naics) + '</b> wrapped, and we did not see activity, so alerts paused. If a federal opportunity fits you, you still want to see it the day it posts.</p>' +
+    '<p style="margin:0 0 10px"><a href="https://pixharvest.com/#trial" style="background:#0b1b3a;color:#fff;font-weight:800;padding:12px 22px;border-radius:8px;text-decoration:none">Restart a free trial \u2192</a></p>' +
+    '<div style="background:#fff7e6;border:1px solid #f0c36d;border-radius:8px;padding:12px 16px;margin-top:16px;font-size:13px;color:#7a5b12"><b>Last chance:</b> come back within 7 days and upgrade with code <b>SAVE20</b> \u2014 20% off annual (Pro $790/yr \u2192 $632/yr).</div>' +
+    '<p style="font-size:12px;color:#8a97b5;margin-top:18px">We only email about your watch \u2014 no spam, unsubscribe anytime by replying "stop".</p></div>';
+}
+function govDailyPage(data, sync) {
+  const opps0 = (data && Array.isArray(data.opportunities)) ? data.opportunities : [];
+  const opps = opps0.slice().sort((a, b) => {
+    const ta = (a.postedAt || a.postedDate || ""), tb = (b.postedAt || b.postedDate || "");
+    if (ta && tb) return ta < tb ? 1 : ta > tb ? -1 : 0;
+    return (ta ? -1 : 0) - (tb ? -1 : 0);
+  });
+  const syncLine = sync ? (() => {
+    const last = String(sync.lastSync || "").slice(11, 19);
+    const nextIn = sync.nextSync ? Math.max(0, Math.round((new Date(sync.nextSync).getTime() - Date.now()) / 6e4)) : null;
+    const d = sync.delay;
+    let s = "Hourly sync \u00B7 last check " + (last ? last + " UTC" : "") + (nextIn !== null ? " \u00B7 next in ~" + nextIn + " min" : "");
+    if (d) s += ' \u00B7 avg posted-to-radar <b style="color:#3ecf8e">~' + d.avg + " min</b> (measured on " + sync.newCount + " new)";
+    return s;
+  })() : "Hourly refresh \u00B7 same-day delivery";
+  const fresh = (o) => {
+    if (!o.postedAt) return "";
+    const hrs = Math.max(0, Math.round((Date.now() - new Date(o.postedAt).getTime()) / 36e5));
+    return ' \u00B7 <b style="color:#3ecf8e">' + (hrs < 1 ? "under an hour ago" : hrs + "h ago") + "</b>";
+  };
+  const early = (o) => o.type === "Special Notice" ? ' \u00B7 <span style="background:#e6f7ee;color:#0d7a3d;font-weight:600;padding:1px 6px;border-radius:10px;font-size:11px">early signal</span>' : '';
+  const total = opps.length;
+  const dayStart = new Date(); dayStart.setUTCHours(0, 0, 0, 0);
+  const todayCount = opps.filter(o => o.postedAt && new Date(o.postedAt).getTime() >= dayStart.getTime()).length;
+  const weekCount = opps.filter(o => o.postedAt && new Date(o.postedAt).getTime() >= Date.now() - 7 * 864e5).length;
+  const setAsides = {};
+  const agencies = {};
+  opps.forEach(o => {
+    if (o.setAside && o.setAside !== "N/A" && o.setAside !== "null") setAsides[o.setAside] = (setAsides[o.setAside] || 0) + 1;
+    if (o.agency) agencies[o.agency] = (agencies[o.agency] || 0) + 1;
+  });
+  const setAsideTotal = Object.values(setAsides).reduce((a, b) => a + b, 0);
+  const topAgency = Object.entries(agencies).sort((a, b) => b[1] - a[1])[0] || null;
+  const setAsideNames = Object.keys(setAsides).sort((a, b) => setAsides[b] - setAsides[a]).slice(0, 4);
+  const updated = data && data.generated ? data.generated.slice(0, 10) : "";
+  const statCard = (num, label) => '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:12px;padding:18px 14px;text-align:center;flex:1;min-width:130px"><div style="font-size:30px;font-weight:800;color:#0b1b3a">' + num + '</div><div style="font-size:12px;color:#5a6b8a;margin-top:4px">' + label + '</div></div>';
+  const statsRow = '<div style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0">' + statCard(todayCount, "new today") + statCard(weekCount, "new this week") + statCard(setAsideTotal, "set-aside flagged") + statCard(topAgency ? topAgency[0] : "N/A", "top buyer agency") + '</div><p style="font-size:13px;color:#5a6b8a;background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:10px 14px">' + syncLine + '</p>';
+  const rows = opps.slice(0, 15).map(o =>
+    '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:13px 16px;margin:9px 0">' +
+    '<div style="font-weight:700;color:#0b1b3a;font-size:14px">' + esc(String(o.title || "").slice(0, 90)) + '</div>' +
+    '<div style="font-size:12px;color:#8a97b5;margin-top:4px">' + esc(o.agency || "") + fresh(o) + early(o) + (o.setAside && o.setAside !== "N/A" ? ' \u00B7 <span style="color:#b8860b;font-weight:600">' + esc(o.setAside) + '</span>' : "") + ' \u00B7 full details behind the trial</div></div>').join("") || '<p style="color:#8a97b5">Radar is warming up \u2014 new opportunities will appear here as they are published on SAM.gov.</p>';
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Today\u2019s New Federal Contract Opportunities \u2014 ' + todayCount + ' posted today \u00B7 GovContract Radar</title><meta name="description" content="Live federal contract opportunities today: new SAM.gov solicitations across all NAICS, with set-aside flags and buyer agencies. Full details and daily alerts unlock with a free trial."><link rel="canonical" href="https://pixharvest.com/gov/daily"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6;margin:0}.wrap{max-width:860px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:44px 0 48px}.hero h1{font-size:28px;margin:0 0 10px;line-height:1.25}.hero p{color:#b8c7e4;margin:0 0 22px;font-size:15px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:15px}.sec{padding:34px 0}.sec h2{font-size:20px;margin:0 0 6px}.sec p{color:#5a6b8a;margin:0 0 18px;font-size:14px}.wall{background:linear-gradient(135deg,#0b1b3a,#14305e);border-radius:14px;color:#fff;padding:28px;text-align:center;margin:26px 0}.wall h3{font-size:20px;margin:0 0 8px}.wall p{color:#b8c7e4;font-size:14px;margin:0 0 18px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}footer a{color:#7f95bd}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>Today\u2019s Federal Contract Opportunities</h1><p>The live radar \u2014 fresh from public SAM.gov data' + (updated ? ', updated ' + updated : '') + '. <b style=\"color:#fff\">' + todayCount + ' new opportunities today, ' + weekCount + ' this week</b> \u2014 refreshed every hour. What is being bought, who is buying, and which doors are set aside for small business.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free 7-Day Trial</a></div></section><section class="sec"><div class="wrap"><h2>Radar snapshot</h2><p>Aggregated from live public procurement data. Full details \u2014 titles, deadlines, direct links \u2014 unlock with a free trial.</p>' + statsRow + (setAsideNames.length ? '<p style="font-size:13px;color:#5a6b8a">Set-aside tags in the radar: <b>' + esc(setAsideNames.join(" \u00B7 ")) + '</b></p>' : '') + '<h2 style="margin-top:26px">A look inside the radar</h2><p style="font-size:13px;color:#8a97b5">Sample entries \u2014 current titles, full details behind the trial.</p>' + rows + '<div class="sec" style="padding-top:8px"><h2 style="margin-top:6px">Who won recent federal awards</h2><p>Recent award winners by NAICS industry \u2014 awardees, amounts and agencies from public USAspending data. See who holds your market before you bid.</p><a href="/gov/awards" style="color:#0d7a3d;font-weight:700">See award winners by industry \u2192</a></div></div></section><section class="wall"><div class="wrap"><h3>Don\u2019t miss the one that fits you</h3><p>Tell us your NAICS codes and get every matching opportunity by email \u2014 the day it posts. Free 7-day trial, no card required.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free Trial</a>&nbsp;&nbsp;<a href="https://pixharvest.com/pay" style="color:#3ecf8e;font-weight:700;font-size:14px">Prefer invoice? Pay by bank transfer</a></div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 Built on public U.S. government data (SAM.gov, USAspending) \u00B7 <a href="/">home</a> \u00B7 <a href="/gov/guides">guides</a> \u00B7 <a href="/sitemap.xml">sitemap</a></div></footer></body></html>';
+}
+
+function govRankPage(data, sync) {
+  const opps = (data && Array.isArray(data.opportunities)) ? data.opportunities : [];
+  const weekAgo = Date.now() - 7 * 864e5;
+  const todayStart = new Date(); todayStart.setUTCHours(0, 0, 0, 0);
+  const map = {};
+  opps.forEach(o => {
+    const ts = o.postedAt ? new Date(o.postedAt).getTime() : 0;
+    if (!ts || ts < weekAgo) return;
+    const codes = Array.isArray(o.naics) ? o.naics : (o.naics ? [String(o.naics)] : []);
+    codes.forEach(c => {
+      const k = String(c).slice(0, 6);
+      if (!map[k]) map[k] = { code: k, week: 0, today: 0 };
+      map[k].week++;
+      if (ts >= todayStart.getTime()) map[k].today++;
+    });
+  });
+  const rows = Object.values(map).sort((a, b) => b.week - a.week || b.today - a.today).slice(0, 20);
+  const nameOf = (code) => { const g = GOV_NAICS.find(x => x[0] === code); return g ? g[1] : code; };
+  const list = rows.length ? rows.map((r, i) =>
+    '<div style="background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:12px 16px;margin:8px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
+    '<div style="font-size:20px;font-weight:800;color:#0b1b3a;min-width:34px;text-align:center">' + (i + 1) + '</div>' +
+    '<div style="flex:1;min-width:200px"><div style="font-weight:700;color:#0b1b3a;font-size:14.5px"><a href="/gov/naics/' + esc(r.code) + '" style="color:#0b1b3a;text-decoration:none">' + esc(nameOf(r.code)) + '</a></div>' +
+    '<div style="font-size:12px;color:#8a97b5;margin-top:2px">NAICS ' + esc(r.code) + '</div></div>' +
+    '<div style="text-align:center;min-width:70px"><div style="font-size:18px;font-weight:800;color:#0d7a3d">' + r.week + '</div><div style="font-size:11px;color:#8a97b5">this week</div></div>' +
+    '<div style="text-align:center;min-width:70px"><div style="font-size:18px;font-weight:800;color:#3ecf8e">' + r.today + '</div><div style="font-size:11px;color:#8a97b5">today</div></div>' +
+    '<a href="/gov/naics/' + esc(r.code) + '" style="background:#0b1b3a;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;border-radius:8px;text-decoration:none">See opportunities \u2192</a></div>'
+  ).join("") : '<p style="color:#8a97b5">Radar is warming up \u2014 industry rankings appear as new opportunities are published on SAM.gov.</p>';
+  const updated = data && data.generated ? data.generated.slice(0, 10) : "";
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Most Active Federal Contracting Industries This Week \u2014 Live Ranking \u00B7 GovContract Radar</title><meta name="description" content="Live ranking of the most active federal contracting industries this week: which NAICS codes have the most new SAM.gov opportunities, updated hourly."><link rel="canonical" href="https://pixharvest.com/gov/rank"><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6;margin:0}.wrap{max-width:860px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:16px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:44px 0 48px}.hero h1{font-size:27px;margin:0 0 10px;line-height:1.25}.hero p{color:#b8c7e4;margin:0 0 20px;font-size:15px}.cta{display:inline-block;background:#3ecf8e;color:#0b1b3a;font-weight:800;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:15px}.sec{padding:30px 0}.sec h2{font-size:20px;margin:0 0 6px}.sec p{color:#5a6b8a;margin:0 0 14px;font-size:14px}.sync{font-size:12px;color:#5a6b8a;background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:9px 14px;margin:0 0 14px}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:22px 0;text-align:center}footer a{color:#7f95bd}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>Which federal markets are moving this week</h1><p>Live ranking of the most active federal contracting industries \u2014 counted from new SAM.gov opportunities' + (updated ? ', refreshed ' + updated : '') + ', updated hourly. Where the government is buying right now.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free 7-Day Trial</a></div></section><section class="sec"><div class="wrap"><h2>Top industries this week</h2><p>New opportunities posted in the last 7 days, grouped by NAICS. Click any industry to see its live opportunities.</p><div class="sync">Hourly sync from public SAM.gov data \u00B7 rankings auto-refresh</div>' + list + '<div style="background:linear-gradient(135deg,#0b1b3a,#14305e);border-radius:14px;color:#fff;padding:26px;text-align:center;margin:24px 0 6px"><h3 style="font-size:19px;margin:0 0 8px">Don\u2019t miss the one that fits you</h3><p style="color:#b8c7e4;font-size:14px;margin:0 0 16px">Tell us your NAICS codes and get every matching opportunity by email \u2014 the day it posts. Free 7-day trial, no card required.</p><a class="cta" href="https://pixharvest.com/#trial">Start Free Trial</a></div></div></section><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 Built on public U.S. government data (SAM.gov, USAspending) \u00B7 <a href="/">home</a> \u00B7 <a href="/gov/daily">live radar</a> \u00B7 <a href="/gov/awards">awards</a> \u00B7 <a href="/sitemap.xml">sitemap</a></div></footer></body></html>';
+}
+
+function govWeeklyHtml(naics, items) {
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:20px;color:#0b1b3a;margin:0 0 4px">\u{1F4C5} Your weekly federal contract digest</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 16px">' + items.length + ' new opportunity' + (items.length > 1 ? "ies" : "") + ' for NAICS <b>' + esc(naics) + '</b> this week \u00B7 GovContract Radar</p>' +
+    govOppHtml(items) +
+    '<div style="background:#fff7e6;border:1px solid #f0c36d;border-radius:8px;padding:10px 14px;margin-top:16px;font-size:12px;color:#7a5b12">' +
+    'Your trial discount (20% off, code <b>SAVE20</b>) is still available until your trial ends \u2014 <a href="https://pixharvest.com/pay" style="color:#b8860b;font-weight:700">request invoice</a>.</div>' +
+    '<p style="font-size:13px;color:#7f95bd;margin-top:18px">This is your free weekly check-in. Want <b>daily</b> alerts, set-aside filtering and deadlines? Upgrade in one click \u2014 annual plans save 2 months: <a href="https://pixharvest.com/#pricing" style="color:#3ecf8e">pixharvest.com</a></p></div>';
+}
+
+function govPayPage() {
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pay by Invoice / Bank Transfer \u2014 GovContract Radar</title><meta name="description" content="Pay for GovContract Radar by bank transfer via Payoneer. Request an invoice for Starter, Pro, Radar+, Team or Enterprise and we email payment details within 24 hours."><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.6}.wrap{max-width:720px;margin:0 auto;padding:0 20px}header{background:#0b1b3a;color:#fff;padding:18px 0}.brand{font-weight:800;font-size:17px}.brand span{color:#3ecf8e}.hero{background:linear-gradient(135deg,#0b1b3a,#14305e);color:#fff;padding:40px 0 44px}.hero h1{font-size:28px;line-height:1.25;margin:0 0 10px}.hero p{font-size:15px;color:#b8c7e4;margin:0}.card{background:#fff;border-radius:12px;padding:28px;margin:28px 0;box-shadow:0 2px 10px rgba(11,27,58,.06)}.card h2{font-size:18px;margin-bottom:6px}.card p{font-size:14px;color:#5a6b8a;margin-bottom:14px}.opt{display:flex;gap:10px;align-items:center;border:1px solid #e3e9f3;border-radius:10px;padding:14px 16px;margin:10px 0;cursor:pointer}.opt.sel{border:2px solid #3ecf8e}.opt .nm{font-weight:800;font-size:15px}.opt .pr{margin-left:auto;font-weight:800;color:#0b1b3a}.opt .pr span{font-size:12px;color:#8a97b5;font-weight:500}.form input{width:100%;padding:13px 14px;border:1px solid #e3e9f3;border-radius:8px;font-size:15px;margin:8px 0}.form button{width:100%;background:#3ecf8e;color:#0b1b3a;font-weight:800;font-size:16px;padding:15px;border:none;border-radius:8px;cursor:pointer;margin-top:12px}.fine{margin-top:14px;font-size:12px;color:#7f95bd;text-align:center}footer{background:#0b1b3a;color:#7f95bd;font-size:13px;padding:24px 0;text-align:center;margin-top:28px}footer a{color:#7f95bd}</style></head><body><header><div class="wrap brand">GovContract <span>Radar</span></div></header><section class="hero"><div class="wrap"><h1>Pay by bank transfer \u2014 no card needed</h1><p>Request an invoice and we email you payment details (Payoneer wire / ACH) within 24 hours. Plans activate the same day we receive payment.</p><p style="font-size:14px;color:#0d7a3d;background:#e6f7ee;border:1px solid #9fd8bd;border-radius:8px;padding:10px 14px;margin:10px 0 0">✅ Card checkout pending merchant review \u2014 bank transfer (Payoneer) is live now \u00b7 mention <b>"card"</b> and we email a checkout link when it\u2019s available.</p></div></section><div class="wrap"><div class="card"><h2>Choose your plan</h2><p>Choose the tier that fits \u2014 Starter (1 NAICS, 5/day), Pro (5 NAICS, unlimited, set-aside filter), Radar+ (adds match score \u0026 recompete radar), Team (multi-user), Enterprise (data licensing). Annual = 2 months free.</p><div id="opts"><div class="opt" data-plan="Starter $190/yr"><span class="nm">Starter \u00B7 annual <b style="color:#3ecf8e">(save $38)</b></span><span class="pr">$190<span>/yr</span></span></div><div class="opt" data-plan="Starter $19/mo"><span class="nm">Starter \u00B7 monthly</span><span class="pr">$19<span>/mo</span></span></div><div class="opt sel" data-plan="Pro $790/yr"><span class="nm">Pro \u2014 recommended \u00B7 annual <b style="color:#3ecf8e">(save $158)</b></span><span class="pr">$790<span>/yr</span></span></div><div class="opt" data-plan="Pro $79/mo"><span class="nm">Pro \u00B7 monthly</span><span class="pr">$79<span>/mo</span></span></div><div class="opt" data-plan="Radar+ $1,490/yr"><span class="nm">Radar+ \u00B7 annual <b style="color:#3ecf8e">(save $298)</b></span><span class="pr">$1,490<span>/yr</span></span></div><div class="opt" data-plan="Radar+ $149/mo"><span class="nm">Radar+ \u00B7 monthly</span><span class="pr">$149<span>/mo</span></span></div><div class="opt" data-plan="Team $990/yr"><span class="nm">Team \u00B7 annual <b style="color:#3ecf8e">(save $198)</b></span><span class="pr">$990<span>/yr</span></span></div><div class="opt" data-plan="Team $99/mo"><span class="nm">Team \u00B7 monthly</span><span class="pr">$99<span>/mo</span></span></div><div class="opt" data-plan="Enterprise $2,990/yr"><span class="nm">Enterprise \u00B7 annual <b style="color:#3ecf8e">(save $598)</b></span><span class="pr">$2,990<span>/yr</span></span></div><div class="opt" data-plan="Enterprise $299/mo"><span class="nm">Enterprise \u00B7 monthly</span><span class="pr">$299<span>/mo</span></span></div></div></div><div class="card"><h2>Pay by card — instant activation</h2><p>Self-serve checkout for Starter and Pro. Your account upgrades automatically the moment payment succeeds — no waiting, no manual review.</p><select id="cc-plan" style="width:100%;padding:13px 14px;border:1px solid #e3e9f3;border-radius:8px;font-size:15px;margin:8px 0;background:#fff"><option value="pro">Pro — $79/mo (unlimited, set-aside filter)</option><option value="pro-annual">Pro — $790/yr · save $158 (recommended)</option><option value="starter">Starter — $19/mo (1 NAICS, 5/day)</option><option value="starter-annual">Starter — $190/yr · save $38</option></select><input type="text" id="cc-key" placeholder="Your API key (from the welcome email)" style="width:100%;padding:13px 14px;border:1px solid #e3e9f3;border-radius:8px;font-size:15px;margin:8px 0;box-sizing:border-box"><input type="email" id="cc-email" placeholder="Work email (for your receipt)" style="width:100%;padding:13px 14px;border:1px solid #e3e9f3;border-radius:8px;font-size:15px;margin:8px 0;box-sizing:border-box"><button onclick="ccPay()" style="width:100%;background:#3ecf8e;color:#0b1b3a;font-weight:800;font-size:16px;padding:15px;border:none;border-radius:8px;cursor:pointer;margin-top:12px">Pay with card →</button><div class="fine" id="ccm">Instant activation · Same API key · Annual saves 2 months</div></div><div class="card"><h2>Request your invoice</h2><form class="form" id="pf"><input type="text" id="pc" placeholder="Company name" required><input type="email" id="pe" placeholder="Work email" required><input type="text" id="pn" placeholder="NAICS code(s) you track (e.g. 541511)" required><button type="submit">Request Invoice</button></form><div class="fine" id="pm">No card required \u00B7 We email you payment details within 24h \u00B7 ACH / wire via Payoneer</div></div></div><footer><div class="wrap">GovContract Radar by PixHarvest \u00B7 <a href="/">home</a> \u00B7 <a href="/terms">terms</a> \u00B7 <a href="/privacy">privacy</a></div></footer><script>var opts=document.querySelectorAll(".opt"),sel=document.querySelector(".opt.sel");opts.forEach(function(o){o.addEventListener("click",function(){opts.forEach(function(x){x.classList.remove("sel");});o.classList.add("sel");sel=o;});});var f=document.getElementById("pf"),pm=document.getElementById("pm");f.addEventListener("submit",function(ev){ev.preventDefault();var plan=sel?sel.getAttribute("data-plan"):"Pro $79/mo";var body={name:document.getElementById("pc").value.trim(),email:document.getElementById("pe").value.trim(),company:document.getElementById("pc").value.trim(),product:"gov-contract-radar",message:"Invoice request: "+plan+" \u00B7 NAICS: "+document.getElementById("pn").value.trim()};pm.textContent="Sending request\u2026";fetch("/api/lead",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(d){pm.textContent=d.ok?"Invoice request sent \u2014 check your inbox for payment details within 24h.":"Error: "+(d.error||"unknown");}).catch(function(){pm.textContent="Network error \u2014 please email contentforge.press@outlook.com.";});});function ccPay(){var sel=document.getElementById("cc-plan").value;var mode=sel.indexOf("annual")>=0?"annual":"monthly";var plan=sel.split("-")[0];var key=document.getElementById("cc-key").value.trim();var email=document.getElementById("cc-email").value.trim();var m=document.getElementById("ccm");if(!key){m.textContent="Enter your API key first.";return;}m.textContent="Creating secure checkout…";fetch("/api/gov/checkout",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({key:key,plan:plan,mode:mode,email:email})}).then(function(r){return r.json();}).then(function(d){if(d.ok&&d.checkoutUrl){location.href=d.checkoutUrl;}else if(d.invoice){m.textContent="This plan is invoiced — use the invoice form below.";}else{m.textContent="Error: "+(d.error||"unknown");}}).catch(function(){m.textContent="Network error — please try again.";});}</script></body></html>';
+}
+/* ============ GovContract Radar: self-serve payment valve (Dodo) ============ */
+const GOV_DODO = {
+  starter: { product: "pdt_0NoteCBdrDMP8ScmVRTnh", price: 19 },
+  pro: { product: "pdt_0NoteE9MyIpVLcXpKJ4n6", price: 79 }
+};
+function govPlanMode(m) { return String(m || "monthly") === "annual" ? "annual" : "monthly"; }
+function govDodoCreateCheckout(env, key, plan, mode, email) {
+  const cfg = GOV_DODO[plan];
+  if (!cfg) return Promise.resolve({ ok: false, error: "plan not available for self-serve checkout — request an invoice instead" });
+  const annual = govPlanMode(mode) === "annual";
+  return fetch("https://live.dodopayments.com/checkouts", {
+    method: "POST",
+    headers: { "authorization": "Bearer " + env.DODO_API_KEY, "content-type": "application/json" },
+    body: JSON.stringify({
+      product_cart: [{ product_id: cfg.product, quantity: annual ? 10 : 1 }],
+      payment_link: true,
+      metadata: { key, plan, mode: annual ? "annual" : "monthly" },
+      customer: email ? { email } : undefined,
+      return_url: "https://pixharvest.com/account?key=" + encodeURIComponent(key) + "&sid=",
+      webhook_url: "https://pixharvest.com/api/dodo/webhook"
+    })
+  }).then(async r => {
+    const t = await r.text();
+    let d = {};
+    try { d = JSON.parse(t); } catch (e) {}
+    if (!r.ok) return { ok: false, error: "dodo " + r.status + " " + t.slice(0, 160) };
+    return { ok: true, sessionId: d.session_id, checkoutUrl: d.checkout_url };
+  }).catch(e => ({ ok: false, error: String(e && e.message || e) }));
+}
+function govDodoStatus(env, sid) {
+  return fetch("https://live.dodopayments.com/checkouts/" + encodeURIComponent(sid), {
+    headers: { "authorization": "Bearer " + env.DODO_API_KEY }
+  }).then(async r => {
+    const t = await r.text();
+    let d = {};
+    try { d = JSON.parse(t); } catch (e) {}
+    if (!r.ok) return { ok: false, error: "dodo " + r.status };
+    return { ok: true, paymentStatus: d.payment_status, paymentId: d.payment_id };
+  }).catch(e => ({ ok: false, error: String(e && e.message || e) }));
+}
+function govPaidHtml(plan, mode, expires, key) {
+  return '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px">' +
+    '<h1 style="font-size:22px;color:#0b1b3a;margin:0 0 6px">Payment received \u2014 your ' + esc(plan) + ' plan is active \u2705</h1>' +
+    '<p style="color:#5a6b8a;font-size:14px;margin:0 0 18px">Thanks for subscribing to GovContract Radar. Your account was upgraded instantly \u2014 no waiting, no manual review.</p>' +
+    '<div style="background:#0b1b3a;color:#fff;border-radius:8px;padding:16px;margin:0 0 16px">' +
+    '<div style="font-size:12px;color:#8ba3cc;margin-bottom:4px">Your API key (unchanged)</div>' +
+    '<div style="font-size:18px;font-weight:800;letter-spacing:1px">' + esc(key) + '</div></div>' +
+    '<div style="background:#f6f8fb;border:1px solid #e3e9f3;border-radius:8px;padding:14px 16px;font-size:13px;color:#4a5a7a">' +
+    '<div style="padding:3px 0"><b>Plan:</b> ' + esc(plan) + ' (' + esc(mode) + ')</div>' +
+    '<div style="padding:3px 0"><b>Access until:</b> ' + esc(String(expires).slice(0, 10)) + '</div>' +
+    '<div style="padding:3px 0"><b>What changed:</b> full data depth' + (plan === "pro" ? ", set-aside filter, unlimited alerts" : "") + ' \u2014 instantly live on /v1/gov/feed with your same key.</div></div>' +
+    '<p style="font-size:13px;color:#7f95bd;margin-top:18px">View account: <a href="https://pixharvest.com/account?key=' + esc(key) + '" style="color:#3ecf8e">pixharvest.com/account</a> \u00B7 Questions? Reply to this email \u2014 a human answers within 24h.</p></div>';
+}
+async function govMaybeUpgrade(env, kv, sid) {
+  if (!sid) return { ok: false, error: "no sid" };
+  const pending = await kv.get("__gov_checkout:" + sid, "json");
+  if (!pending || !pending.key) return { ok: false, error: "unknown session" };
+  if (pending.done) return { ok: true, already: true };
+  const st = await govDodoStatus(env, sid);
+  if (!st.ok) return { ok: false, error: st.error || "status check failed" };
+  if (String(st.paymentStatus).toLowerCase() !== "succeeded") return { ok: false, error: "not paid yet: " + st.paymentStatus };
+  const rec = await kv.get("__gov_user:" + pending.key, "json");
+  if (rec && rec.email) {
+    const mode = govPlanMode(pending.mode);
+    const days = mode === "annual" ? 365 : 30;
+    rec.plan = govPlanName(pending.plan);
+    rec.planSince = new Date().toISOString();
+    rec.planMode = mode;
+    rec.expires = new Date(Date.now() + days * 864e5).toISOString();
+    await kv.put("__gov_user:" + pending.key, JSON.stringify(rec));
+    await govSendMail(env, rec.email, "Payment received \u2014 your " + rec.plan + " plan is active", govPaidHtml(rec.plan, mode, rec.expires, pending.key));
+  }
+  await kv.put("__gov_checkout:" + sid, JSON.stringify({ ...pending, done: true, upgraded: new Date().toISOString() }));
+  return { ok: true, upgraded: true, plan: pending.plan };
+}
+/* ============ end GovContract Radar automation ============ */
+
 var worker_default = {
   async fetch(request, env) {
     const url = new URL(request.url);
     const p = url.pathname;
     const kv = env.SHARED_KV;
-      if (p === "/terms" || p === "/privacy" || p === "/refunds") { const lg = legalPage(p.slice(1)); return lg ? new Response(lg, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } }) : new Response(null, { status: 404 }); }
-if (p === "/" || p === "/pricing" || p === "/faq") return new Response(page(), { headers: { "content-type": "text/html; charset=utf-8" } });
-    if (p === "/try") return new Response(demoPage(), { headers: { "content-type": "text/html; charset=utf-8" } });
-    
-    if (p === "/mcp") return handleMcpMain(request);
-    if (p === "/tariff" || p === "/tariff/") return new Response(null, { status: 302, headers: { "location": "/free-data" } });
-    if (p.startsWith("/tariff/")) {
-      const slug = p.slice(8);
-      return handleTariffProxy(request, slug);
+    if (p === "/control" || p === "/control/") return new Response("Not Found", { status: 404, headers: { "cache-control": "no-store" } });
+    if (env.INDEXNOW_KEY && p === "/" + env.INDEXNOW_KEY + ".txt") return new Response(env.INDEXNOW_KEY, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=86400" } });
+    if (p === "/api/gov/indexnow") {
+      const ak = url.searchParams.get("key") || request.headers.get("x-admin-key") || "";
+      if (ak !== "ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac") return json({ error: "forbidden" }, 403);
+      const res = await pushIndexNow(env, kv);
+      try { await kv.put("__gov_meta:indexnow", JSON.stringify({ at: new Date().toISOString(), ok: res.ok, pushed: res.pushed, status: res.status, error: res.error || "" }), { expirationTtl: 604800 }); } catch (e) {}
+      return json({ ok: res.ok, pushed: res.pushed, status: res.status, error: res.error || "" });
     }
-    if (p === "/tools" || p === "/tools/") return handleToolsPage(null);
-    if (p.startsWith("/tools/")) return handleToolsPage(p.slice(7));
+      if (p === "/terms" || p === "/privacy" || p === "/refunds") { const lg = legalPage(p.slice(1)); return lg ? new Response(lg, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } }) : new Response(null, { status: 404 }); }
+async function govLandingFresh(env) {
+  let dd = null, sync = null;
+  try { dd = await env.SHARED_KV.get("__gov_opps:latest", "json"); } catch (e) {}
+  try { sync = await env.SHARED_KV.get("__gov_meta:sync", "json"); } catch (e) {}
+  const list = Array.isArray(dd) ? dd : (dd && Array.isArray(dd.opportunities) ? dd.opportunities : []);
+  const startToday = new Date(); startToday.setUTCHours(0, 0, 0, 0);
+  const today = list.filter(o => o.postedAt && new Date(o.postedAt).getTime() >= startToday.getTime());
+  const top = list.slice(0, 3);
+  const rows = top.map(o => {
+    const pa = o.postedAt ? String(o.postedAt).replace("T", " ").slice(0, 16).replace("Z", "") + " UTC" : "";
+    const days = o.responseDeadLine ? Math.round((new Date(o.responseDeadLine).getTime() - Date.now()) / 864e5) : null;
+    const dl = days === null ? "" : (days < 0 ? ' · <b style="color:#f87171">closed</b>' : (days === 0 ? ' · <b style="color:#f87171">closes today</b>' : (days <= 14 ? ' · <b style="color:#b8860b">closes in ' + days + 'd</b>' : ' · closes ' + String(o.responseDeadLine).slice(0, 10))));
+    const href = o.noticeId ? "https://sam.gov/opp/" + encodeURIComponent(String(o.noticeId).trim()) + "/view" : "https://sam.gov/";
+    return '<a href="' + href + '" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:12px 16px;margin:8px 0;text-decoration:none">' +
+      '<span style="font-weight:700;color:#0b1b3a;font-size:14px">' + esc(String(o.title || "").slice(0, 80)) + '</span>' +
+      '<span style="font-size:12px;color:#8a97b5">' + esc(o.agency || "") + (o.type ? ' · ' + esc(o.type) : "") + (pa ? ' · <b style="color:#3ecf8e">' + pa + '</b>' : "") + dl + '</span></a>';
+  }).join("") || '<p style="color:#8a97b5;text-align:center;padding:10px">No opportunities in the latest sync — new ones are fetched every hour.</p>';
+  const syncLine = sync ? " · hourly sync, last check " + (sync.lastSync ? String(sync.lastSync).slice(0, 16).replace("T", " ").replace("Z", "") + " UTC" : "recently") : "";
+  const block = '<section class="data" style="background:#f6f8fb"><div class="wrap"><h2 style="text-align:center;font-size:26px;margin-bottom:8px">Fresh today — verify it yourself</h2><p style="text-align:center;color:#5a6b8a;font-size:15px;margin-bottom:22px">' + (today.length > 0 ? '<b style="color:#0b1b3a">' + today.length + ' new opportunities</b> posted on SAM.gov in the last 24 hours' : 'The watch is running 24/7 — new postings are quiet right now, and the moment one drops we sync it within the hour. Latest synced at ' + (sync && sync.lastSync ? String(sync.lastSync).slice(0, 16).replace("T", " ").replace("Z", "") + ' UTC' : 'recently')) + syncLine + '. Every row links to the official SAM.gov notice — check the posting time yourself.</p>' + rows + '<div style="text-align:center;margin-top:18px"><a href="/try" style="display:inline-block;background:#0b1b3a;color:#fff;font-weight:800;padding:12px 26px;border-radius:8px;text-decoration:none;font-size:14px">See the live radar — try your NAICS free →</a></div></div></section>';
+  return GOV_LANDING.replace('<section class="pricing" id="pricing">', block + '<section class="pricing" id="pricing">');
+}
+if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/contact" || p === "/gov" || p === "/gov/") return new Response(await govLandingFresh(env), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+    if (p === "/pay" || p === "/pay/") return new Response(govPayPage(), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } });
+    if (p === "/gov/guides" || p === "/gov/guides/") {
+      const links = GOV_GUIDES.map(g => '<a href="/gov/guides/' + g[0] + '" style="display:block;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:12px 16px;margin:8px 0;color:#0b1b3a;text-decoration:none;font-weight:600;font-size:14px">' + esc(g[1]) + '</a>').join("");
+      return new Response('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Federal Contracting Guides \u00B7 GovContract Radar</title><style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;max-width:760px;margin:0 auto;padding:30px 20px}h1{font-size:26px}</style></head><body><h1>Federal Contracting Guides</h1>' + links + '<p style="margin-top:20px"><a href="/" style="color:#3ecf8e">Back to GovContract Radar \u2192</a></p></body></html>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } });
+    }
+    if (p === "/4660683b5d3e6c0641a62620091c0bc8.txt") {
+      return new Response("4660683b5d3e6c0641a62620091c0bc8", { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=86400" } });
+    }
+    if (p === "/v1/gov/feed") {
+      const key = String(url.searchParams.get("key") || "").trim();
+      const naics = String(url.searchParams.get("naics") || "").trim();
+      const setAside = String(url.searchParams.get("setAside") || "").trim();
+      const limit = Math.min(parseInt(url.searchParams.get("limit") || "20", 10) || 20, 50);
+      if (!key) return json({ error: "key required" }, 400);
+      const rec = await kv.get("__gov_user:" + key, "json");
+      if (!rec || !rec.email) return json({ error: "invalid key" }, 401);
+      await kv.put("__gov_last:" + key, new Date().toISOString(), { expirationTtl: 45 * 86400 });
+      if (rec.expires && new Date(rec.expires) < new Date()) return json({ error: "trial expired", upgrade: "https://pixharvest.com/#pricing" }, 402);
+      const plan = govPlanName(rec.plan);
+      const cfg = GOV_PLANS[plan];
+      if (setAside && !cfg.setAside) return json({ error: "set-aside filtering is a Pro+ feature \u2014 upgrade at https://pixharvest.com/#pricing", plan }, 403);
+      const naicsFilter = naics || rec.naics || "";
+      const dd = await kv.get("__gov_opps:latest", "json");
+      let items = (dd && Array.isArray(dd.opportunities)) ? dd.opportunities : [];
+      items = items.slice().sort((a, b) => {
+        const ta = (a.postedAt || a.postedDate || ""), tb = (b.postedAt || b.postedDate || "");
+        if (ta && tb) return ta < tb ? 1 : ta > tb ? -1 : 0;
+        if (ta && !tb) return -1;
+        if (!ta && tb) return 1;
+        return 0;
+      });
+      if (naicsFilter) items = items.filter(o => govMatches(naicsFilter, o));
+      if (setAside) items = items.filter(o => String(o.setAside || "").toLowerCase().indexOf(setAside.toLowerCase()) >= 0);
+      let dailyRemaining = null;
+      let take = limit;
+      if (cfg.dailyMax < 9999) {
+        const dayKey = "__gov_daily:" + key + ":" + new Date().toISOString().slice(0, 10);
+        const used = parseInt(await kv.get(dayKey) || "0", 10) || 0;
+        dailyRemaining = Math.max(0, cfg.dailyMax - used);
+        take = Math.min(take, dailyRemaining);
+        await kv.put(dayKey, String(used + take), { expirationTtl: 86400 });
+      }
+      const out = items.slice(0, take).map(o => {
+        const row = govFieldSet(o, plan);
+        if (cfg.matchScore) row.matchScore = govMatchScore(o, naicsFilter);
+        if (cfg.recompete) row.recompete = govRecompete(o);
+        row.signalSummary = govSignalSummary(o);
+        return row;
+      });
+      const lowTier = plan !== "pro" && plan !== "radar+" && plan !== "team" && plan !== "enterprise";
+      const sync = await kv.get("__gov_meta:sync", "json").catch(() => null);
+      return json({ ok: true, count: out.length, plan, generated: (dd && dd.generated) || null, naics: naicsFilter, items: out,
+        sync: sync || null,
+        dailyRemaining, upgrade: lowTier ? "https://pixharvest.com/#pricing" : undefined,
+        message: lowTier && out.length === 0 ? "No more opportunities in today's quota \u2014 new ones arrive tomorrow, or upgrade for unlimited." : undefined });
+    }
+    if (p === "/gov/daily" || p === "/gov/daily/") {
+      const dd = await kv.get("__gov_opps:latest", "json");
+      const sync = await kv.get("__gov_meta:sync", "json").catch(() => null);
+      return new Response(govDailyPage(dd, sync), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+    }
+    if (p === "/api/gov/today.json" || p === "/api/gov/today") {
+      const dd = await kv.get("__gov_opps:latest", "json");
+      const opps = (dd && Array.isArray(dd.opportunities)) ? dd.opportunities : [];
+      const weekAgo = Date.now() - 7 * 864e5;
+      const week = opps.filter(o => o.postedAt && new Date(o.postedAt).getTime() >= weekAgo).slice(0, 15).map(o => ({
+        title: o.title, agency: o.agency, type: o.type, naics: o.naics, setAside: o.setAside,
+        postedAt: o.postedAt || null,
+        url: o.uiLink || (o.solicitationNumber ? "https://sam.gov/opp/" + o.solicitationNumber : null)
+      }));
+      return new Response(JSON.stringify({ ok: true, source: "SAM.gov (public domain)", note: "Deadlines, full descriptions and NAICS filtering are available to subscribers", updated: (dd && dd.generated) || null, count: week.length, opportunities: week }), {
+        headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=600, s-maxage=600", "access-control-allow-origin": "*" }
+      });
+    }
+    if (p === "/gov/rank" || p === "/gov/rank/") {
+      const dd = await kv.get("__gov_opps:latest", "json");
+      return new Response(govRankPage(dd), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+    }
+    if (p === "/gov/rss.xml" || p === "/gov/rss") {
+      const dd = await kv.get("__gov_opps:latest", "json");
+      return new Response(govRssFeed(dd), { headers: { "content-type": "application/rss+xml; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900", "access-control-allow-origin": "*" } });
+    }
+    if (p === "/gov/widget" || p === "/gov/widget/") {
+      const dd = await kv.get("__gov_opps:latest", "json");
+      const wnaics = String(url.searchParams.get("naics") || "").trim();
+      let wopps = (dd && dd.opportunities) || [];
+      if (wnaics) wopps = wopps.filter(o => Array.isArray(o.naics) && o.naics.some(x => String(x).slice(0, 4) === wnaics.slice(0, 4)));
+      return new Response(govWidgetHtml({ opportunities: wopps }, wnaics), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=600, s-maxage=600", "access-control-allow-origin": "*" } });
+    }
+    if (p === "/api/gov/awards") {
+      const anaics = String(url.searchParams.get("naics") || "").trim();
+      const alimit = Number(url.searchParams.get("limit")) || 10;
+      const aw = await govAwards(env, anaics || null, alimit);
+      return json({ ok: true, naics: anaics || "all", cached: !!aw.cached, found: (aw.items || []).length, error: aw.error || null, awards: aw.items || [], note: "Public USAspending award data. Subscribe for opportunity radar: https://pixharvest.com/try" });
+    }
+    if (p === "/gov/awards" || p === "/gov/awards/") {
+      const TOP_AWARD_NAICS = ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110"];
+      const rows = await Promise.all(TOP_AWARD_NAICS.map(async (c) => {
+        const r = await govAwards(env, c, 5);
+        return [c, (GOV_NAICS.find(g => g[0] === c) || [c, "NAICS " + c])[1], r.items || []];
+      }));
+      return new Response(govAwardsIndex(rows), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+    }
+    if (p.startsWith("/gov/awards/")) {
+      const seg = p.slice(12).split("/").filter(Boolean);
+      const acode = String(seg[0] || "").replace(/[^0-9]/g, "").slice(0, 6);
+      const ayear = String(seg[1] || "").replace(/[^0-9]/g, "").slice(0, 4);
+      if (!acode) return new Response(null, { status: 404 });
+      const info = GOV_NAICS.find(g => g[0] === acode) || null;
+      if (ayear && ayear.length === 4 && Number(ayear) >= 2023 && Number(ayear) <= 2025) {
+        const aw = await govAwards(env, acode, 10, ayear);
+        return new Response(govAwardsYearPage(acode, info, ayear, aw), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+      }
+      const aw = await govAwards(env, acode, 10);
+      return new Response(govAwardsPage(acode, info, aw), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+    }
+    if (p.startsWith("/gov/guides/")) {
+      const g = govGuidePage(p.slice(12));
+      return g ? new Response(g, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } }) : new Response(null, { status: 404 });
+    }
+    if (p === "/free-data" || p === "/free-data/") return new Response(page(), { headers: { "content-type": "text/html; charset=utf-8" } });
+    if (p === "/try" || p === "/try/") {
+      const ddt = await env.SHARED_KV.get("__gov_opps:latest", "json").catch(() => null);
+      const syt = await env.SHARED_KV.get("__gov_meta:sync", "json").catch(() => null);
+      const naicsq = String(url.searchParams.get("naics") || "").trim();
+      return new Response(demoPage(ddt, syt, naicsq), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=600, s-maxage=600" } });
+    }
+    if (p === "/account" || p === "/account/") {
+      const key = String(url.searchParams.get("key") || "").trim();
+      if (!key) return new Response('<!doctype html><html lang="en"><head><title>Your GovContract Radar account</title></head><body style="font-family:system-ui;padding:40px 20px;max-width:560px;margin:0 auto;background:#f6f8fb;color:#14213d"><h1>Enter your trial key</h1><p style="color:#5a6b8a">Paste the key from your welcome email to see your subscription status.</p><form method="get"><input name="key" placeholder="e.g. GOV-XXXXXX" style="width:100%;padding:12px;border:1px solid #e3e9f3;border-radius:8px;font-size:15px"><button style="margin-top:12px;padding:12px 24px;background:#3ecf8e;color:#0b1b3a;font-weight:800;border:none;border-radius:8px;font-size:15px;cursor:pointer">View my account</button></form></body></html>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+      const rec = await kv.get("__gov_user:" + key, "json");
+      if (!rec || !rec.email) return new Response('<!doctype html><html lang="en"><head><title>Key not found</title></head><body style="font-family:system-ui;padding:40px;background:#f6f8fb;color:#14213d"><h1>Key not found</h1><p style="color:#5a6b8a">Check the key in your welcome email, or <a href="/#trial" style="color:#3ecf8e">start a new trial</a>.</p></body></html>', { status: 404, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+      const lastSeen = await kv.get("__gov_last:" + key);
+      const activated = await kv.get("__gov_act:" + key);
+      const sid = String(url.searchParams.get("sid") || "").trim();
+      let upMsg = "";
+      if (sid) {
+        const up = await govMaybeUpgrade(env, kv, sid);
+        if (up.ok && up.upgraded) upMsg = "Payment received — your " + esc(up.plan || "") + " plan is now active. Access until " + esc(rec.expires ? String(rec.expires).slice(0, 10) : "") + ".";
+      }
+      await kv.put("__gov_last:" + key, new Date().toISOString(), { expirationTtl: 45 * 86400 });
+      return new Response(govAccountPage(rec, !!activated, lastSeen, upMsg), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+    }
+    if (p === "/api/gov/activate") {
+      const key = String(url.searchParams.get("key") || "").trim();
+      const rec = await kv.get("__gov_user:" + key, "json");
+      if (!rec || !rec.email) return json({ error: "invalid key" }, 401);
+      await kv.put("__gov_act:" + key, new Date().toISOString(), { expirationTtl: 90 * 86400 });
+      await kv.put("__gov_last:" + key, new Date().toISOString(), { expirationTtl: 45 * 86400 });
+      return new Response('<script>location.href="/account?key=' + encodeURIComponent(key) + '";</script><p style="font-family:system-ui;padding:40px">Radar watch confirmed \u2014 redirecting…</p>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+    }
+    if (p === "/api/gov/signup") {
+      if (request.method !== "POST") return json({ error: "method" }, 405);
+      let b = {};
+      try { b = await request.json(); } catch (e) { return json({ error: "bad json" }, 400); }
+      const email = String(b.email || "").trim().toLowerCase().slice(0, 200);
+      const naics = String(b.naics || "").trim().slice(0, 20);
+      if (!email || !email.includes("@") || !naics) return json({ error: "email + naics required" }, 400);
+      const now = new Date().toISOString();
+      const key = "GOV-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+      const plan = govPlanName(b.plan || "trial");
+      const rec = { key, email, naics, created: now, expires: new Date(Date.now() + 7 * 864e5).toISOString(), plan };
+      await kv.put("__gov_user:" + key, JSON.stringify(rec));
+      await kv.put("__gov_trial:" + email, JSON.stringify({ key, email, naics, created: now }));
+      let welcome = "queued";
+      try {
+        const since = new Date(Date.now() - 3 * 864e5).toISOString().slice(0, 10);
+        const sm = await govSam(env, since, now.slice(0, 10));
+        const match = (sm.items || []).filter(o => govMatches(naics, o)).slice(0, 5);
+        const mr = await govSendMail(env, email, "Your GovContract Radar trial is ready", govWelcomeHtml(key, naics, match));
+        welcome = mr.ok ? "sent" : "failed:" + (mr.status || mr.error || "?");
+      } catch (e) { welcome = "error:" + String(e && e.message || e); }
+      return json({ ok: true, trialKey: key, welcome, message: "Trial created — setup email sent to " + email });
+    }
+    
+    if (p === "/api/gov/checkout") {
+      if (request.method !== "POST") return json({ error: "method" }, 405);
+      let b = {};
+      try { b = await request.json(); } catch (e) { return json({ error: "bad json" }, 400); }
+      const key = String(b.key || "").trim().slice(0, 40);
+      const plan = govPlanName(b.plan || "");
+      const mode = govPlanMode(b.mode);
+      if (!key || !plan || plan === "trial") return json({ error: "key + plan required" }, 400);
+      const rec = await kv.get("__gov_user:" + key, "json");
+      if (!rec || !rec.email) return json({ error: "invalid key" }, 401);
+      if (!GOV_DODO[plan]) return json({ ok: true, invoice: true, message: "This plan is invoiced — use /pay" });
+      const email = String(b.email || rec.email || "").trim().slice(0, 200);
+      const cs = await govDodoCreateCheckout(env, key, plan, mode, email);
+      if (!cs.ok) return json({ error: cs.error || "checkout failed" }, 502);
+      await kv.put("__gov_checkout:" + cs.sessionId, JSON.stringify({ key, plan, mode: govPlanMode(mode), email, ts: new Date().toISOString() }), { expirationTtl: 604800 });
+      return json({ ok: true, checkoutUrl: cs.checkoutUrl, sessionId: cs.sessionId });
+    }
+    if (p === "/api/dodo/webhook") {
+      if (request.method !== "POST") return json({ error: "method" }, 405);
+      let raw = "";
+      try { raw = await request.text(); } catch (e) {}
+      let d = {};
+      try { d = JSON.parse(raw || "{}"); } catch (e) {}
+      const sid = String((d && (d.session_id || d.checkout_id || (d.data && d.data.session_id) || (d.payment && d.payment.session_id) || "")) || "").trim();
+      if (!sid) return json({ ok: true }); // ignore unrelated events
+      await govMaybeUpgrade(env, kv, sid);
+      return json({ ok: true });
+    }
+    
+    if (p === "/mcp") {
+      const host = String(request.headers.get("host") || "");
+      if (host.startsWith("gov.")) return handleGovMcp(request, env);
+      return handleMcpMain(request);
+    }
+    if (p === "/gov/alternatives" || p === "/gov/alternatives/") return new Response(govAltIndex(), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+    if (p.startsWith("/gov/alternatives/")) {
+      const html = govAltPage(p.slice(18));
+      if (!html) return new Response(null, { status: 404 });
+      return new Response(html, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+    }
+    if (p === "/gov/mcp" || p === "/gov/mcp/") return handleGovMcp(request, env);
+    if (p.startsWith("/gov/naics/")) {
+      const rest = p.slice(11);
+      const parts = rest.split("/");
+      const code = parts[0];
+      if (!/^\d{4,6}$/.test(code)) return new Response(null, { status: 404 });
+      const data = await kv.get("__gov_opps:latest", "json");
+      if (parts.length >= 2 && parts[1]) {
+        const html = govSetAsidePage(code, parts[1], data);
+        if (!html) return new Response(null, { status: 404 });
+        return new Response(html, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+      }
+      return new Response(govNaicsPage(code, data), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+    }
+    if (p === "/api/gov/ingest") {
+      const ak = url.searchParams.get("key") || request.headers.get("x-admin-key") || "";
+      if (ak !== "ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac") return json({ error: "forbidden" }, 403);
+      if (request.method !== "POST") return json({ error: "method" }, 405);
+      let b = {};
+      try { b = await request.json(); } catch { return json({ error: "bad json" }, 400); }
+      if (!b || !Array.isArray(b.opportunities)) return json({ error: "opportunities[] required" }, 400);
+      const TENDER = ["Presolicitation", "Combined Synopsis/Solicitation", "Solicitation", "Sources Sought", "Special Notice"];
+      const tender = b.opportunities.filter(o => TENDER.includes(o.type));
+      if (!tender.length) return json({ error: "no tender opportunities in payload \u2014 keeping last-good data" }, 422);
+      await kv.put("__gov_opps:latest", JSON.stringify({ generated: new Date().toISOString(), count: tender.length, opportunities: tender }), { expirationTtl: 604800 });
+      return json({ ok: true, count: tender.length });
+    }
+    if (p === "/tariff" || p === "/tariff/") return new Response(null, { status: 302, headers: { "location": "/free-data" } });
+    if (p === "/tariff" || p.startsWith("/tariff/")) {
+      return new Response(null, { status: 301, headers: { location: "/gov", "cache-control": "public, max-age=3600" } });
+    }
+    if (p === "/tools" || p.startsWith("/tools/")) {
+      return new Response(null, { status: 301, headers: { location: "/gov", "cache-control": "public, max-age=3600" } });
+    }
     if (p === "/v1/tariff") {
       const q = (url.searchParams.get("hs") || url.searchParams.get("q") || "").trim();
       const rows = tariffLookup(q);
       if (!rows.length) return json({ error: "no match — try an HS code like 8703.24 or a product like laptop" }, 404);
       return json({ ok: true, query: q, results: rows.length, rates: rows, note: "Free sample coverage — the full 2026 HTS schedule with 4,000+ pages is on /pricing", fullSchedule: "https://contentforge-press.github.io/us-tariff-data/" }, 200, );
-    }
-    if (p === "/api/shopify-snapshot") {
-      const store = (url.searchParams.get("store") || "").trim();
-      if (!store || store.length > 120) return json({ error: "missing or invalid store" }, 400);
-      try {
-        const up = await fetch("https://s-shopify.pixharvest.com/v1/snapshot?store=" + encodeURIComponent(store), { signal: AbortSignal.timeout(15e3) });
-        const body = await up.text();
-        return new Response(body, { headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
-      } catch (e) {
-        return json({ error: "upstream failed: " + String(e && e.message || e) }, 502);
-      }
     }
     if (p === "/api/lead") {
       if (request.method !== "POST") return json({ error: "method" }, 405);
@@ -1294,29 +2655,31 @@ if (p === "/" || p === "/pricing" || p === "/faq") return new Response(page(), {
     if (p === "/health") return json({ ok: true });
     if (p === "/terms" || p === "/privacy" || p === "/refunds") return new Response(policyPage(p.slice(1)), { headers: { "content-type": "text/html; charset=utf-8" } });
     function sitemapXml() {
-      const staticUrls = ["", "pricing", "try", "terms", "privacy", "refunds", "free-data"];
+      const staticUrls = ["", "pricing", "try", "terms", "privacy", "refunds", "free-data", "gov", "gov/daily", "gov/rank"];
       let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
       const add = /* @__PURE__ */ __name((u) => {
         xml += "  <url><loc>https://pixharvest.com/" + u + "</loc></url>\n";
       }, "add");
       staticUrls.forEach(add);
+      GOV_NAICS.forEach(g => add("gov/naics/" + g[0]));
+      GOV_NAICS.forEach(g => GOV_SET_ASIDES.forEach(s => add("gov/naics/" + g[0] + "/" + s[0])));
+      GOV_GUIDES.forEach(g => add("gov/guides/" + g[0]));
+      add("gov/alternatives");
+      GOV_ALTS.forEach(a => add("gov/alternatives/" + a[0]));
+      add("gov/awards");
+      ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110", "511210", "541612", "541360", "541370", "541380", "541715", "541714", "541713", "541519", "561311"].forEach(c => add("gov/awards/" + c));
+      ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110", "511210", "541612", "541360", "541370", "541380", "541715", "541714", "541713", "541519", "561311"].forEach(c => ["2025", "2024", "2023"].forEach(y => add("gov/awards/" + c + "/" + y)));
       add("llms.txt");
       add("docs");
       add("docs/auth");
       const seen = /* @__PURE__ */ new Set(["", "pricing", "try", "terms", "privacy", "refunds", "llms.txt", "docs", "docs/auth"]);
-      for (const a of ["shopify", "github", "hackernews", "app-store", "hiring"]) {
-        add("docs/" + a);
-        seen.add("docs/" + a);
-      }
       for (const r of DOCS_EXT) {
+        if (["shopify", "github", "hackernews", "app-store", "hiring", "tariff", "alternatives"].includes(r.api)) continue;
         const u = r.api === "shared" ? "docs/" + r.slug : "docs/" + r.api + "/" + r.slug;
         if (!seen.has(u)) {
           add(u);
           seen.add(u);
         }
-      }
-      for (const t of TOOLS_MATRIX) {
-        add("tools/" + t[0]);
       }
       return xml + "</urlset>\n";
     }
@@ -1326,28 +2689,76 @@ if (p === "/" || p === "/pricing" || p === "/faq") return new Response(page(), {
         if (p === '/free-data/sample-tariffs.csv') return new Response(TARIFF_CSV, { headers: { 'content-type': 'text/csv', 'content-disposition': 'attachment; filename="sample-tariffs.csv"' } });
         if (p === '/free-data/sample-shopify.json') return new Response(SHOPIFY_SAMPLE_JSON, { headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' } });
         if (p === "/sitemap.xml") {
-          const full = await tariffSitemap();
-          if (full) {
-            const fullXml = await full.text();
-            const core = sitemapXml().replace("</urlset>", "");
-            const merged = core + fullXml.replace(/<\?xml[^>]*\?>/, "").replace(/^<urlset[^>]*>/, "").replace(/<\/urlset>$/, "") + "</urlset>";
-            return new Response(merged, { headers: { "content-type": "application/xml", "cache-control": "public, max-age=21600" } });
-          }
-          return new Response(sitemapXml(), { headers: { "content-type": "application/xml" } });
+          return new Response(sitemapXml(), { headers: { "content-type": "application/xml", "cache-control": "public, max-age=21600" } });
         }
     if (p === "/favicon.png") return png(FAVICON);
     if (p === "/matrix.png") return png(MATRIX_B64);
     if (p === "/0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d.txt") return new Response("0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d", { headers: { "content-type": "text/plain" } });
-    if (p === "/llms.txt") return new Response(LLMS_TXT, { headers: { "content-type": "text/plain; charset=utf-8" } });
+    if (p === "/llms.txt") return new Response(LLMS_TXT, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=300, s-maxage=300" } });
+    if (p === "/llms-full.txt") return new Response(LLMS_FULL_TXT, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=300, s-maxage=300" } });
         if (p === "/.well-known/mcp/server-card.json") return new Response(SERVER_CARD_JSON, { headers: { "content-type": "application/json", "access-control-allow-origin": "*", "cache-control": "public, max-age=3600" } });
+        if (p === "/.well-known/glama.json") {
+          const gj = await kv.get("__glama:connector-json");
+          const fallback = JSON.stringify({ $schema: "https://glama.ai/mcp/schemas/connector.json", maintainers: [{ email: "contentforge.press@outlook.com" }] });
+          return new Response(gj || fallback, { headers: { "content-type": "application/json", "access-control-allow-origin": "*", "cache-control": "no-store" } });
+        }
+        if (p === "/api/glama/set") {
+          const ak = url.searchParams.get("key") || request.headers.get("x-admin-key") || "";
+          if (ak !== "ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac") return json({ error: "forbidden" }, 403);
+          if (request.method !== "POST") return json({ error: "method" }, 405);
+          let b = {};
+          try { b = await request.json(); } catch { return json({ error: "bad json" }, 400); }
+          if (!b || !b.connectorJson) return json({ error: "connectorJson required" }, 400);
+          await kv.put("__glama:connector-json", JSON.stringify(b.connectorJson));
+          return json({ ok: true });
+        }
+        if (p === "/api/gov/pool-refresh") {
+          const ak = url.searchParams.get("key") || request.headers.get("x-admin-key") || "";
+          if (ak !== "ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac") return json({ error: "forbidden" }, 403);
+          if (url.searchParams.get("naics") === "all") env.ALL_NAICS = true;
+          const pool = await refreshOppsPool(env);
+          return json({ ok: true, generated: pool.generated, naics: Object.keys(pool.naics).length, mode: env.ALL_NAICS ? "30 热门 NAICS" : "10 核心 NAICS（配额安全）" });
+        }
+        if (p === "/api/gov/sync-now") {
+          const ak = url.searchParams.get("key") || request.headers.get("x-admin-key") || "";
+          if (ak !== "ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac") return json({ error: "forbidden" }, 403);
+          if (!env.GOVCON_KEY) return json({ error: "GOVCON_KEY not configured", hint: "set Cloudflare secret GOVCON_KEY" }, 501);
+          const meta = await kv.get("__gov_meta:govcon", "json").catch(() => null);
+          const since = url.searchParams.get("since") || (meta && meta.since) || new Date(Date.now() - 3 * 864e5).toISOString();
+          const gd = await govConDelta(env, since);
+          const nowIso = new Date().toISOString();
+          let merged;
+          if (gd.items && gd.items.length) {
+            merged = await mergeOpps(kv, gd.items, 1000);
+          }
+          await kv.put("__gov_meta:govcon", JSON.stringify({ since: nowIso, lastCount: gd.items ? gd.items.length : 0, lastErr: gd.error || "" }), { expirationTtl: 604800 });
+          if (url.searchParams.get("naics") === "all") {
+            const CORE20 = ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110"];
+            let added = 0;
+            for (const c of CORE20) {
+              const ns = await govConNAICS(env, c, 20);
+              if (ns.items && ns.items.length) { merged = await mergeOpps(kv, ns.items, 1000); added += ns.items.length; }
+            }
+            return json({ ok: true, deltaCount: gd.items ? gd.items.length : 0, naicsAdded: added, total: merged ? merged.opportunities.length : 0, since: nowIso });
+          }
+          if (!merged) return json({ ok: false, error: gd.error || "no tender changes", since });
+          return json({ ok: true, newCount: gd.items.length, total: merged.opportunities.length, since: nowIso });
+        }
 if (p === "/.well-known/mcp.json") return new Response(MCP_JSON, { headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
+    if (p.startsWith("/docs/shopify") || p.startsWith("/docs/github") || p.startsWith("/docs/hackernews") || p.startsWith("/docs/app-store") || p.startsWith("/docs/hiring") || p.startsWith("/docs/alternatives")) {
+      return new Response(null, { status: 301, headers: { location: "/gov", "cache-control": "public, max-age=3600" } });
+    }
+    if (p.startsWith("/docs/tariff")) {
+      return new Response(null, { status: 301, headers: { location: "/docs", "cache-control": "public, max-age=3600" } });
+    }
     if (p === "/docs" || p.startsWith("/docs/")) {
       const slug = p === "/docs" ? "index" : p.slice(6);
+      if (slug === "index") return new Response(govDocsIndex(), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } });
       const html = docsPage(slug);
       const is404 = html.includes("<title>404");
       return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" }, status: is404 ? 404 : 200 });
     }
-    if (p === "/robots.txt") return new Response("User-agent: *\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\nSitemap: https://pixharvest.com/sitemap.xml\n", { headers: { "content-type": "text/plain" } });
+    if (p === "/robots.txt") return new Response("User-agent: *\nDisallow: /control\n\nUser-agent: *\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\nSitemap: https://pixharvest.com/sitemap.xml\n", { headers: { "content-type": "text/plain" } });
     if (p === "/__beacon") {
       if (request.method !== "POST") return json({ error: "method" }, 405);
       let b = {};
@@ -1385,6 +2796,160 @@ if (p === "/.well-known/mcp.json") return new Response(MCP_JSON, { headers: { "c
       return json({ ok: true, days, totals });
     }
     return new Response(page(), { status: 404, headers: { "content-type": "text/html; charset=utf-8" } });
+  },
+  async scheduled(event, env, ctx) {
+    const kv = env.SHARED_KV;
+    const today = new Date().toISOString().slice(0, 10);
+    const h = new Date().getUTCHours();
+    let merged, fresh, nowIso = new Date().toISOString();
+    /* ① 主源（每小时）：GovConAPI 增量同步——免费层 50 req/day，每小时 1 次增量绰绰有余，数据 ≤1 小时新鲜 */
+    if (env.GOVCON_KEY) {
+      const meta = await kv.get("__gov_meta:govcon", "json").catch(() => null);
+      const since = (meta && meta.since) || new Date(Date.now() - 3 * 864e5).toISOString();
+      const gd = await govConDelta(env, since);
+      if (gd.items && gd.items.length) {
+        merged = await mergeOpps(kv, gd.items, 1000);
+        fresh = gd.items;
+        await kv.put("__gov_meta:govcon", JSON.stringify({ since: nowIso, lastCount: gd.items.length, lastErr: "" }), { expirationTtl: 604800 });
+        console.log("govcon delta: " + gd.items.length + " new/modified");
+      } else {
+        const err = gd.error || "no changes";
+        await kv.put("__gov_meta:govcon", JSON.stringify({ since: (meta && meta.since) || since, lastCount: 0, lastErr: err }), { expirationTtl: 604800 });
+        console.log("govcon delta: " + err);
+      }
+      /* 每天 UTC 0 点：20 核心 NAICS 各搜一次补池（20 次/天，预算 24+20=44 ≤ 50），digest 各 NAICS 保数据 */
+      if (h === 0) {
+        const CORE20 = ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110"];
+        let added = 0;
+        for (const c of CORE20) {
+          const ns = await govConNAICS(env, c, 20);
+          if (ns.items && ns.items.length) { await mergeOpps(kv, ns.items, 1000); added += ns.items.length; }
+        }
+        console.log("govcon naics pool daily: +" + added + " opportunities across 20 core NAICS");
+        const inr = await pushIndexNow(env, kv);
+        console.log("indexnow daily: pushed " + inr.pushed + (inr.ok ? " OK" : " FAIL " + inr.error));
+        try { await kv.put("__gov_meta:indexnow", JSON.stringify({ at: nowIso, ok: inr.ok, pushed: inr.pushed, status: inr.status, error: inr.error || "" }), { expirationTtl: 604800 }); } catch (e) {}
+      }
+    }
+    /* ② 备份源（每 6 小时）：SAM 全量兜底 limit=1000 7 天窗口（4 次/天配额内） */
+    if (h % 6 === 0) {
+      const from = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
+      const sm = await govSam(env, from, today, undefined, 1000);
+      const items = sm.items || [];
+      const TENDER = ["Presolicitation", "Combined Synopsis/Solicitation", "Solicitation", "Sources Sought", "Special Notice"];
+      const tender = items.filter(o => TENDER.includes(o.type));
+      if (tender.length) {
+        const needTs = tender.filter(o => !o.postedAt).slice(0, 10);
+        if (needTs.length) {
+          await Promise.all(needTs.map(async o => { const p = await govSamDetail(o.noticeId); if (p) o.postedAt = p; }));
+        }
+        merged = await mergeOpps(kv, tender, 1000);
+        fresh = tender;
+        const delays = fresh.map(o => o.postedAt ? Math.round((new Date(nowIso).getTime() - new Date(o.postedAt).getTime()) / 6e4) : null).filter(d => d !== null && d >= 0 && d <= 60 * 24);
+        const syncMeta = {
+          lastSync: nowIso,
+          nextSync: new Date(Date.now() + 6 * 36e5).toISOString(),
+          oppsCount: merged.opportunities.length,
+          newCount: fresh.length,
+          delay: delays.length ? { min: Math.min.apply(null, delays), max: Math.max.apply(null, delays), avg: Math.round(delays.reduce((a, b) => a + b, 0) / delays.length) } : null
+        };
+        await kv.put("__gov_meta:sync", JSON.stringify(syncMeta), { expirationTtl: 604800 });
+      } else {
+        console.log("gov sam: empty or rate-limited \u2014 keeping last-good data");
+      }
+    }
+    /* ③ 兜底：本小时无新数据时从 latest 池读（0 配额），邮件/过期检查照常 */
+    if (!merged) {
+      const cache = await kv.get("__gov_opps:latest", "json").catch(() => null);
+      merged = cache || { generated: today, count: 0, opportunities: [] };
+      fresh = [];
+    }
+    const list = await kv.list({ prefix: "__gov_user:" });
+    let sent = 0, skipped = 0;
+    for (const k of list.keys) {
+      try {
+        const u = JSON.parse(await kv.get(k.name));
+        if (!u || !u.email || !u.naics) continue;
+        const plan = govPlanName(u.plan);
+        let match = (merged.opportunities || []).filter(o => govMatches(u.naics, o));
+        const cap = GOV_PLANS[plan].dailyMax;
+        if (cap < 9999) match = match.slice(0, cap);
+        if (!match.length) { skipped++; continue; }
+        const seenKey = "__gov_sent:" + u.email + ":" + today;
+        if (await kv.get(seenKey)) continue;
+        const mr = await govSendMail(env, u.email, "GovContract Radar: " + match.length + " new opportunity" + (match.length > 1 ? "ies" : "") + " for NAICS " + u.naics, govDailyHtml(u.naics, match, plan));
+        if (mr.ok) { await kv.put(seenKey, "1", { expirationTtl: 172800 }); sent++; }
+      } catch (e) {}
+    }
+    console.log("gov daily: " + (merged.opportunities || []).length + " items, " + list.keys.length + " users, " + sent + " sent, " + skipped + " no-match");
+    const ulist = await kv.list({ prefix: "__gov_user:" });
+    const soon = new Date(Date.now() + 36 * 3600e3).toISOString();
+    let exp = 0;
+    for (const k of ulist.keys) {
+      try {
+        const u = JSON.parse(await kv.get(k.name));
+        if (!u || !u.email || !u.expires) continue;
+        if (u.expires > soon) continue;
+        const emKey = "__gov_exp:" + u.key;
+        if (await kv.get(emKey)) continue;
+        const plan = govPlanName(u.plan);
+        const isTrial = plan === "trial";
+        const mr = await govSendMail(env, u.email,
+          isTrial ? "Your GovContract Radar trial ends tomorrow — keep your alerts running" : "Your GovContract Radar plan (" + plan + ") is up for renewal",
+          isTrial ? govExpireHtml(u.naics) : govRenewHtml(u.naics, plan));
+        if (mr.ok) { await kv.put(emKey, "1"); exp++; }
+      } catch (e) {}
+    }
+    console.log("gov expiry: " + exp + " reminders sent");
+    const nudgeDays = 3 * 864e5, retainDays = 14 * 864e5;
+    const nowMs = Date.now();
+    let nudged = 0, retained = 0;
+    for (const k of ulist.keys) {
+      try {
+        const u = JSON.parse(await kv.get(k.name));
+        if (!u || !u.email || !u.naics) continue;
+        const activated = await kv.get("__gov_act:" + u.key);
+        const lastRaw = await kv.get("__gov_last:" + u.key);
+        const lastMs = lastRaw ? new Date(lastRaw).getTime() : new Date(u.created).getTime();
+        const since = nowMs - lastMs;
+        if (activated && since < retainDays) continue;
+        if (!activated && since < nudgeDays) continue;
+        if (!activated) {
+          const nKey = "__gov_nudge:" + u.key;
+          if (await kv.get(nKey)) continue;
+          const mr = await govSendMail(env, u.email, "One click: confirm your GovContract Radar watch", govNudgeHtml(u.naics, u.key));
+          if (mr.ok) { await kv.put(nKey, "1"); nudged++; }
+        } else {
+          const rKey = "__gov_retain:" + u.key;
+          if (await kv.get(rKey)) continue;
+          const mr = await govSendMail(env, u.email, "GovContract Radar paused — restart anytime", govRetainHtml(u.naics));
+          if (mr.ok) { await kv.put(rKey, "1"); retained++; }
+        }
+      } catch (e) {}
+    }
+    console.log("gov retention: " + nudged + " activation nudges, " + retained + " retain emails");
+    const dow = new Date().getDay();
+    if (dow === 0 || dow === 1) {
+      const weekKey = "w" + Math.floor(Date.now() / 6048e5);
+      let wk = 0;
+      for (const k of ulist.keys) {
+        try {
+          const u = JSON.parse(await kv.get(k.name));
+          if (!u || !u.email || !u.naics || !u.expires) continue;
+          if (u.expires >= nowIso) continue;
+          const wkKey = "__gov_week:" + u.key + ":" + weekKey;
+          if (await kv.get(wkKey)) continue;
+          const plan = govPlanName(u.plan);
+          let match = items.filter(o => govMatches(u.naics, o));
+          const cap = GOV_PLANS[plan].dailyMax;
+          if (cap < 9999) match = match.slice(0, cap);
+          if (!match.length) continue;
+          const mr = await govSendMail(env, u.email, "Your weekly federal contract digest — " + match.length + " new opportunity" + (match.length > 1 ? "ies" : "") + " for NAICS " + u.naics, govWeeklyHtml(u.naics, match));
+          if (mr.ok) { await kv.put(wkKey, "1", { expirationTtl: 604800 }); wk++; }
+        } catch (e) {}
+      }
+      console.log("gov weekly: " + wk + " stay-in-touch digests sent");
+    }
   }
 };
 export {

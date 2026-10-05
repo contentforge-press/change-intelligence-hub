@@ -5,3 +5,10 @@ compatibility_date = "2025-01-01"
 [[kv_namespaces]]
 binding = "SHARED_KV"
 id = "ed62f7b5d5274de686f5f699915a30a1"
+
+[[routes]]
+pattern = "gov.pixharvest.com/*"
+zone_id = "45e02d7e62de7e9d3e19eefea512c9b6"
+
+[triggers]
+crons = ["0 * * * *"]
