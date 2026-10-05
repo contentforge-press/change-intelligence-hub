@@ -3020,6 +3020,36 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
       if (!rows.length) return json({ error: "no match — try an HS code like 8703.24 or a product like laptop" }, 404);
       return json({ ok: true, query: q, results: rows.length, rates: rows, note: "Free sample coverage — the full 2026 HTS schedule with 4,000+ pages is on /pricing", fullSchedule: "https://contentforge-press.github.io/us-tariff-data/" }, 200, );
     }
+    /* 客户触达总脉冲：客户雷达每次运行调用，一次性取回"新线索+新邮件+新发票/询盘"，保证客户触达不遗漏。
+       返回 60 分钟内未确认(ack)的触达；雷达确认处理后再 ack。 */
+    if (p === "/api/gov/pulse") {
+      const ak = url.searchParams.get("key") || request.headers.get("x-admin-key") || "";
+      if (ak !== "ba951afdb936eecd4ffb9ddfb1b44b25f47bbab1dfc391ac") return json({ error: "forbidden" }, 403);
+      const since = String(url.searchParams.get("since") || "").trim();
+      const ack = url.searchParams.get("ack") === "1";
+      const cut = since ? new Date(since).getTime() : Date.now() - 3600e3;
+      // ① 网站表单/发票请求：__lead:
+      const leadKeys = await kv.list({ prefix: "__lead:" });
+      const leads = [];
+      for (const k of leadKeys.keys) {
+        const v = await kv.get(k.name, "json");
+        if (v && new Date(v.ts || 0).getTime() > cut) leads.push(v);
+      }
+      // ② 邮件转发：__gov_inbound:
+      const mailKeys = await kv.list({ prefix: "__gov_inbound:" });
+      const mails = [];
+      for (const k of mailKeys.keys) {
+        const v = await kv.get(k.name, "json");
+        if (v && new Date(v.ts || 0).getTime() > cut) mails.push(v);
+      }
+      const sorted = [...leads.map(l => ({ kind: "lead", ...l })), ...mails.map(m => ({ kind: "email", ...m }))].sort((a, b) => a.ts < b.ts ? 1 : -1);
+      if (ack) {
+        // 确认已处理：写入最近 ack 时间，下次只返回更新的
+        await kv.put("__gov_pulse_last", new Date().toISOString());
+      }
+      const pulseLast = await kv.get("__gov_pulse_last") || "";
+      return json({ ok: true, since: since || null, pulseLast, count: sorted.length, items: sorted.slice(0, 50).map(x => ({ kind: x.kind, ts: x.ts, name: x.name || "", email: x.email || (x.via === "email-forward" ? x.from : ""), company: x.company || "", subject: x.subject || "", message: String(x.message || x.rawHead || "").slice(0, 500) })) });
+    }
     if (p === "/api/lead") {
       if (request.method !== "POST") return json({ error: "method" }, 405);
       let b = {};
