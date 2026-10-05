@@ -54,6 +54,9 @@ This repo is not a mockup. [**LIVE.md**](LIVE.md) is a real snapshot pulled from
 **What requires a subscription:** deadlines, full descriptions, NAICS filtering, set-aside filtering, webhooks, daily digests and historical search. See [pricing](https://pixharvest.com/#pricing).
 
 ---
+- 🖥️ **Live demo — no signup, no login:** https://pixharvest.com/demo — see today's real SAM.gov opportunities and which contracts are expiring soon in your NAICS (recompete windows with named incumbents)
+- 💰 **Pay by card instantly:** https://pixharvest.com/pay (Dodo checkout, annual saves 2 months) or invoice via Payoneer
+
 
 ## 🤖 MCP Server (for AI agents)
 
