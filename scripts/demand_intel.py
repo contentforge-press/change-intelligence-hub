@@ -58,6 +58,54 @@ def fetch(query, hours_back):
         return json.load(r)
 
 
+
+
+REDDIT_SUBS = ["GovernmentContracting", "smallbusiness", "federalcontractors"]
+
+
+def fetch_reddit():
+    """Try direct Reddit .json first (works from some egress IPs), fall back to PullPush. Never fails the run."""
+    rows = []
+    src = None
+    for sub in REDDIT_SUBS:
+        try:
+            u = "https://www.reddit.com/r/%s/new.json?limit=8" % sub
+            req = urllib.request.Request(u, headers={"User-Agent": UA, "Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=12) as r:
+                d = json.load(r)
+                for k in d.get("data", {}).get("children", []):
+                    p = k.get("data", {})
+                    t = (p.get("title") or "").strip()
+                    if not t:
+                        continue
+                    low = t.lower()
+                    if any(n in low for n in NOISE):
+                        continue
+                    perma = p.get("permalink", "")
+                    url = "https://www.reddit.com" + perma if perma else u
+                    rows.append("**[" + t[:100] + "](" + url + ")** · reddit r/" + sub + " · u/" + (p.get("author") or "?") + " · ⬆" + str(p.get("score", 0)) + " 💬" + str(p.get("num_comments", 0)) + " · q=`r/" + sub + "`")
+                src = "reddit"
+        except Exception:
+            continue
+    if rows:
+        return rows, src
+    # fallback: PullPush archive
+    try:
+        u = "https://api.pullpush.io/reddit/search/submission/?subreddit=GovernmentContracting&size=8&sort=desc"
+        req = urllib.request.Request(u, headers={"User-Agent": UA, "Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            d = json.load(r)
+            for p in d.get("data", []):
+                t = (p.get("title") or "").strip()
+                if not t:
+                    continue
+                rows.append("**[" + t[:100] + "](https://www.reddit.com" + (p.get("permalink") or "") + ")** · reddit r/GovernmentContracting (archive) · ⬆" + str(p.get("score", 0)))
+            if rows:
+                src = "pullpush"
+    except Exception:
+        pass
+    return rows, src
+
 def hn_url(hit):
     if hit.get("story_id"):
         return f"https://news.ycombinator.com/item?id={hit.get('story_id')}"
@@ -90,8 +138,14 @@ def main():
             kind = "story" if hit.get("title") else "comment"
             report.append(f"- **[{title}]({hn_url(hit)})** · {kind} · {author} · ⬆{pts} 💬{ncom} · {ts} UTC · q=`{q}`")
 
+    rr, rsrc = fetch_reddit()
+    if rr:
+        report.append("### Reddit (source: " + (rsrc or "?") + ")\n")
+        report += rr
+        report.append("")
+
     lines = [
-        "# Demand Signals — Hacker News\n",
+        "# Demand Signals — Hacker News + Reddit\n",
         f"> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last {HOURS_BACK}h where people talk about federal contracting pain points. Updated {now.strftime('%Y-%m-%d %H:%M UTC')}.\n",
         f"**Signals found:** {len([l for l in report if not l.startswith('- ⚠️')])} · queries: {', '.join(QUERIES)}\n",
         "## Discussions\n",
