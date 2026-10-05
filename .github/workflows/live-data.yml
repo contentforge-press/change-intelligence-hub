@@ -1,0 +1,67 @@
+name: refresh-live-data
+
+on:
+  schedule:
+    - cron: '17 * * * *'   # hourly, offset from :00 to avoid load spikes
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pull live data (public API, no key)
+        run: |
+          curl -sS --max-time 30 -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/126.0 Safari/537.36" \
+            "https://pixharvest.com/api/gov/today.json" -o /tmp/gov_live.json
+
+      - name: Generate LIVE.md
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/gov_live.json'))
+          opps = d['opportunities']
+          updated = d.get('updated', 'n/a')
+          count = d.get('count', len(opps))
+          types = {}
+          naics_all = set()
+          for o in opps:
+              types[o.get('type','?')] = types.get(o.get('type','?'), 0) + 1
+              naics_all.update(o.get('naics', []))
+          lines = [
+            "# GovContract Radar — Live Data Feed\n",
+            "> **Real data, refreshed automatically every hour by GitHub Actions.** This file is generated from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov.\n",
+            f"**Last refreshed:** `{updated}` (UTC)  ",
+            f"**Opportunities shown:** {count} (latest from last 7 days)  ",
+            f"**Notice types:** {', '.join(f'{k}×{v}' for k,v in sorted(types.items()))}  ",
+            f"**NAICS codes covered:** {', '.join(sorted(naics_all))}\n",
+            "## Latest opportunities\n",
+            "| Type | Title | NAICS | Set-aside | Posted (UTC) | SAM.gov |",
+            "|---|---|---|---|---|---|",
+          ]
+          for o in opps:
+              title = (o.get('title') or '')[:60].replace('|','/')
+              naics = ', '.join(o.get('naics', []))
+              sa = (o.get('setAside') or '—')[:35].replace('|','/')
+              posted = (o.get('postedAt') or 'n/a')[:19]
+              url = o.get('url') or '#'
+              lines.append(f"| {o.get('type','?')} | {title} | {naics} | {sa} | {posted} | [view]({url}) |")
+          lines.append("\n---\n")
+          lines.append("*Deadlines, full descriptions, NAICS filtering and set-aside filtering require a subscription: https://pixharvest.com/#pricing · See [examples/](examples/) to build on this API.*\n")
+          open('LIVE.md','w',encoding='utf-8').write('\n'.join(lines))
+          print('LIVE.md generated')
+          PY
+
+      - name: Commit & push
+        run: |
+          git config user.name "PixHarvest Bot"
+          git config user.email "contentforge.press@outlook.com"
+          git add LIVE.md
+          git diff --cached --quiet || git commit -m "chore: refresh live data feed ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git push origin HEAD:main
