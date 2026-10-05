@@ -43,6 +43,8 @@ Response — the 15 most recent opportunities from the last 7 days, refreshed ho
 
 **What's free:** a live sample of the latest federal opportunities, so you can verify the data is real, fresh and traceable to SAM.gov.
 
+> 💻 **Ready-to-run code:** see [examples/](examples/) for curl, Python and MCP-client snippets.
+
 **What requires a subscription:** deadlines, full descriptions, NAICS filtering, set-aside filtering, webhooks, daily digests and historical search. See [pricing](https://pixharvest.com/#pricing).
 
 ---
