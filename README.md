@@ -97,6 +97,7 @@ Also published on the **official MCP Registry** (Glama, Smithery). No API key ne
 - **Early-signal Special Notices** — opportunities before they become formal solicitations
 - **Deadline alerts** — never lose a bidding window
 - **Recompete radar** — expiring contracts you can take over (Radar+)
+- **Contractor pages** — see who wins federal contracts in your market: https://pixharvest.com/gov/company (recent award winners by company, with live new opportunities in the same NAICS)
 - **Signal AI summaries** — what each opportunity actually means for you (Pro+)
 - **Award intelligence** — who won, from USAspending.gov
 

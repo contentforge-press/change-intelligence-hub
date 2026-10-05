@@ -2059,6 +2059,66 @@ async function govConNAICS(env, naics, limit) {
     .catch(e => ({ items: [], error: String(e && e.message || e) }));
 }
 
+/* 承包商池刷新：USAspending 免 key 公开 API 拉最近 90 天中标，聚合出活跃承包商，过滤国防巨头，写 KV __gov_contractors_pool（承包商页数据源） */
+async function fetchContractorsPool(env) {
+  const MEGA = /BOEING|LOCKHEED|NORTHROP|RAYTHEON|GENERAL DYNAMICS|HUNTINGTON INGALLS|RTX|L3HARRIS|L3 HARRIS|SAIC|BAE SYSTEMS|CACI|LEIDOS|AECOM|KBR|HII/;
+  try {
+    const end = new Date();
+    const start = new Date(Date.now() - 90 * 864e5);
+    const rows = [];
+    for (let page = 0; page < 5; page++) {
+      const body = {
+        filters: {
+          award_type_codes: ["A", "B", "C", "D"],
+          time_period: [{ start_date: start.toISOString().slice(0, 10), end_date: end.toISOString().slice(0, 10) }]
+        },
+        fields: ["recipient_name", "awarding_agency_name", "total_obligation", "award_id_piid", "period_of_performance_current_end_date"],
+        page: page + 1,
+        limit: 100
+      };
+      const r = await fetch("https://api.usaspending.gov/api/v2/search/spending_by_award/", {
+        method: "POST",
+        headers: { "content-type": "application/json", "user-agent": "PixHarvest/1.0 (radar)" },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(60e3)
+      });
+      if (!r.ok) break;
+      const d = await r.json();
+      const items = d && (d.results || d.data || []);
+      if (!items.length) break;
+      items.forEach(it => {
+        const nm = String(it.recipient_name || "").trim().toUpperCase();
+        if (!nm) return;
+        rows.push({
+          name: nm,
+          agency: it.awarding_agency_name || "",
+          amount: Number(it.total_obligation) || 0,
+          piid: it.award_id_piid || "",
+          end: it.period_of_performance_current_end_date || ""
+        });
+      });
+      if (items.length < 100) break;
+    }
+    const byName = {};
+    rows.forEach(rw => {
+      if (MEGA.test(rw.name)) return;
+      const key = rw.name.replace(/[^A-Z0-9]/g, "");
+      if (!byName[key]) byName[key] = { name: rw.name, naics: "", agency: rw.agency, contracts: 0, total_amount: 0, last_signed: "", sample_ids: [] };
+      const b = byName[key];
+      b.contracts++;
+      b.total_amount += rw.amount;
+      if (rw.end > b.last_signed) b.last_signed = rw.end;
+      if (b.sample_ids.length < 6 && rw.piid) b.sample_ids.push(rw.piid);
+    });
+    const contractors = Object.values(byName)
+      .sort((a, b) => b.total_amount - a.total_amount)
+      .map(c => ({ name: c.name, slug: c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60), naics: c.naics, agency: c.agency, contracts: c.contracts, total_amount: Math.round(c.total_amount * 100) / 100, last_signed: c.last_signed.slice(0, 10), sample_ids: c.sample_ids }));
+    return { as_of: new Date().toISOString().slice(0, 16).replace("T", " "), window: start.toISOString().slice(0, 10) + "~" + end.toISOString().slice(0, 10), total_rows: rows.length, contractors };
+  } catch (e) {
+    return { error: String(e && e.message || e), contractors: [] };
+  }
+}
+
 /* IndexNow：免费即时收录推送（代替 GSC，0 成本"广告位"引擎）——变化驱动：只推 sitemap + 当日有新增数据的 NAICS 页，避免 host 级 429 限流 */
 async function pushIndexNow(env, kv) {
   const key = env.INDEXNOW_KEY;
@@ -3059,6 +3119,23 @@ if (p === "/.well-known/mcp.json") return new Response(MCP_JSON, { headers: { "c
         const inr = await pushIndexNow(env, kv);
         console.log("indexnow daily: pushed " + inr.pushed + (inr.ok ? " OK" : " FAIL " + inr.error));
         try { await kv.put("__gov_meta:indexnow", JSON.stringify({ at: nowIso, ok: inr.ok, pushed: inr.pushed, status: inr.status, error: inr.error || "" }), { expirationTtl: 604800 }); } catch (e) {}
+      }
+      /* 每天 UTC 3 点：承包商池 7 天过期自动刷新（USAspending 免 key 拉 500 行 → 聚合 → 写 KV __gov_contractors_pool），承包商页数据保持新鲜 */
+      if (h === 3) {
+        try {
+          const cpMeta = await kv.get("__gov_meta:contractors:last", "json").catch(() => null);
+          const cpAge = cpMeta ? (Date.now() - (cpMeta.at || 0)) : Infinity;
+          if (cpAge > 6 * 864e5) {
+            const cp = await fetchContractorsPool(env);
+            if (cp && cp.contractors && cp.contractors.length) {
+              await kv.put("__gov_contractors_pool", JSON.stringify(cp));
+              await kv.put("__gov_meta:contractors:last", JSON.stringify({ at: Date.now(), count: cp.contractors.length }), { expirationTtl: 86400 * 14 });
+              console.log("contractors pool refreshed: " + cp.contractors.length);
+            } else {
+              console.log("contractors pool: fetch empty — keeping last-good");
+            }
+          }
+        } catch (e) { console.log("contractors pool refresh error: " + (e && e.message || e)); }
       }
     }
     /* ② 备份源（每 6 小时）：SAM 全量兜底 limit=1000 7 天窗口（4 次/天配额内） */
