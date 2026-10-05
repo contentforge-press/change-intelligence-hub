@@ -2072,7 +2072,7 @@ async function fetchContractorsPool(env) {
           award_type_codes: ["A", "B", "C", "D"],
           time_period: [{ start_date: start.toISOString().slice(0, 10), end_date: end.toISOString().slice(0, 10) }]
         },
-        fields: ["recipient_name", "awarding_agency_name", "total_obligation", "award_id_piid", "period_of_performance_current_end_date"],
+        fields: ["Award ID", "Recipient Name", "NAICS Code", "Awarding Agency", "Date Signed", "Award Amount"],
         page: page + 1,
         limit: 100
       };
@@ -2087,14 +2087,15 @@ async function fetchContractorsPool(env) {
       const items = d && (d.results || d.data || []);
       if (!items.length) break;
       items.forEach(it => {
-        const nm = String(it.recipient_name || "").trim().toUpperCase();
+        const nm = String(it["Recipient Name"] || "").trim().toUpperCase();
         if (!nm) return;
         rows.push({
           name: nm,
-          agency: it.awarding_agency_name || "",
-          amount: Number(it.total_obligation) || 0,
-          piid: it.award_id_piid || "",
-          end: it.period_of_performance_current_end_date || ""
+          naics: String(it["NAICS Code"] || "").trim(),
+          agency: it["Awarding Agency"] || "",
+          amount: Number(it["Award Amount"]) || 0,
+          piid: it["Award ID"] || "",
+          end: it["Date Signed"] || ""
         });
       });
       if (items.length < 100) break;
@@ -2103,7 +2104,7 @@ async function fetchContractorsPool(env) {
     rows.forEach(rw => {
       if (MEGA.test(rw.name)) return;
       const key = rw.name.replace(/[^A-Z0-9]/g, "");
-      if (!byName[key]) byName[key] = { name: rw.name, naics: "", agency: rw.agency, contracts: 0, total_amount: 0, last_signed: "", sample_ids: [] };
+      if (!byName[key]) byName[key] = { name: rw.name, naics: rw.naics, agency: rw.agency, contracts: 0, total_amount: 0, last_signed: "", sample_ids: [] };
       const b = byName[key];
       b.contracts++;
       b.total_amount += rw.amount;
@@ -2116,6 +2117,55 @@ async function fetchContractorsPool(env) {
     return { as_of: new Date().toISOString().slice(0, 16).replace("T", " "), window: start.toISOString().slice(0, 10) + "~" + end.toISOString().slice(0, 10), total_rows: rows.length, contractors };
   } catch (e) {
     return { error: String(e && e.message || e), contractors: [] };
+  }
+}
+
+/* NAICS 公司列表：USAspending 按 NAICS 过滤拉最近 90 天中标公司，聚合 Top 60（/gov/naics/<code>/companies 页数据源），缓存 7 天 */
+async function fetchNaicsCompanies(naics) {
+  try {
+    const end = new Date();
+    const start = new Date(Date.now() - 90 * 864e5);
+    const rows = [];
+    for (let page = 0; page < 3; page++) {
+      const body = {
+        filters: {
+          award_type_codes: ["A", "B", "C", "D"],
+          naics_codes: [String(naics)],
+          time_period: [{ start_date: start.toISOString().slice(0, 10), end_date: end.toISOString().slice(0, 10) }]
+        },
+        fields: ["Award ID", "Recipient Name", "Awarding Agency", "Date Signed", "Award Amount"],
+        page: page + 1,
+        limit: 100
+      };
+      const r = await fetch("https://api.usaspending.gov/api/v2/search/spending_by_award/", {
+        method: "POST",
+        headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36" },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(60e3)
+      });
+      if (!r.ok) break;
+      const d = await r.json();
+      const items = d && (d.results || d.data || []);
+      if (!items.length) break;
+      items.forEach(it => {
+        const nm = String(it["Recipient Name"] || "").trim().toUpperCase();
+        if (!nm) return;
+        rows.push({ name: nm, agency: it["Awarding Agency"] || "", amount: Number(it["Award Amount"]) || 0, piid: it["Award ID"] || "", end: it["Date Signed"] || "" });
+      });
+      if (items.length < 100) break;
+    }
+    const byName = {};
+    rows.forEach(rw => {
+      const key = rw.name.replace(/[^A-Z0-9]/g, "");
+      if (!byName[key]) byName[key] = { name: rw.name, slug: rw.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60), agency: rw.agency, contracts: 0, total_amount: 0 };
+      const b = byName[key];
+      b.contracts++;
+      b.total_amount += rw.amount;
+    });
+    const companies = Object.values(byName).sort((a, b) => b.total_amount - a.total_amount);
+    return { companies: companies.slice(0, 60), total: companies.length, rows: rows.length };
+  } catch (e) {
+    return { error: String(e && e.message || e), companies: [] };
   }
 }
 
@@ -2611,6 +2661,25 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
       const cards = pool.contractors.slice(0, 120).map(c => '<a href="/gov/company/' + esc(c.slug) + '" style="display:block;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:12px 16px;margin:8px 0;color:#0b1b3a;text-decoration:none;font-weight:600;font-size:14px">' + esc(c.name) + ' <span style="color:#8a97b5;font-weight:400">· ' + c.contracts + ' awards \u00B7 ' + esc(c.agency || "") + ' \u2192</span></a>').join("");
       return new Response('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Federal Contractors \u2014 Who Wins Government Contracts \u00B7 GovContract Radar</title><meta name="description" content="See which companies win recent U.S. federal contracts by industry, from public USAspending data \u2014 and get alerted on new opportunities the hour they post."><style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;max-width:760px;margin:0 auto;padding:30px 20px}h1{font-size:26px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:18px 0 6px;text-decoration:none}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}</style></head><body><h1>Recent Federal Contractors by Industry</h1><div class="s">Active federal contractors from public USAspending data \u2014 see who wins in your market, then get alerted on every new opportunity that fits your NAICS.</div>' + cards + '<a class="cta" href="/try">Try the full opportunity radar free \u2192</a><div class="f">Source: USAspending.gov public API \u00B7 GovContract Radar \u00B7 <a href="/gov/awards" style="color:#0d7a3d">awards by industry</a> \u00B7 <a href="/" style="color:#0d7a3d">home</a></div></body></html>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
     }
+    if (p.startsWith("/gov/naics/") && p.endsWith("/companies")) {
+      const naics = p.slice("/gov/naics/".length, -"/companies".length).trim();
+      if (!/^\d{6}$/.test(naics)) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      const kv2 = env.SHARED_KV;
+      let cached = await kv2.get("__gov_naics_companies:" + naics, "json").catch(() => null);
+      if (!cached || !cached.companies || !cached.companies.length || Date.now() - (cached.at || 0) > 7 * 864e5) {
+        const fetched = await fetchNaicsCompanies(naics);
+        if (fetched && fetched.companies && fetched.companies.length) {
+          cached = { at: Date.now(), naics, companies: fetched.companies.slice(0, 60), total: fetched.total };
+          await kv2.put("__gov_naics_companies:" + naics, JSON.stringify(cached), { expirationTtl: 86400 * 14 }).catch(() => {});
+        }
+      }
+      if (!cached || !cached.companies || !cached.companies.length) return new Response("Not found", { status: 404, headers: { "content-type": "text/html; charset=utf-8" } });
+      const naicsName = GOV_NAICS.find(g => g[0] === naics);
+      const nm = naicsName ? naicsName[1] : "NAICS " + naics;
+      const rows2 = cached.companies.map((c, i) => '<div class="co"><span class="rk">' + (i + 1) + '</span><div class="cn"><a href="/gov/company/' + esc(String(c.slug || c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60))) + '" style="color:#0b1b3a;text-decoration:none;font-weight:700">' + esc(c.name) + '</a><div class="cm">' + (c.agency ? esc(c.agency) + ' \u00B7 ' : '') + c.contracts + ' award' + (c.contracts > 1 ? 's' : '') + ' \u00B7 <b style="color:#0d7a3d">$' + Number(c.total_amount).toLocaleString("en-US", { maximumFractionDigits: 0 }) + '</b></div></div></div>').join("");
+      const page = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Who Wins ' + esc(nm) + ' Federal Contracts \u2014 Company List \u00B7 GovContract Radar</title><meta name="description" content="Which companies win ' + esc(nm) + ' federal contracts: recent award winners from public USAspending data, with live new SAM.gov opportunities in NAICS ' + naics + '. See the list, then get alerted on the next opportunity."><link rel="canonical" href="https://pixharvest.com/gov/naics/' + naics + '/companies"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.5}.w{max-width:820px;margin:0 auto;padding:28px 20px 40px}.h{font-size:25px;font-weight:800;margin-bottom:6px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.co{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:11px 14px;margin-bottom:8px}.rk{background:#e6f7ee;color:#0d7a3d;font-weight:800;border-radius:6px;padding:1px 8px;font-size:13px}.cn{flex:1}.cm{font-size:12.5px;color:#5a6b8a;margin-top:2px}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:18px 0 6px;text-decoration:none}.cta.g{background:#fff;color:#0d7a3d;border:2px solid #0d7a3d}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}.f a{color:#0d7a3d}</style></head><body><div class="w"><div class="h">Who Wins ' + esc(nm) + ' Federal Contracts</div><div class="s">Top award winners in NAICS ' + naics + ' from public USAspending data' + (cached.total ? ' \u2014 ' + cached.total + ' companies tracked' : '') + '. Who holds this market, and what is opening up next \u2014 that is what GovContract Radar watches.</div>' + rows2 + '<a class="cta" href="/try">Get every new opportunity in NAICS ' + naics + ' within 60 minutes \u2192</a><a class="cta g" href="/gov/naics/' + naics + '">See live opportunities in NAICS ' + naics + ' \u2192</a><div class="f">Source: USAspending.gov + SAM.gov public data \u00B7 GovContract Radar \u00B7 <a href="/gov/company">all contractors</a> \u00B7 <a href="/gov/awards/' + naics + '">awards in NAICS ' + naics + '</a> \u00B7 <a href="/">home</a></div></div></body></html>';
+      return new Response(page, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+    }
     if (p === "/pay" || p === "/pay/") return new Response(govPayPage(), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } });
     if (p === "/gov/guides" || p === "/gov/guides/") {
       const links = GOV_GUIDES.map(g => '<a href="/gov/guides/' + g[0] + '" style="display:block;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:12px 16px;margin:8px 0;color:#0b1b3a;text-decoration:none;font-weight:600;font-size:14px">' + esc(g[1]) + '</a>').join("");
@@ -2947,6 +3016,7 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
       }, "add");
       staticUrls.forEach(add);
       GOV_NAICS.forEach(g => add("gov/naics/" + g[0]));
+      GOV_NAICS.forEach(g => add("gov/naics/" + g[0] + "/companies"));
       GOV_NAICS.forEach(g => GOV_SET_ASIDES.forEach(s => add("gov/naics/" + g[0] + "/" + s[0])));
       GOV_GUIDES.forEach(g => add("gov/guides/" + g[0]));
       add("gov/alternatives");
