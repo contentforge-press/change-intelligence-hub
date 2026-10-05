@@ -2081,6 +2081,11 @@ async function pushIndexNow(env, kv) {
   GOV_GUIDES.forEach(g => add("https://pixharvest.com/gov/guides/" + g[0]));
   add("https://pixharvest.com/gov/daily");
   add("https://pixharvest.com/gov");
+  add("https://pixharvest.com/gov/company");
+  try {
+    const cpool = await kv.get("__gov_contractors_pool", "json");
+    if (cpool && Array.isArray(cpool.contractors)) cpool.contractors.slice(0, 150).forEach(c => add("https://pixharvest.com/gov/company/" + String(c.slug || "").replace(/[^a-z0-9\-]/g, "")));
+  } catch (e) {}
   /* sitemap 每 7 天重推一次（即便在 seen 中）：让 Bing 重爬感知全站内容更新 */
   const lastSitemapAt = Number(seen.lastSitemapAt || 0);
   if (Date.now() - lastSitemapAt > 7 * 864e5 && !urls.includes("https://pixharvest.com/sitemap.xml")) {
@@ -2525,6 +2530,27 @@ async function govLandingFresh(env) {
   return GOV_LANDING.replace('<section class="pricing" id="pricing">', block + '<section class="pricing" id="pricing">');
 }
 if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/contact" || p === "/gov" || p === "/gov/") return new Response(await govLandingFresh(env), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=900, s-maxage=900" } });
+    if (p.startsWith("/gov/company/")) {
+      const slug = decodeURIComponent(p.slice("/gov/company/".length).split("/")[0] || "");
+      const pool = await env.SHARED_KV.get("__gov_contractors_pool", "json").catch(() => null);
+      if (!pool || !pool.contractors) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      const rec = pool.contractors.find(c => c.slug === slug.toLowerCase() || c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === slug.toLowerCase());
+      if (!rec) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      const name = rec.name;
+      const naics = rec.naics || "541511";
+      const amount = "$" + (rec.total_amount ? Number(rec.total_amount).toLocaleString("en-US", { maximumFractionDigits: 0 }) : "0");
+      const amtWords = rec.total_amount > 1e9 ? "over $" + (rec.total_amount / 1e9).toFixed(1) + " billion" : rec.total_amount > 1e6 ? "over $" + (rec.total_amount / 1e6).toFixed(1) + " million" : "over $" + (rec.total_amount / 1e3).toFixed(0) + "K";
+      const opps = await env.SHARED_KV.get("__gov_opps:latest", "json").catch(() => null);
+      const rows = (opps && opps.items ? opps.items.slice(0, 5) : []).map(o => '<div class="op"><div class="ot">' + esc(String(o.title || "").slice(0, 90)) + '</div><div class="om">' + esc(o.agency || "") + (o.type ? ' · ' + esc(o.type) : "") + '</div></div>').join("") || '<div class="e">Live opportunities refresh hourly — check back soon.</div>';
+      const page = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + esc(name) + ' Federal Contracts — Recent Awards &amp; New Opportunities \u00B7 GovContract Radar</title><meta name="description" content="' + esc(name) + ' federal contract activity: ' + rec.contracts + ' recent awards totaling ' + amtWords + ' from public USAspending data — plus live new SAM.gov opportunities in the same NAICS. Get alerted the hour they post."><link rel="canonical" href="https://pixharvest.com/gov/company/' + esc(slug) + '"><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;line-height:1.5}.w{max-width:860px;margin:0 auto;padding:28px 20px 40px}.h{font-size:26px;font-weight:800;margin-bottom:6px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.op{background:#fff;border:1px solid #e3e9f3;border-radius:10px;padding:12px 14px;margin-bottom:9px}.ot{font-size:15px;margin-bottom:3px}.om{font-size:12.5px;color:#5a6b8a}.e{font-size:13px;color:#8a97b5;padding:14px 0}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:18px 0 6px;text-decoration:none}.cta.g{background:#fff;color:#0d7a3d;border:2px solid #0d7a3d}.n{font-size:11.5px;color:#8a97b5;text-align:center}.n a{color:#0d7a3d}.faq{margin-top:16px;padding:16px 18px;background:#fff;border:1px solid #e3e9f3;border-radius:10px}.faq h2{font-size:16px;margin:0 0 10px}.faq p{font-size:13px;color:#4a5a7a;margin:0 0 9px}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}</style></head><body><div class="w"><div class="h">' + esc(name) + ' — Federal Contract Activity</div><div class="s">' + esc(name) + ' has ' + rec.contracts + ' recent federal contract award' + (rec.contracts > 1 ? "s" : "") + ' totaling ' + esc(amtWords) + ' in the last 90 days, from public USAspending data' + (rec.agency ? ' · primary buyer: ' + esc(rec.agency) : '') + '. Who wins in your market, and what is opening up next — that is what GovContract Radar watches.</div><div class="s" style="background:#e6f7ee;border:1px solid #9fd8bd;border-radius:10px;padding:12px 14px">Live right now: new federal opportunities in the same NAICS area <b style="color:#0d7a3d">(' + esc(naics) + ')</b> — posted on SAM.gov, synced hourly.</div>' + rows + '<a class="cta" href="/try">Get every new opportunity in this market within 60 minutes \u2192</a><a class="cta g" href="/gov/naics/' + esc(naics) + '">See live opportunities in NAICS ' + esc(naics) + ' \u2192</a><div class="faq"><h2>About ' + esc(name) + ' federal contracts</h2><p><b>Where does this data come from?</b> Award records are from USAspending.gov, the official U.S. federal spending database — public-domain data, fully compliant to republish. Contract opportunities come from SAM.gov.</p><p><b>Why watch this market?</b> ' + esc(name) + ' is an active federal contractor — the incumbent you compete with. Knowing who holds the market and what is being bought tells you where the next recompete opportunities will come from.</p><p><b>How do I win contracts like these?</b> The first step is seeing new solicitations the hour they post. GovContract Radar checks SAM.gov every hour and alerts you when a new opportunity matches your NAICS code — free 7-day trial, no card required.</p></div><div class="f">Source: USAspending.gov + SAM.gov public data \u00B7 GovContract Radar \u00B7 <a href="/gov/company" style="color:#0d7a3d">All contractors</a></div></div></body></html>';
+      return new Response(page, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+    }
+    if (p === "/gov/company" || p === "/gov/company/") {
+      const pool = await env.SHARED_KV.get("__gov_contractors_pool", "json").catch(() => null);
+      if (!pool || !pool.contractors) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8" } });
+      const cards = pool.contractors.slice(0, 120).map(c => '<a href="/gov/company/' + esc(c.slug) + '" style="display:block;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:12px 16px;margin:8px 0;color:#0b1b3a;text-decoration:none;font-weight:600;font-size:14px">' + esc(c.name) + ' <span style="color:#8a97b5;font-weight:400">· ' + c.contracts + ' awards \u00B7 ' + esc(c.agency || "") + ' \u2192</span></a>').join("");
+      return new Response('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Federal Contractors \u2014 Who Wins Government Contracts \u00B7 GovContract Radar</title><meta name="description" content="See which companies win recent U.S. federal contracts by industry, from public USAspending data \u2014 and get alerted on new opportunities the hour they post."><style>body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f8fb;color:#14213d;max-width:760px;margin:0 auto;padding:30px 20px}h1{font-size:26px}.s{color:#5a6b8a;font-size:14px;margin-bottom:16px}.cta{display:block;background:#0d7a3d;color:#fff;text-align:center;font-weight:800;font-size:15px;border-radius:10px;padding:13px;margin:18px 0 6px;text-decoration:none}.f{font-size:11.5px;color:#8a97b5;margin-top:14px}</style></head><body><h1>Recent Federal Contractors by Industry</h1><div class="s">Active federal contractors from public USAspending data \u2014 see who wins in your market, then get alerted on every new opportunity that fits your NAICS.</div>' + cards + '<a class="cta" href="/try">Try the full opportunity radar free \u2192</a><div class="f">Source: USAspending.gov public API \u00B7 GovContract Radar \u00B7 <a href="/gov/awards" style="color:#0d7a3d">awards by industry</a> \u00B7 <a href="/" style="color:#0d7a3d">home</a></div></body></html>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=1800, s-maxage=1800" } });
+    }
     if (p === "/pay" || p === "/pay/") return new Response(govPayPage(), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=3600, s-maxage=3600" } });
     if (p === "/gov/guides" || p === "/gov/guides/") {
       const links = GOV_GUIDES.map(g => '<a href="/gov/guides/' + g[0] + '" style="display:block;background:#fff;border:1px solid #e3e9f3;border-radius:8px;padding:12px 16px;margin:8px 0;color:#0b1b3a;text-decoration:none;font-weight:600;font-size:14px">' + esc(g[1]) + '</a>').join("");
@@ -2853,7 +2879,7 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
     }
     if (p === "/health") return json({ ok: true });
     if (p === "/terms" || p === "/privacy" || p === "/refunds") return new Response(policyPage(p.slice(1)), { headers: { "content-type": "text/html; charset=utf-8" } });
-    function sitemapXml() {
+    async function sitemapXml() {
       const staticUrls = ["", "pricing", "try", "terms", "privacy", "refunds", "free-data", "gov", "gov/daily", "gov/rank"];
       let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
       const add = /* @__PURE__ */ __name((u) => {
@@ -2865,7 +2891,12 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
       GOV_GUIDES.forEach(g => add("gov/guides/" + g[0]));
       add("gov/alternatives");
       GOV_ALTS.forEach(a => add("gov/alternatives/" + a[0]));
+      add("gov/company");
       add("gov/awards");
+      try {
+        const cpool = await env.SHARED_KV.get("__gov_contractors_pool", "json");
+        if (cpool && Array.isArray(cpool.contractors)) cpool.contractors.slice(0, 300).forEach(c => add("gov/company/" + String(c.slug || "").replace(/[^a-z0-9\-]/g, "")));
+      } catch (e) {}
       ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110", "511210", "541612", "541360", "541370", "541380", "541715", "541714", "541713", "541519", "561311"].forEach(c => add("gov/awards/" + c));
       ["541511", "541512", "541330", "541690", "541611", "518210", "236220", "561720", "541620", "541613", "336413", "484121", "811310", "611420", "541990", "561210", "238210", "334111", "443120", "623110", "511210", "541612", "541360", "541370", "541380", "541715", "541714", "541713", "541519", "561311"].forEach(c => ["2025", "2024", "2023"].forEach(y => add("gov/awards/" + c + "/" + y)));
       add("llms.txt");
@@ -2888,7 +2919,7 @@ if (p === "/" || p === "/pricing" || p === "/faq" || p === "/about" || p === "/c
         if (p === '/free-data/sample-tariffs.csv') return new Response(TARIFF_CSV, { headers: { 'content-type': 'text/csv', 'content-disposition': 'attachment; filename="sample-tariffs.csv"' } });
         if (p === '/free-data/sample-shopify.json') return new Response(SHOPIFY_SAMPLE_JSON, { headers: { 'content-type': 'application/json', 'access-control-allow-origin': '*' } });
         if (p === "/sitemap.xml") {
-          return new Response(sitemapXml(), { headers: { "content-type": "application/xml", "cache-control": "public, max-age=21600" } });
+          return new Response(await sitemapXml(), { headers: { "content-type": "application/xml", "cache-control": "public, max-age=21600" } });
         }
     if (p === "/favicon.png") return png(FAVICON);
     if (p === "/matrix.png") return png(MATRIX_B64);
