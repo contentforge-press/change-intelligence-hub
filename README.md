@@ -114,4 +114,4 @@ Prefer invoice / bank transfer (Payoneer wire or ACH)? https://pixharvest.com/pa
 
 ## ✉️ Contact
 
-contentforge.press@outlook.com — we answer every message within 24 hours, worldwide.
+contact@pixharvest.com — we answer every message within 24 hours, worldwide.
