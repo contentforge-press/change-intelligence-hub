@@ -101,6 +101,17 @@ Also published on the **official MCP Registry** (Glama, Smithery). No API key ne
 - **Signal AI summaries** — what each opportunity actually means for you (Pro+)
 - **Award intelligence** — who won, from USAspending.gov
 
+## 📄 Live Data Pages (free, no login)
+
+Real public SAM.gov + USAspending data, updated hourly:
+
+- **Today's opportunities**: https://pixharvest.com/gov/daily
+- **Live demo with recompete evidence**: https://pixharvest.com/demo
+- **Contracts expiring soon (recompete windows)**: https://pixharvest.com/gov/expiring
+- **Who wins by NAICS industry**: https://pixharvest.com/gov/naics/541511/companies (example)
+- **Recent federal awards by industry**: https://pixharvest.com/gov/awards
+- **Free API — no key**: https://pixharvest.com/api/gov/today.json · https://pixharvest.com/api/gov/recompete.json
+
 ## 🚀 Start Free
 
 7-day free trial, no card required — https://pixharvest.com/#trial
