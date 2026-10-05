@@ -58,10 +58,13 @@ jobs:
           print('LIVE.md generated')
           PY
 
+      - name: Generate DEMAND.md (HN demand signals)
+        run: python3 scripts/demand_intel.py
+
       - name: Commit & push
         run: |
           git config user.name "PixHarvest Bot"
           git config user.email "contentforge.press@outlook.com"
-          git add LIVE.md
-          git diff --cached --quiet || git commit -m "chore: refresh live data feed ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git add LIVE.md DEMAND.md
+          git diff --cached --quiet || git commit -m "chore: refresh live feeds ($(date -u +%Y-%m-%dT%H:%MZ))"
           git push origin HEAD:main
