@@ -45,6 +45,12 @@ Response — the 15 most recent opportunities from the last 7 days, refreshed ho
 
 > 💻 **Ready-to-run code:** see [examples/](examples/) for curl, Python and MCP-client snippets.
 
+## 📡 Live proof — real data, updated hourly
+
+This repo is not a mockup. [**LIVE.md**](LIVE.md) is regenerated every hour by a GitHub Action from the live public API — real federal opportunities, real SAM.gov links, real timestamps. Open it and see what the radar actually returns, refreshed automatically.
+
+**[→ Open the live data feed](LIVE.md)**
+
 **What requires a subscription:** deadlines, full descriptions, NAICS filtering, set-aside filtering, webhooks, daily digests and historical search. See [pricing](https://pixharvest.com/#pricing).
 
 ---
