@@ -1,6 +1,6 @@
 # GovContract Radar — Live Data Feed
 
-> **Real data, refreshed automatically every hour by GitHub Actions.** This file is generated from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov.
+> **Real data snapshot** pulled from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov. For the always-live feed open the [live radar page](https://pixharvest.com/gov/daily).
 
 **Last refreshed:** `2026-10-05T01:20:57.381Z` (UTC)  
 **Opportunities shown:** 15 (latest from last 7 days)  
