@@ -1,4 +1,4 @@
-# Demand Signals — Hacker News
+# Demand Signals — Hacker News + Reddit
 
 > Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-10-05 03:56 UTC.
 
