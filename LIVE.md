@@ -2,25 +2,25 @@
 
 > **Real data, refreshed automatically every hour by GitHub Actions.** This file is generated from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov.
 
-**Last refreshed:** `2026-10-06T11:01:28.136Z` (UTC)  
+**Last refreshed:** `2026-10-06T12:01:34.123Z` (UTC)  
 **Opportunities shown:** 10 (latest from last 7 days)  
-**Notice types:** Combined Synopsis/Solicitation×9, Solicitation×1  
-**NAICS codes covered:** 333613, 333998, 334417, 335313, 335931, 335932, 336390, 339991, 531120
+**Notice types:** Combined Synopsis/Solicitation×4, Presolicitation×2, Solicitation×4  
+**NAICS codes covered:** 237110, 326220, 333413, 333998, 334516, 336992, 339113, 517111
 
 ## Latest opportunities
 
 | Type | Title | NAICS | Set-aside | Posted (UTC) | SAM.gov |
 |---|---|---|---|---|---|
-| Combined Synopsis/Solicitation | 30--ELEMENT,SPIROFLEX | 333613 | — | 2026-10-06T01:34:11 | [view](https://sam.gov/workspace/contract/opp/fe63a6f8be3b44428b87699b5b35bfa8/view) |
-| Combined Synopsis/Solicitation | 29--SWITCH,LIQUID LEVEL | 335931 | — | 2026-10-06T01:42:13 | [view](https://sam.gov/workspace/contract/opp/fc61b872098d425b87a43995501f7f08/view) |
-| Solicitation | Military Recruiting Lease for office space 5,300 to 5,800 SF | 531120 | — | 2026-10-06T00:59:59 | [view](https://sam.gov/workspace/contract/opp/fc4f16c4879e4d4dacf49348031c63c0/view) |
-| Combined Synopsis/Solicitation | 59--HOUSING,ELECTRONIC COM | 335932 | — | 2026-10-06T01:23:18 | [view](https://sam.gov/workspace/contract/opp/fb9892843ecc4aacb0042dd4249f5279/view) |
-| Combined Synopsis/Solicitation | 59--SWITCH,INTERLOCK | 335313 | — | 2026-10-06T01:25:21 | [view](https://sam.gov/workspace/contract/opp/fae21709ae0b48e08bfc2c59c638cbfb/view) |
-| Combined Synopsis/Solicitation | 53--SEAL RING,METAL | 339991 | — | 2026-10-06T01:25:50 | [view](https://sam.gov/workspace/contract/opp/f84ef5cc60694f06bf96342237a5a6e5/view) |
-| Combined Synopsis/Solicitation | 25--STEP ASSEMBLY,FUEL TAN | 336390 | — | 2026-10-06T01:41:42 | [view](https://sam.gov/workspace/contract/opp/f79b9ed97c254f79bc2f2b67c52958ab/view) |
-| Combined Synopsis/Solicitation | 59--CONNECTOR,PLUG,ELECTRI | 334417 | — | 2026-10-06T01:29:55 | [view](https://sam.gov/workspace/contract/opp/f411c7c966f84b67b0a576118f59ce60/view) |
-| Combined Synopsis/Solicitation | 43--FILTER ELEMENT,FLUID | 333998 | — | 2026-10-06T01:30:38 | [view](https://sam.gov/workspace/contract/opp/ef9cbaab49dd4460a1eb266ee21b57aa/view) |
-| Combined Synopsis/Solicitation | 59--CIRCUIT BREAKER | 335313 | — | 2026-10-06T01:41:43 | [view](https://sam.gov/workspace/contract/opp/eda08b90a3904484aa4e56b5ee441de9/view) |
+| Combined Synopsis/Solicitation | RFQ: Reaward a 100MB commercial circuit Intra-SWA. | 517111 | — | 2026-10-06T11:41:42 | [view](https://sam.gov/workspace/contract/opp/fccafe1a87424bc3ba5029301bf685a0/view) |
+| Solicitation | HOSE ASSY | 326220 | — | 2026-10-06T08:23:14 | [view](https://sam.gov/workspace/contract/opp/fc141c92f35b485fae353a4cd5a2fff5/view) |
+| Presolicitation | 29--REGULATOR,ENGINE GE, IN REPAIR/MODIFICATION OF |  | — | 2026-10-06T11:35:28 | [view](https://sam.gov/workspace/contract/opp/faf7475beb314b39b0f3efc5ef04ee73/view) |
+| Solicitation | BLOWER,EXHAUST | 333413 | — | 2026-10-06T09:21:55 | [view](https://sam.gov/workspace/contract/opp/f73354c4acbb48e7b340c20cdfbaa104/view) |
+| Combined Synopsis/Solicitation | 25--MANIFOLD ASSEMBLY,CMDR | 336992 | — | 2026-10-06T11:06:28 | [view](https://sam.gov/workspace/contract/opp/f4e9563dd17746d0a35544f1f86ef51c/view) |
+| Solicitation | JOYSTICK,DATA ENTRY | 333998 | — | 2026-10-06T08:56:38 | [view](https://sam.gov/workspace/contract/opp/f09820cf0cd54075a24be792a3b6fb89/view) |
+| Combined Synopsis/Solicitation | Bill Parkin (MAK) | 237110 | — | 2026-10-06T10:46:08 | [view](https://sam.gov/workspace/contract/opp/eef04aa8ceb94972a96b6e21787e035e/view) |
+| Combined Synopsis/Solicitation | 66--DETECTOR,GAS | 334516 | — | 2026-10-06T10:41:55 | [view](https://sam.gov/workspace/contract/opp/ea3aea124d6f4f5c8f7cd210395c648c/view) |
+| Presolicitation | 29--REGULATOR,ENGINE GE, IN REPAIR/MODIFICATION OF |  | — | 2026-10-06T11:30:35 | [view](https://sam.gov/workspace/contract/opp/e90fce835e7446d587b2ad528f5c0d5d/view) |
+| Solicitation | 66--EVACUATION KIT | 339113 | — | 2026-10-06T07:54:43 | [view](https://sam.gov/workspace/contract/opp/e8ea303c801a47c7b50ad90f8171e35e/view) |
 
 ---
 
