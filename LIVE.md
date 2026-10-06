@@ -2,10 +2,10 @@
 
 > **Real data, refreshed automatically every hour by GitHub Actions.** This file is generated from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov.
 
-**Last refreshed:** `2026-10-06T08:01:16.988Z` (UTC)  
-**Opportunities shown:** 15 (latest from last 7 days)  
-**Notice types:** Combined Synopsis/Solicitation×10, Presolicitation×1, Solicitation×3, Sources Sought×1  
-**NAICS codes covered:** 325998, 333515, 333613, 333998, 334417, 335313, 335931, 335932, 336390, 336412, 336413, 339991, 531120, 561492
+**Last refreshed:** `2026-10-06T11:01:28.136Z` (UTC)  
+**Opportunities shown:** 10 (latest from last 7 days)  
+**Notice types:** Combined Synopsis/Solicitation×9, Solicitation×1  
+**NAICS codes covered:** 333613, 333998, 334417, 335313, 335931, 335932, 336390, 339991, 531120
 
 ## Latest opportunities
 
@@ -21,11 +21,6 @@
 | Combined Synopsis/Solicitation | 59--CONNECTOR,PLUG,ELECTRI | 334417 | — | 2026-10-06T01:29:55 | [view](https://sam.gov/workspace/contract/opp/f411c7c966f84b67b0a576118f59ce60/view) |
 | Combined Synopsis/Solicitation | 43--FILTER ELEMENT,FLUID | 333998 | — | 2026-10-06T01:30:38 | [view](https://sam.gov/workspace/contract/opp/ef9cbaab49dd4460a1eb266ee21b57aa/view) |
 | Combined Synopsis/Solicitation | 59--CIRCUIT BREAKER | 335313 | — | 2026-10-06T01:41:43 | [view](https://sam.gov/workspace/contract/opp/eda08b90a3904484aa4e56b5ee441de9/view) |
-| Solicitation | N0038327QD104 - REPAIR 3 UNITS STARTER ENGINE GAS | 336412 | — | 2026-10-02T19:16:17 | [view](https://sam.gov/workspace/contract/opp/fcd50ec1fcca48d9bc7aa4e554882af3/view) |
-| Combined Synopsis/Solicitation | FCI Otisville Bulk Rock Salt | 325998 | NONE | 2026-10-02T16:31:35 | [view](https://sam.gov/workspace/contract/opp/fadc904c16ae41d0b5a28e68c6e97957/view) |
-| Solicitation | 16--CHILLER ASSY,AIRCRA | 336413 | — | 2026-10-02T10:41:26 | [view](https://sam.gov/workspace/contract/opp/f8fa418910d145fc9ff93ac0b68f5caa/view) |
-| Sources Sought | Tooling BPA Follow-on | 333515 | NONE | 2026-10-02T20:49:25 | [view](https://sam.gov/workspace/contract/opp/f801392694af4b5c8424552c944d5e02/view) |
-| Presolicitation | R606 Court Repoting Service | 561492 | SDVOSBC | 2026-10-02T22:13:38 | [view](https://sam.gov/workspace/contract/opp/f76281bb15694892b4c4a24083168f02/view) |
 
 ---
 
