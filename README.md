@@ -7,6 +7,7 @@ Hourly-synced intelligence on new U.S. federal contract opportunities from **SAM
 - 🕐 Live radar: https://pixharvest.com/gov/daily
 - 📊 Weekly industry ranking: https://pixharvest.com/gov/rank
 - 🤖 MCP server for AI agents: `https://gov.pixharvest.com/mcp`
+- 📦 **npm data chip (MCP):** `npm i pixharvest-us-trade-mcp` — live US stacked tariff rates + SAM.gov opportunities, served to any AI agent
 - 🔓 **Public API — no key required** (see below)
 
 ---
