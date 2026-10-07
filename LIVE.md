@@ -2,7 +2,7 @@
 
 > **Real data, refreshed automatically every hour by GitHub Actions.** This file is generated from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov.
 
-**Last refreshed:** `2026-10-07T01:00:41.572Z` (UTC)  
+**Last refreshed:** `2026-10-07T09:00:17.054Z` (UTC)  
 **Opportunities shown:** 8 (latest from last 7 days)  
 **Notice types:** Combined Synopsis/Solicitation×8  
 **NAICS codes covered:** 321991, 332911, 333998, 334413, 335311, 335314, 336330, 811310
