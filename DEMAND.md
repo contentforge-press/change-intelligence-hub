@@ -1,13 +1,14 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-10-08 17:52 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-10-08 23:21 UTC.
 
-**Signals found:** 4 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
+**Signals found:** 5 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
 ## Discussions
 
 - **[You&#x27;re misunderstanding: the companies doing the investing, if they&#x27;re publicly traded companies HAV](https://news.ycombinator.com/item?id=49963366)** · comment · giancarlostoro · ⬆0 💬0 · 10-05 14:16 UTC · q=`"government contracting"`
 - **[SpaceX has been awarded roughly $22 billion to nearly $30 billion in cumulative public federal contracts, the ](https://news.ycombinator.com/item?id=49977979)** · comment · dataviz1000 · ⬆0 💬0 · 10-06 15:00 UTC · q=`"federal contracts"`
+- **[There is a moat: government contracts. Everything from NSF grant reviews, drone warfare, DHS visa processing a](https://news.ycombinator.com/item?id=50008187)** · comment · rchaud · ⬆0 💬0 · 10-08 18:12 UTC · q=`"government contracts"`
 - **[Endorphins make you happy as you are. Endorphins have sedative effect. Morphine is a similar substance and it ](https://news.ycombinator.com/item?id=49967444)** · comment · thesz · ⬆0 💬0 · 10-05 21:35 UTC · q=`"government contracts"`
 - **[&gt; Oh they definitely can. Irrespective of whether you are living in US or not, you still have to get yourse](https://news.ycombinator.com/item?id=49944227)** · comment · ben_w · ⬆0 💬0 · 10-05 07:14 UTC · q=`"government contracts"`
 
