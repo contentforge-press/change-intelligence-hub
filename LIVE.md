@@ -2,23 +2,25 @@
 
 > **Real data, refreshed automatically every hour by GitHub Actions.** This file is generated from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov.
 
-**Last refreshed:** `2026-10-07T23:00:35.659Z` (UTC)  
-**Opportunities shown:** 8 (latest from last 7 days)  
-**Notice types:** Combined Synopsis/Solicitation×8  
-**NAICS codes covered:** 321991, 332911, 333998, 334413, 335311, 335314, 336330, 811310
+**Last refreshed:** `2026-10-08T02:00:35.628Z` (UTC)  
+**Opportunities shown:** 10 (latest from last 7 days)  
+**Notice types:** Combined Synopsis/Solicitation×3, Presolicitation×1, Solicitation×2, Sources Sought×2, Special Notice×2  
+**NAICS codes covered:** 331210, 332919, 332991, 333310, 334417, 334419, 334511, 336211
 
 ## Latest opportunities
 
 | Type | Title | NAICS | Set-aside | Posted (UTC) | SAM.gov |
 |---|---|---|---|---|---|
-| Combined Synopsis/Solicitation | Automatic Transfer Switch (ATS) Maintenance & Repair Service | 811310 | — | 2026-10-06T20:28:49 | [view](https://sam.gov/workspace/contract/opp/ffd966f1b9724079aa85d366be6639aa/view) |
-| Combined Synopsis/Solicitation | 59--TRANSFORMER,POWER | 335311 | — | 2026-10-06T18:42:07 | [view](https://sam.gov/workspace/contract/opp/ffc6df208ddd4ef8aae7f1d0ea9ad020/view) |
-| Combined Synopsis/Solicitation | 25--ARM ASSEMBLY,IDLER | 336330 | — | 2026-10-06T15:29:13 | [view](https://sam.gov/workspace/contract/opp/ff6fd0a5da944d9fb4500f065b27029c/view) |
-| Combined Synopsis/Solicitation | 59--TRANSFORMER,POWER | 334413 | — | 2026-10-06T15:32:58 | [view](https://sam.gov/workspace/contract/opp/ff687ab503914dae99a3c48cdfbe4f8d/view) |
-| Combined Synopsis/Solicitation | 43--FILTER ELEMENT,FLUID | 333998 | — | 2026-10-06T15:43:00 | [view](https://sam.gov/workspace/contract/opp/ff15104a75c64f678973cdaa9b4e503f/view) |
-| Combined Synopsis/Solicitation | 59--RELAY,ELECTROMAGNETIC | 335314 | — | 2026-10-06T15:44:45 | [view](https://sam.gov/workspace/contract/opp/fedba67fbd734d7cacf477fcb36ebfe0/view) |
-| Combined Synopsis/Solicitation | 54--IA-NEAL SMITH NWR-TEMP MODULAR OFFICE | 321991 | — | 2026-10-06T17:59:37 | [view](https://sam.gov/workspace/contract/opp/fe90b821653d40329659e79a4616cc3c/view) |
-| Combined Synopsis/Solicitation | 48--VALVE,ANGLE | 332911 | — | 2026-10-06T18:42:15 | [view](https://sam.gov/workspace/contract/opp/fe5f0d28eaad475aa32257587bba61a9/view) |
+| Solicitation | Kingsbury Steel | 331210 | — | 2026-10-07T17:57:25 | [view](https://sam.gov/workspace/contract/opp/ffd371eaa14c4a03a0fd12fcbeee2f99/view) |
+| Presolicitation | 48--VALVE FUEL, IN REPAIR/MODIFICATION OF |  | — | 2026-10-07T08:08:30 | [view](https://sam.gov/workspace/contract/opp/ff5d433c170c441c86afa498d7be1b7f/view) |
+| Combined Synopsis/Solicitation | HOUSING, BEARING UNIT | 332991 | — | 2026-10-07T16:49:18 | [view](https://sam.gov/workspace/contract/opp/ff05372bd4014de685c91fb488a7d89a/view) |
+| Combined Synopsis/Solicitation | VEHICLE 5670 UTILITY BODY COLVILLE NATIONAL FOREST | 336211 | — | 2026-10-07T18:39:06 | [view](https://sam.gov/workspace/contract/opp/fe522a6aacb8422fa17e10e4d7966a17/view) |
+| Special Notice | ACC-DTA Ground Maneuver Commercial Solutions Opening (CSO) |  | — | 2026-10-07T18:30:59 | [view](https://sam.gov/workspace/contract/opp/fd8daf9429824814882419486b899606/view) |
+| Combined Synopsis/Solicitation | 61--CABLE ASSEMBLY,SPECIAL | 334419 | — | 2026-10-07T18:29:10 | [view](https://sam.gov/workspace/contract/opp/fd75284f392d4f18b5a19b5015658872/view) |
+| Sources Sought | Export Variant (XV) Second Generation Forward Looking Infrar | 334511 | — | 2026-10-07T18:29:40 | [view](https://sam.gov/workspace/contract/opp/fd72a739880a4a2ca6e33e5b2be7080e/view) |
+| Solicitation | STEM,FLUID VALVE | 332919 | — | 2026-10-07T09:06:46 | [view](https://sam.gov/workspace/contract/opp/fbc9b79f920942b18569a03fc855ce5e/view) |
+| Sources Sought | Second Articles for Royal Australia Air Force (RAAF) P-8A Tr | 333310 | — | 2026-10-07T20:48:19 | [view](https://sam.gov/workspace/contract/opp/fb87375fd50a4153a747e2271da3426d/view) |
+| Special Notice | RFI: Draft MIL-DTL for Militarized USB-C (USB-CM) - Feedback | 334417 | — | 2026-10-07T15:28:13 | [view](https://sam.gov/workspace/contract/opp/fb5e4caa974540f796153fd5f5c39763/view) |
 
 ---
 
