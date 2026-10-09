@@ -2,25 +2,25 @@
 
 > **Real data, refreshed automatically every hour by GitHub Actions.** This file is generated from the public API at `https://pixharvest.com/api/gov/today.json` — no key, no login. Every row is traceable to SAM.gov.
 
-**Last refreshed:** `2026-10-08T23:00:35.503Z` (UTC)  
+**Last refreshed:** `2026-10-09T05:00:35.592Z` (UTC)  
 **Opportunities shown:** 10 (latest from last 7 days)  
-**Notice types:** Combined Synopsis/Solicitation×3, Presolicitation×1, Solicitation×2, Sources Sought×2, Special Notice×2  
-**NAICS codes covered:** 331210, 332919, 332991, 333310, 334417, 334419, 334511, 336211
+**Notice types:** Combined Synopsis/Solicitation×5, Solicitation×2, Sources Sought×2, Special Notice×1  
+**NAICS codes covered:** 237990, 325413, 326199, 332994, 334412, 334519, 541611, 561320, 562910
 
 ## Latest opportunities
 
 | Type | Title | NAICS | Set-aside | Posted (UTC) | SAM.gov |
 |---|---|---|---|---|---|
-| Solicitation | Kingsbury Steel | 331210 | — | 2026-10-07T17:57:25 | [view](https://sam.gov/workspace/contract/opp/ffd371eaa14c4a03a0fd12fcbeee2f99/view) |
-| Presolicitation | 48--VALVE FUEL, IN REPAIR/MODIFICATION OF |  | — | 2026-10-07T08:08:30 | [view](https://sam.gov/workspace/contract/opp/ff5d433c170c441c86afa498d7be1b7f/view) |
-| Combined Synopsis/Solicitation | HOUSING, BEARING UNIT | 332991 | — | 2026-10-07T16:49:18 | [view](https://sam.gov/workspace/contract/opp/ff05372bd4014de685c91fb488a7d89a/view) |
-| Combined Synopsis/Solicitation | VEHICLE 5670 UTILITY BODY COLVILLE NATIONAL FOREST | 336211 | — | 2026-10-07T18:39:06 | [view](https://sam.gov/workspace/contract/opp/fe522a6aacb8422fa17e10e4d7966a17/view) |
-| Special Notice | ACC-DTA Ground Maneuver Commercial Solutions Opening (CSO) |  | — | 2026-10-07T18:30:59 | [view](https://sam.gov/workspace/contract/opp/fd8daf9429824814882419486b899606/view) |
-| Combined Synopsis/Solicitation | 61--CABLE ASSEMBLY,SPECIAL | 334419 | — | 2026-10-07T18:29:10 | [view](https://sam.gov/workspace/contract/opp/fd75284f392d4f18b5a19b5015658872/view) |
-| Sources Sought | Export Variant (XV) Second Generation Forward Looking Infrar | 334511 | — | 2026-10-07T18:29:40 | [view](https://sam.gov/workspace/contract/opp/fd72a739880a4a2ca6e33e5b2be7080e/view) |
-| Solicitation | STEM,FLUID VALVE | 332919 | — | 2026-10-07T09:06:46 | [view](https://sam.gov/workspace/contract/opp/fbc9b79f920942b18569a03fc855ce5e/view) |
-| Sources Sought | Second Articles for Royal Australia Air Force (RAAF) P-8A Tr | 333310 | — | 2026-10-07T20:48:19 | [view](https://sam.gov/workspace/contract/opp/fb87375fd50a4153a747e2271da3426d/view) |
-| Special Notice | RFI: Draft MIL-DTL for Militarized USB-C (USB-CM) - Feedback | 334417 | — | 2026-10-07T15:28:13 | [view](https://sam.gov/workspace/contract/opp/fb5e4caa974540f796153fd5f5c39763/view) |
+| Combined Synopsis/Solicitation | ISBEE Solicitation: FFP Non-Personal Healthcare Services for | 561320 | — | 2026-10-08T16:30:11 | [view](https://sam.gov/workspace/contract/opp/ff834f159cfd4b808c1d7ba5620e689a/view) |
+| Special Notice | BioMerieux rapid microbial identification (ID) and antibioti | 325413 | — | 2026-10-08T17:35:37 | [view](https://sam.gov/workspace/contract/opp/ff4a01b81b1b4c0b86df9d561c38c0a1/view) |
+| Sources Sought | Project Management Technical Admin Support Services | 541611 | — | 2026-10-08T21:10:06 | [view](https://sam.gov/workspace/contract/opp/fea7a2373e374d0787cadfe817b04210/view) |
+| Combined Synopsis/Solicitation | 53--MOUNT,RESILIENT,WEAPON | 332994 | — | 2026-10-08T21:55:25 | [view](https://sam.gov/workspace/contract/opp/fe569b598bf84777aaf58b7faab46099/view) |
+| Combined Synopsis/Solicitation | 66--METER,NOISE LEVEL | 334412 | — | 2026-10-08T19:11:17 | [view](https://sam.gov/workspace/contract/opp/fdc6534976534c8b8567226f0fdfc73f/view) |
+| Combined Synopsis/Solicitation | 61--CONTROLLER,MOTOR | 334519 | — | 2026-10-08T18:32:33 | [view](https://sam.gov/workspace/contract/opp/fd313ae796e94019a32d54fcc076c7c5/view) |
+| Solicitation | Y1PZ--Fort Sill NC Gravesite Expansion and FCA Deficiencies  | 237990 | — | 2026-10-08T12:53:59 | [view](https://sam.gov/workspace/contract/opp/fba4178c403e4ea6885212838e2a41fd/view) |
+| Solicitation | CIRCUIT CARD ASSY | 334412 | — | 2026-10-08T09:44:19 | [view](https://sam.gov/workspace/contract/opp/fb05ed576a0e4baf9c289340ed5ebe86/view) |
+| Combined Synopsis/Solicitation | AFRL HQ AVIS Tech Refresh | 326199 | — | 2026-10-08T17:07:47 | [view](https://sam.gov/workspace/contract/opp/fa837891be68435abbcd12d88d777796/view) |
+| Sources Sought | Grand Island Mitigation Site | 562910 | — | 2026-10-08T20:32:35 | [view](https://sam.gov/workspace/contract/opp/f9f7021035d340e09c120ef77b07c3ae/view) |
 
 ---
 
