@@ -1,8 +1,8 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-07 10:08 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-07 16:26 UTC.
 
-**Signals found:** 10 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
+**Signals found:** 9 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
 ## Discussions
 
@@ -15,7 +15,6 @@
 - **[It&#x27;s worth noting Motorola Mobility owns the Motorola trademark and can use it for any purpose. Motorola ](https://news.ycombinator.com/item?id=50380810)** · comment · grapheneos · ⬆0 💬0 · 11-05 23:28 UTC · q=`"government contracts"`
 - **[Motorola was split into Motorola Solutions and Motorola Mobility in 2011. Everyone who owned the Motorola stoc](https://news.ycombinator.com/item?id=50380810)** · comment · grapheneos · ⬆0 💬0 · 11-05 18:52 UTC · q=`"government contracts"`
 - **[A lot of capital was looking for a place to get parked. AI and hardware seems like it has the best prospects g](https://news.ycombinator.com/item?id=50372360)** · comment · dzink · ⬆0 💬0 · 11-04 23:38 UTC · q=`"government contracts"`
-- **[You just tell them to pound sand and switch providers no matter how painful. Google Cloud exists and the produ](https://news.ycombinator.com/item?id=50305025)** · comment · ericmay · ⬆0 💬0 · 10-31 12:41 UTC · q=`"government contracts"`
 
 ---
 
