@@ -1,12 +1,13 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-07 02:47 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-07 10:08 UTC.
 
-**Signals found:** 9 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
+**Signals found:** 10 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
 ## Discussions
 
 - **[Government contracting. It doesn&#x27;t matter what the government wants to do, if it involves computers then ](https://news.ycombinator.com/item?id=50342284)** · comment · cowlevel · ⬆0 💬0 · 11-03 02:50 UTC · q=`"government contracting"`
+- **[Anthropic, for obvious reasons. Hard to imagine a more moral founding story, corporate vision, or governance s](https://news.ycombinator.com/item?id=50402106)** · comment · bbor · ⬆0 💬0 · 11-07 06:41 UTC · q=`"government contracts"`
 - **[I mean, surely you know already the responses to these?<p>1. Elon didn&#x27;t &quot;create jobs,&quot; he prof](https://news.ycombinator.com/item?id=50391456)** · comment · komali2 · ⬆0 💬0 · 11-06 16:46 UTC · q=`"government contracts"`
 - **[<i>A better way to think</i><p>So when &quot;free market&quot; ideals come up short, re-define the market?  Ho](https://news.ycombinator.com/item?id=50392781)** · comment · jqpabc123 · ⬆0 💬0 · 11-06 16:27 UTC · q=`"government contracts"`
 - **[This is silly.  The very concept of a &quot;market&quot; assumes independent competition.<p>The marketplace co](https://news.ycombinator.com/item?id=50392781)** · comment · jqpabc123 · ⬆0 💬0 · 11-06 15:20 UTC · q=`"government contracts"`
