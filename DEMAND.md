@@ -1,12 +1,13 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-15 21:49 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-16 02:07 UTC.
 
 **Signals found:** 12 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
 ## Discussions
 
 - **[&quot;Modernizing&quot; is a favorite buzzword in government contracting. Moving some app to the cloud and doi](https://news.ycombinator.com/item?id=50501844)** · comment · icedchai · ⬆0 💬0 · 11-15 01:54 UTC · q=`"government contracting"`
+- **[By &quot;received more than $22B in subsidies from taxpayer money&quot; do you mean &quot;the government has s](https://news.ycombinator.com/item?id=50511072)** · comment · andrewla · ⬆0 💬0 · 11-16 00:39 UTC · q=`"government contracts"`
 - **[Fair, “bailout” is not a good term for an era where taxpayers give loans to floundering companies.<p>What Musk](https://news.ycombinator.com/item?id=50500963)** · comment · bumby · ⬆0 💬0 · 11-15 03:24 UTC · q=`"government contracts"`
 - **[Those exploration dreams can only exist via the bankrolling of government contracts and riding bubbles.<p>Goog](https://news.ycombinator.com/item?id=50500963)** · comment · drivebyhooting · ⬆0 💬0 · 11-14 22:01 UTC · q=`"government contracts"`
 - **[It&#x27;s been lifted. And naturally the political appointee is desperate to credit his lord and master.<p>In ](https://news.ycombinator.com/item?id=50489641)** · comment · hdivider · ⬆0 💬0 · 11-14 01:52 UTC · q=`"government contracts"`
@@ -16,7 +17,6 @@
 - **[Haha thanks for the unexpected Sesame Street :-)<p>Yeah, I&#x27;m generally onboard for higher top tax rates, ](https://news.ycombinator.com/item?id=50484421)** · comment · ericd · ⬆0 💬0 · 11-13 18:31 UTC · q=`"government contracts"`
 - **[In the US, unlikely.<p>He is currently a landmine and any publicly traded company taking on that risk would be](https://news.ycombinator.com/item?id=50486489)** · comment · pixl97 · ⬆0 💬0 · 11-13 17:47 UTC · q=`"government contracts"`
 - **[The correct nomenclature is now “Super Intelligence Engineer”, right?  I think it’s required if you want to se](https://news.ycombinator.com/item?id=50480480)** · comment · photochemsyn · ⬆0 💬0 · 11-13 17:42 UTC · q=`"government contracts"`
-- **[Being allowed to circumvent SEC rules for one, which gives access to huge amounts of capital, which then feeds](https://news.ycombinator.com/item?id=50444129)** · comment · slowin · ⬆0 💬0 · 11-11 21:41 UTC · q=`"government contracts"`
 - **[I think the evidence is all anecdotal about the end of Congressional earmarks. In 2008-9 Congress banned set-a](https://news.ycombinator.com/item?id=50442202)** · comment · mandevil · ⬆0 💬0 · 11-10 17:20 UTC · q=`"set-aside" "federal"`
 
 ---
