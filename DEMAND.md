@@ -1,6 +1,6 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-18 21:56 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-19 03:27 UTC.
 
 **Signals found:** 14 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
@@ -19,7 +19,7 @@
 - **[&gt; We don&#x27;t have to care how much money Zuckerberg wastes. Do you lie awake at night wondering how much](https://news.ycombinator.com/item?id=50489641)** · comment · ToucanLoucan · ⬆0 💬0 · 11-13 23:51 UTC · q=`"government contracts"`
 - **[We don&#x27;t have to care how much money Zuckerberg wastes.  Do you lie awake at night wondering how much mon](https://news.ycombinator.com/item?id=50489641)** · comment · method_capital · ⬆0 💬0 · 11-13 23:43 UTC · q=`"government contracts"`
 - **[They went with an outside provider instead of just extending the sam.gov ID system? Why?](https://news.ycombinator.com/item?id=50540437)** · comment · j_m_b · ⬆0 💬0 · 11-18 11:54 UTC · q=`"SAM.gov"`
-- **[F-22 Next-Generation micro–Data Transfer Cartridge (mDTC)](https://news.ycombinator.com/item?id=50547583)** · story · birdboat00 · ⬆128 💬83 · 11-18 15:35 UTC · q=`"SAM.gov"`
+- **[F-22 Next-Generation micro–Data Transfer Cartridge (mDTC)](https://news.ycombinator.com/item?id=50547583)** · story · birdboat00 · ⬆148 💬104 · 11-18 15:35 UTC · q=`"SAM.gov"`
 
 ---
 
