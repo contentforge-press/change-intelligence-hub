@@ -1,13 +1,12 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-21 23:15 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-22 03:15 UTC.
 
-**Signals found:** 13 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
+**Signals found:** 12 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
 ## Discussions
 
 - **[Isn&#x27;t it just ordinary government contracting?](https://news.ycombinator.com/item?id=50540437)** · comment · cowlevel · ⬆0 💬0 · 11-18 13:42 UTC · q=`"government contracting"`
-- **[&quot;Modernizing&quot; is a favorite buzzword in government contracting. Moving some app to the cloud and doi](https://news.ycombinator.com/item?id=50501844)** · comment · icedchai · ⬆0 💬0 · 11-15 01:54 UTC · q=`"government contracting"`
 - **[<i>We have a responsibility to ensure our work is not used to harm society.</i> - I applaud the effort, but it](https://news.ycombinator.com/item?id=50557885)** · comment · awongh · ⬆0 💬0 · 11-19 11:00 UTC · q=`"government contracts"`
 - **[Yup, pretty much. On the one hand, government contracts are fertile ground for corruption, so there&#x27;s a l](https://news.ycombinator.com/item?id=50547583)** · comment · rcxdude · ⬆0 💬0 · 11-19 10:17 UTC · q=`"government contracts"`
 - **[&gt; Democratic lawmakers have also suggested that SpaceX, which has gained an estimated $10bn in new governme](https://news.ycombinator.com/item?id=50555515)** · comment · k310 · ⬆0 💬0 · 11-19 03:34 UTC · q=`"government contracts"`
