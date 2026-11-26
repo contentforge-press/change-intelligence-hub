@@ -1,8 +1,8 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-25 22:32 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-26 05:03 UTC.
 
-**Signals found:** 10 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
+**Signals found:** 9 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
 ## Discussions
 
@@ -12,7 +12,6 @@
 - **[Unfortunately, the US government has a history of epic bungles when they’ve tried to handle munitions producti](https://news.ycombinator.com/item?id=50588982)** · comment · jandrewrogers · ⬆0 💬0 · 11-22 04:59 UTC · q=`"government contracts"`
 - **[<i>We have a responsibility to ensure our work is not used to harm society.</i> - I applaud the effort, but it](https://news.ycombinator.com/item?id=50557885)** · comment · awongh · ⬆0 💬0 · 11-19 11:00 UTC · q=`"government contracts"`
 - **[Yup, pretty much. On the one hand, government contracts are fertile ground for corruption, so there&#x27;s a l](https://news.ycombinator.com/item?id=50547583)** · comment · rcxdude · ⬆0 💬0 · 11-19 10:17 UTC · q=`"government contracts"`
-- **[&gt; Democratic lawmakers have also suggested that SpaceX, which has gained an estimated $10bn in new governme](https://news.ycombinator.com/item?id=50555515)** · comment · k310 · ⬆0 💬0 · 11-19 03:34 UTC · q=`"government contracts"`
 - **[On the government sites you mention, it&#x27;s worth checking for an official API before wrapping the front en](https://news.ycombinator.com/item?id=50455811)** · comment · mdutt2399 · ⬆0 💬0 · 11-25 12:45 UTC · q=`"SAM.gov"`
 - **[Trades will be very safe for a long while.  Plumbing, Electrical and others are in massive demand.  Robots wil](https://news.ycombinator.com/item?id=50600771)** · comment · freddealmeida · ⬆0 💬0 · 11-24 00:12 UTC · q=`"SAM.gov"`
 - **[&gt; Trump said he&#x27;ll stop the DOJ, NSA, SEC from investigating...for now.<p>And he has the means to prev](https://news.ycombinator.com/item?id=50611576)** · comment · dofm · ⬆0 💬0 · 11-23 18:17 UTC · q=`"federal contractor"`
