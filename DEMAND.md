@@ -1,11 +1,12 @@
 # Demand Signals — Hacker News + Reddit
 
-> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-27 18:58 UTC.
+> Auto-scanned every hour by GitHub Actions via the free HN Algolia API. Only **real discussions** from the last 168h where people talk about federal contracting pain points. Updated 2026-11-28 01:59 UTC.
 
-**Signals found:** 10 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
+**Signals found:** 11 · queries: "government contracting", "federal contract", "federal contracts", "government contracts", "SAM.gov", "8(a) certification", "8(a) company", "set-aside contract", "set-aside" "federal", "govcon", "RFP response", "federal proposal", "federal contractor", "contracting officer", "federal procurement"
 
 ## Discussions
 
+- **[Thank you for your insights.<p>Do you see any possible solutions here or is it a “the best we can do” situatio](https://news.ycombinator.com/item?id=50666375)** · comment · 999900000999 · ⬆0 💬0 · 11-28 01:42 UTC · q=`"government contracting"`
 - **[Not true at all. The choice of contract-or-not, and how to incentivize good digital work, is <i>very very rare](https://news.ycombinator.com/item?id=50666375)** · comment · zbentley · ⬆0 💬0 · 11-27 18:57 UTC · q=`"government contracting"`
 - **[Remember that the Executive can effectively hamstring a company by canceling federal contracts and placing arb](https://news.ycombinator.com/item?id=50611576)** · comment · flatline · ⬆0 💬0 · 11-23 16:35 UTC · q=`"federal contracts"`
 - **[Actual federal government employees top out at GS-15, which is what Google pays for new grads, whereas the com](https://news.ycombinator.com/item?id=50666375)** · comment · Eridrus · ⬆0 💬0 · 11-27 17:01 UTC · q=`"government contracts"`
